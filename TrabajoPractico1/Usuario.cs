@@ -17,16 +17,25 @@ namespace TrabajoPractico1
         public bool bloqueado { get; set; }
         public string password { get; set; }
         public List<CajaDeAhorro> cajas { get; }
-        public List<PlazoFijo> pf { get; }
-        public List<Tarjeta> tarjetas { get; }
+        public List<PlazoFijo> pf { 
+            get => pf;
+            set => pf = value;
+        }
+        public List<Tarjeta> tarjetas { set;  get; }
         public List<Pago> pagos { get; }
 
         public Usuario(int Dni, string Mail, string Password)
-        {
+        {   
             dni = Dni;
             mail = Mail;
             password = Password;
+            cajas = new List<CajaDeAhorro>(); 
+            pf = new List<PlazoFijo>();
+            tarjetas = new List<Tarjeta>();
+            pagos = new List<Pago>();
         }
+
+
 
         public Usuario(int Id, int Dni, string Nombre, string Apellido, string Mail, string Password)
         {

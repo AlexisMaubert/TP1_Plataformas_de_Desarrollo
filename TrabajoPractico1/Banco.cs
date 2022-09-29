@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,10 +11,10 @@ namespace TrabajoPractico1
     public class Banco
     {
         public List<Usuario> usuarios { get; set; }
-        public List<CajaDeAhorro> cajas { get; set; }
-        public List<PlazoFijo> pfs { get; set; }
-        public List<Tarjeta> tarjetas { get; set; }
-        public List<Pago> pagos { get; set; }
+        public List<CajaDeAhorro> cajas { get; }
+        public List<PlazoFijo> pfs { get; }
+        public List<Tarjeta> tarjetas { set;  get; }
+        public List<Pago> pagos { get; }
         public List<Movimiento> movimientos { get; }
 
         public Banco() {
@@ -30,6 +31,8 @@ namespace TrabajoPractico1
             movimientos = Movimientos;
         }
 
+        //USUARIOS-------------------------------------------------
+
         public bool altaUsuario(int dni, string mail, string pass)
         {
             try
@@ -43,6 +46,7 @@ namespace TrabajoPractico1
                 return false;
             }
         }
+
 
         public bool bajaUsuario(int dni)
         {
@@ -58,6 +62,7 @@ namespace TrabajoPractico1
             }
         }
 
+
         public bool modificarUsuario(int dni, string mail, string pass)
         {
             try
@@ -72,12 +77,63 @@ namespace TrabajoPractico1
             }
         }
 
+        public bool modificarTarjetasUsuario(List<Tarjeta> tarjetas,int dni)
+        {
+            try
+            {
+                var index = usuarios.FindIndex(i => i.dni == dni);
+                usuarios[index].tarjetas = tarjetas;
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
+        }
+
+       
+
         public List<Usuario> obtenerUsuarios()
         {
             return usuarios.ToList();
         }
 
+        //CAJAS---------------------------------------------
+        public bool altaCaja(List<Usuario> titulares)
+        {
+            try
+            {
+                CajaDeAhorro cajaAgregar = new CajaDeAhorro(titulares.ToList());
+                cajas.Add(cajaAgregar);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
+        public bool bajaCaja(int cbu)
+        {
+            try
+            {
+                var cajaARemover = cajas.SingleOrDefault(i => i.cbu == cbu);
+                cajas.Remove(cajaARemover);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
+        public bool darTarjetaAUsuario(Tarjeta tarjetita, int dni)
+        {
+            int index = usuarios.FindIndex(i => i.dni == dni);
+            usuarios[index].tarjetas.Add(tarjetita);
+            return true;
+        }
+        
     }
 }

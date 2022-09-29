@@ -16,13 +16,13 @@ namespace TrabajoPractico1
 
         public CajaDeAhorro() { }
 
-        public CajaDeAhorro(int Id, int Cbu, List<Usuario> Titulares, float Saldo, List<Movimiento> Movimiento)
+        public CajaDeAhorro( List<Usuario> Titulares)
         {
-            id= Id;
-            cbu = Cbu;
-            saldo = Saldo;
+            Random rnd = new Random();
+            cbu = rnd.Next(100000000, 999999999);
+            saldo = 0;
             titulares = Titulares;
-            movimientos = Movimiento;
+            movimientos = new List<Movimiento>();
         }
     }
 }

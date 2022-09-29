@@ -20,15 +20,14 @@ namespace TrabajoPractico1
 
         }
 
-        public Tarjeta(int Id, Usuario Titular, float Limite)
+        public Tarjeta( Usuario Titular, float Limite)
         {
-            id = Id;
             titular = Titular;
             Random rnd = new Random();
             numero = rnd.Next(100000000, 999999999);
             codigoV = rnd.Next(100, 999); ;
             limite = Limite;
-            consumo = 0.0F;
+            consumo = 0;
         }
     }
 }
