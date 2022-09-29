@@ -27,12 +27,12 @@ namespace TrabajoPractico1
 
         public Banco(List<Usuario> Usuarios, List<CajaDeAhorro> Cajas, List<PlazoFijo> Pfs, List<Tarjeta> Tarjetas, List<Pago> Pagos, List<Movimiento> Movimientos)
         {
-            usuarios = Usuarios;
-            cajas = Cajas;
-            pfs = Pfs;
-            tarjetas = Tarjetas;
-            pagos = Pagos;
-            movimientos = Movimientos;
+            this.pusuarios = Usuarios;
+            this.pcajas = Cajas;
+            this.ppfs = Pfs;
+            this.ptarjetas = Tarjetas;
+            this.ppagos = Pagos;
+            this.pmovimientos = Movimientos;
         }
 
         //USUARIOS-------------------------------------------------
@@ -96,10 +96,6 @@ namespace TrabajoPractico1
             
         }
 
-        public List<Usuario> obtenerUsuarios()
-        {
-            return usuarios.ToList();
-        }
 
         //CAJAS---------------------------------------------
         public bool altaCaja(List<Usuario> titulares)
@@ -107,7 +103,7 @@ namespace TrabajoPractico1
             try
             {
                 CajaDeAhorro cajaAgregar = new CajaDeAhorro(titulares.ToList());
-                cajas.Add(cajaAgregar);
+                this.pcajas.Add(cajaAgregar);
                 return true;
             }
             catch (Exception ex)
@@ -121,7 +117,7 @@ namespace TrabajoPractico1
             try
             {
                 var cajaARemover = cajas.SingleOrDefault(i => i.cbu == cbu);
-                cajas.Remove(cajaARemover);
+                this.pcajas.Remove(cajaARemover);
                 return true;
             }
             catch (Exception ex)
@@ -130,12 +126,5 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool darTarjetaAUsuario(Tarjeta tarjetita, int dni)
-        {
-            int index = usuarios.FindIndex(i => i.dni == dni);
-            usuarios[index].tarjetas.Add(tarjetita);
-            return true;
-        }
-        
     }
 }
