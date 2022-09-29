@@ -10,16 +10,20 @@ namespace TrabajoPractico1
 
     public class Banco
     {
-        public List<Usuario> usuarios { get; set; }
-        public List<CajaDeAhorro> cajas { get; }
-        public List<PlazoFijo> pfs { get; }
-        public List<Tarjeta> tarjetas { set;  get; }
-        public List<Pago> pagos { get; }
-        public List<Movimiento> movimientos { get; }
+        private List<Usuario> pusuarios = new List<Usuario>();
+        private List<CajaDeAhorro> pcajas = new List<CajaDeAhorro>();
+        private List<PlazoFijo> ppfs = new List<PlazoFijo>();
+        private List<Tarjeta> ptarjetas = new List<Tarjeta>();
+        private List<Pago> ppagos = new List<Pago>();
+        private List<Movimiento> pmovimientos = new List<Movimiento>();
+        public List<Usuario> usuarios { get => pusuarios.ToList(); }
+        public List<CajaDeAhorro> cajas { get => pcajas.ToList(); }
+        public List<PlazoFijo> pfs { get => ppfs.ToList(); }
+        public List<Tarjeta> tarjetas { get => ptarjetas.ToList(); }
+        public List<Pago> pagos { get => ppagos.ToList(); }
+        public List<Movimiento> movimientos { get => pmovimientos.ToList(); }
 
-        public Banco() {
-            usuarios = new List<Usuario>();
-        }
+        public Banco() {}
 
         public Banco(List<Usuario> Usuarios, List<CajaDeAhorro> Cajas, List<PlazoFijo> Pfs, List<Tarjeta> Tarjetas, List<Pago> Pagos, List<Movimiento> Movimientos)
         {
@@ -38,7 +42,7 @@ namespace TrabajoPractico1
             try
             {
                 Usuario usuarioAAgregar = new Usuario(dni, mail, pass);
-                usuarios.Add(usuarioAAgregar);
+                this.pusuarios.Add(usuarioAAgregar);
                 return true;
             }
             catch (Exception ex)
@@ -46,14 +50,13 @@ namespace TrabajoPractico1
                 return false;
             }
         }
-
 
         public bool bajaUsuario(int dni)
         {
             try
             {
                 var usuarioARemover = usuarios.SingleOrDefault(i => i.dni == dni);
-                usuarios.Remove(usuarioARemover);
+                this.pusuarios.Remove(usuarioARemover);
                 return true;
             }
             catch (Exception ex)
@@ -62,13 +65,14 @@ namespace TrabajoPractico1
             }
         }
 
-
         public bool modificarUsuario(int dni, string mail, string pass)
         {
             try
             {
                 var index = usuarios.FindIndex(i => i.dni == dni);
-                usuarios[index] = new Usuario(dni, mail, pass);
+                this.pusuarios[index].dni = dni;
+                this.pusuarios[index].mail = mail;
+                this.pusuarios[index].password = pass;
                 return true;
             }
             catch (Exception ex)
@@ -91,8 +95,6 @@ namespace TrabajoPractico1
             }
             
         }
-
-       
 
         public List<Usuario> obtenerUsuarios()
         {
