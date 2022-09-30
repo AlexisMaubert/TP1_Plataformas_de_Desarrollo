@@ -8,21 +8,22 @@ namespace TrabajoPractico1
 {
     public class CajaDeAhorro
     {
+        private List<Usuario> aTitulares = new List<Usuario>();
+        private List<Movimiento> aMovimiento = new List<Movimiento>();
+
         public int id { get; set; }
         public int cbu { get; set; }
-        public List<Usuario> titulares { get; set; }
         public float saldo { get; set; }
-        public List<Movimiento> movimientos { get;  }
+        public List<Usuario> titulares { get => aTitulares.ToList();  }
+        public List<Movimiento> movimientos { get => aMovimiento.ToList(); }
 
         public CajaDeAhorro() { }
 
-        public CajaDeAhorro( List<Usuario> Titulares)
+        public CajaDeAhorro( int Cbu, List<Usuario> Titulares)
         {
-            Random rnd = new Random();
-            cbu = rnd.Next(100000000, 999999999);
-            saldo = 0;
-            titulares = Titulares;
-            movimientos = new List<Movimiento>();
+            this.cbu = Cbu;
+            this.saldo = 0;
+            this.aTitulares = Titulares;
         }
     }
 }

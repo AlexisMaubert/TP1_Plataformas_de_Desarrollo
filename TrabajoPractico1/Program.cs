@@ -28,12 +28,17 @@ namespace TrabajoPractico1
             tarjetas.Add(visa);
             tarjetas.Add(mastercard);
 
-            b.altaUsuario(makuka.dni,makuka.mail,makuka.password);
-            b.darTarjetaAUsuario(visa, makuka.dni);
-            b.darTarjetaAUsuario(mastercard, makuka.dni);
+            b.altaUsuario(makuka.dni, makuka.mail, makuka.password);
+
+            b.modificarUsuario(42345645, "magali@gmail.com","Magalí");
 
 
-            b.modificarTarjetasUsuario(tarjetas, makuka.dni);
+            
+            //b.darTarjetaAUsuario(visa, makuka.dni);
+            //b.darTarjetaAUsuario(mastercard, makuka.dni);
+
+
+            //b.modificarTarjetasUsuario(tarjetas, makuka.dni);
 
 
             //b.altaUsuario(333333,"elale@gmail.com", "tugatitosexy");

@@ -8,6 +8,8 @@ namespace TrabajoPractico1
 {
     public class Usuario
     {
+        private List<PlazoFijo> aPf = new List<PlazoFijo>();
+
         public int id { get; set; }
         public int dni { get; set; }
         public string nombre { get; set; }
@@ -17,10 +19,7 @@ namespace TrabajoPractico1
         public bool bloqueado { get; set; }
         public string password { get; set; }
         public List<CajaDeAhorro> cajas { get; }
-        public List<PlazoFijo> pf { 
-            get => pf;
-            set => pf = value;
-        }
+        public List<PlazoFijo> pf { get => aPf.ToList();}
         public List<Tarjeta> tarjetas { set;  get; }
         public List<Pago> pagos { get; }
 
@@ -30,7 +29,6 @@ namespace TrabajoPractico1
             mail = Mail;
             password = Password;
             cajas = new List<CajaDeAhorro>(); 
-            pf = new List<PlazoFijo>();
             tarjetas = new List<Tarjeta>();
             pagos = new List<Pago>();
         }
@@ -46,7 +44,6 @@ namespace TrabajoPractico1
             mail = Mail;
             password = Password;
             cajas = new List<CajaDeAhorro>();
-            pf = new List<PlazoFijo>();
             tarjetas = new List<Tarjeta>();
             pagos = new List<Pago>();
         }
