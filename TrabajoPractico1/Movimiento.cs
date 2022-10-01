@@ -8,20 +8,22 @@ namespace TrabajoPractico1
 {
     public class Movimiento
     {
+        private CajaDeAhorro aCaja;
+
         public int id { get; set; }
-        public CajaDeAhorro caja { get; set; }
         public string detalle { get; set; }
         public float monto { get; set; }
         public DateTime fecha { get; set; }
+        public CajaDeAhorro caja { get => aCaja; }//Supongo que acá falta algo como el ToList() para las listas para pasarle una copia de la variable.
 
-        public Movimiento(int Id, CajaDeAhorro Caja, string Detalle, float Monto)
+        public Movimiento() { }
+
+        public Movimiento(CajaDeAhorro Caja, string Detalle, float Monto)
         {
-            id = Id;
-            caja = Caja;
-            detalle = Detalle;
-            monto = Monto;
-            fecha = DateTime.Now;
-
+            this.aCaja = Caja;
+            this.detalle = Detalle;
+            this.monto = Monto;
+            this.fecha = DateTime.Now;
         }
     }
 }

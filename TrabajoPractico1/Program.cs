@@ -19,19 +19,30 @@ namespace TrabajoPractico1
 
             Banco b = new Banco();
 
-            Usuario makuka = new Usuario(42345645,"makukas@makukas.com","maku");
+            Usuario user1 = new Usuario(111111,"user1@gmail.com","1234");
+            Usuario user2 = new Usuario(111112,"user2@gmail.com","1234");
 
-            Tarjeta visa = new Tarjeta(makuka, 200);
-            Tarjeta mastercard = new Tarjeta(makuka, 300);
+            Tarjeta visa = new Tarjeta(user1, 200);
+            Tarjeta mastercard = new Tarjeta(user1, 300);
 
             List<Tarjeta> tarjetas = new List<Tarjeta>();
             tarjetas.Add(visa);
             tarjetas.Add(mastercard);
 
-            b.altaUsuario(makuka.dni, makuka.mail, makuka.password);
+            b.altaUsuario(user1.dni, user1.mail, user1.password);
+            b.altaUsuario(user2.dni, user2.mail, user2.password);
 
-            b.modificarUsuario(42345645, "magali@gmail.com","Magalí");
+            b.altaCaja(b.usuarios);
+            b.altaCaja(b.usuarios);
+            b.altaCaja(b.usuarios);
+            b.altaCaja(b.usuarios);
 
+            b.bajaCaja(b.cajas[0].cbu);
+
+            Debug.WriteLine("terminó");
+
+
+            //b.modificarUsuario(42345645, "magali@gmail.com","Magalí");
 
             
             //b.darTarjetaAUsuario(visa, makuka.dni);

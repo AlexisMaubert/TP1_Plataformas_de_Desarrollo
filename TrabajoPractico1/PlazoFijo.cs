@@ -8,26 +8,26 @@ namespace TrabajoPractico1
 {
     public class PlazoFijo
     {
+        private Usuario aTitular;
+
         public int id { get; set; }
-        public Usuario titular { get; set; }
         public float monto { get; set; }
         public DateTime fechaIni { get; set; }
         public DateTime fechaFin { get; set; }
         public float tasa { get; set; }
         public bool pagado { get; set; }
-    
+        public Usuario titular { get=> aTitular; } //Supongo que acá falta algo como el ToList() para las listas para pasarle una copia de la variable.
 
         public PlazoFijo()   {   }
 
-        public PlazoFijo(int Id, Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
+        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
         {
-           id = Id;
-           titular = Titular;
-           monto = Monto;
-           fechaIni = DateTime.Now;
-           fechaFin = FechaFin;
-           tasa = Tasa;
-           pagado = false;
+           this.aTitular = Titular;
+           this.monto = Monto;
+           this.fechaIni = DateTime.Now;
+           this.fechaFin = FechaFin;
+           this.tasa = Tasa;
+           this.pagado = false;
         }
        
     }

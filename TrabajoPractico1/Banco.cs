@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Text;
@@ -100,14 +101,15 @@ namespace TrabajoPractico1
         }
 
         //CAJAS---------------------------------------------
-        public bool altaCaja(List<Usuario> titulares) //No está chequeado
+        public bool altaCaja(List<Usuario> titulares) //Funcionando
         {
             try
             {
-                Random random = new Random();
+                Random random = new Random(); 
                 int nuevoCbu = random.Next(100000000, 999999999);
                 while(cajas.Any(caja => caja.cbu == nuevoCbu)) {  // Mientras haya alguna caja con ese CBU se crea otro CBU
                     nuevoCbu = random.Next(100000000, 999999999);
+                    Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
                 }
                 CajaDeAhorro cajaAgregar = new CajaDeAhorro(nuevoCbu, titulares);
                 this.aCajas.Add(cajaAgregar);
@@ -119,7 +121,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaCaja(int cbu)
+        public bool bajaCaja(int cbu)//Funcionando
         {
             try
             {
@@ -132,6 +134,40 @@ namespace TrabajoPractico1
                 return false;
             }
         }
+        //TARJETAS-----------------------------------------
+        public bool altaTarjeta(Usuario titular, float monto)//Sin chequear
+        {
+            try
+            {
+                Random random = new Random(); 
+                int nuevoNumero = random.Next(100000000, 999999999);
+                while(tarjetas.Any(tarjeta => tarjeta.numero == nuevoNumero)) {  // Mientras haya alguna tarjeta con ese numero se crea otro numero
+                    nuevoNumero = random.Next(100000000, 999999999);
+                    Debug.WriteLine("El número de tarjeta generado ya existe, creado uno nuevo...");
+                }
+                int nuevoCodigo = random.Next(100, 999);
+                Tarjeta tarjetaNueva = new Tarjeta(nuevoNumero, nuevoCodigo, titular, monto);
+                this.aTarjetas.Add(tarjetaNueva);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
+        public void bajaTarjeta(int numeroTarjeta)//Sin chequear
+        {
+            try
+            {
+                Tarjeta tarjetaARemover = tarjetas.SingleOrDefault(tarjeta => tarjeta.numero == numeroTarjeta);
+                this.aTarjetas.Remove(tarjetaARemover);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
     }
 }

@@ -8,26 +8,24 @@ namespace TrabajoPractico1
 {
     public class Tarjeta
     {
+        private Usuario aTitular;
+
         public int id { get; set; }
-        public Usuario titular { get; set; }
         public int numero { get; set; }
         public int codigoV { get; set; }
         public float limite { get; set; }
         public float consumo { get; set; }
+        public Usuario titular { get =>  aTitular; }//Supongo que acá falta algo como el ToList() para las listas para pasarle una copia de la variable.
 
-        public Tarjeta()
+        public Tarjeta() { }
+
+        public Tarjeta( int Numero, int CodigoV, Usuario Titular, float Limite)
         {
-
-        }
-
-        public Tarjeta( Usuario Titular, float Limite)
-        {
-            titular = Titular;
-            Random rnd = new Random();
-            numero = rnd.Next(100000000, 999999999);
-            codigoV = rnd.Next(100, 999); ;
-            limite = Limite;
-            consumo = 0;
+            this.aTitular = Titular;
+            this.numero = Numero;
+            this.codigoV = CodigoV;
+            this.limite = Limite;
+            this.consumo = 0;
         }
     }
 }
