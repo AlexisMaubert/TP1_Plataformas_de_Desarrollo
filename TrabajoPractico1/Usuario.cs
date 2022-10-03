@@ -42,7 +42,35 @@ namespace TrabajoPractico1
             this.apellido = Apellido;
             this.mail = Mail;
             this.password = Password;
-
+        }
+        public void agregarTarjeta(Tarjeta TarjetaNueva)
+        {
+            this.aTarjetas.Add(TarjetaNueva);
+        }
+        public void quitarTarjeta(Tarjeta TarjetaAQuitar)
+        {
+            this.aTarjetas.Remove(TarjetaAQuitar);
+        }
+        public void agregarCaja(CajaDeAhorro CajaNueva)
+        {
+            this.aCajas.Add(CajaNueva);
+        }
+        public void quitarCaja(CajaDeAhorro CajaAQuitar)
+        {
+            this.aCajas.Remove(CajaAQuitar);
+        }
+        public void agregarPago(Pago PagoNuevo)
+        {
+            this.aPagos.Add(PagoNuevo);
+        }
+        public void quitarPago(Pago PagoAQuitar) 
+        {
+            this.aPagos.Remove(PagoAQuitar);
+        }
+        public void agregarPF(PlazoFijo PFNuevo)
+        {
+            this.aPf.Add( PFNuevo);
+        }
         public override string ToString()
         {
             return string.Format("Nombre: {0}, Apellido: {1}, Email: {2}, Password: {3}", nombre, apellido, mail, password);

@@ -25,5 +25,9 @@ namespace TrabajoPractico1
             this.saldo = 0;
             this.aTitulares = Titulares;
         }
+        public void agregarMovimiento(Movimiento NuevoMovimiento)
+        {
+            this.aMovimiento.Add(NuevoMovimiento);
+        }
     }
 }

@@ -27,5 +27,6 @@ namespace TrabajoPractico1
             this.limite = Limite;
             this.consumo = 0;
         }
+        
     }
 }
