@@ -9,11 +9,6 @@ namespace TrabajoPractico1
 {
     public class Usuario 
     {
-        private List<PlazoFijo> aPf = new List<PlazoFijo>();
-        private List<CajaDeAhorro> aCajas = new List<CajaDeAhorro>();
-        private List<Tarjeta> aTarjetas = new List<Tarjeta>();
-        private List<Pago> aPagos = new List<Pago>();
-
         public int id { get; set; }
         public int dni { get; set; }
         public string nombre { get; set; }
@@ -22,54 +17,29 @@ namespace TrabajoPractico1
         public int intentosFallidos { get; set; }
         public bool bloqueado { get; set; }
         public string password { get; set; }
-        public List<CajaDeAhorro> cajas { get => aCajas.ToList(); }
-        public List<PlazoFijo> pf { get => aPf.ToList();}
-        public List<Tarjeta> tarjetas { get=> aTarjetas.ToList(); }
-        public List<Pago> pagos { get=> aPagos.ToList(); }
+        public List<CajaDeAhorro> cajas { get; set; }
+        public List<PlazoFijo> pf { get; set;}
+        public List<Tarjeta> tarjetas { get; set; }
+        public List<Pago> pagos { get; set; }
 
-        public Usuario(int Dni, string Mail, string Password)
-        {   
-            this.dni = Dni;
-            this.mail = Mail;
-            this.password = Password;
-        }
-
-        public Usuario(int Id, int Dni, string Nombre, string Apellido, string Mail, string Password)
+        public Usuario()
         {
-            this.id = Id;
-            this.dni = Dni;
+            this.pagos = new List<Pago>();
+            this.cajas = new List<CajaDeAhorro>();
+            this.pf = new List<PlazoFijo>();
+            this.tarjetas = new List<Tarjeta>();
+        }
+        public Usuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
+        {  
             this.nombre = Nombre;
             this.apellido = Apellido;
+            this.dni = Dni;
             this.mail = Mail;
             this.password = Password;
-        }
-        public void agregarTarjeta(Tarjeta TarjetaNueva)
-        {
-            this.aTarjetas.Add(TarjetaNueva);
-        }
-        public void quitarTarjeta(Tarjeta TarjetaAQuitar)
-        {
-            this.aTarjetas.Remove(TarjetaAQuitar);
-        }
-        public void agregarCaja(CajaDeAhorro CajaNueva)
-        {
-            this.aCajas.Add(CajaNueva);
-        }
-        public void quitarCaja(CajaDeAhorro CajaAQuitar)
-        {
-            this.aCajas.Remove(CajaAQuitar);
-        }
-        public void agregarPago(Pago PagoNuevo)
-        {
-            this.aPagos.Add(PagoNuevo);
-        }
-        public void quitarPago(Pago PagoAQuitar) 
-        {
-            this.aPagos.Remove(PagoAQuitar);
-        }
-        public void agregarPF(PlazoFijo PFNuevo)
-        {
-            this.aPf.Add( PFNuevo);
+            this.pagos = new List<Pago>();
+            this.cajas = new List<CajaDeAhorro>();
+            this.pf = new List<PlazoFijo>();
+            this.tarjetas = new List<Tarjeta>();
         }
         public override string ToString()
         {

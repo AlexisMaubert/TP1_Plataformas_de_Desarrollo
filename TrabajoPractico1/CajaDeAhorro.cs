@@ -8,26 +8,29 @@ namespace TrabajoPractico1
 {
     public class CajaDeAhorro
     {
-        private List<Usuario> aTitulares = new List<Usuario>();
-        private List<Movimiento> aMovimiento = new List<Movimiento>();
-
         public int id { get; set; }
         public int cbu { get; set; }
         public float saldo { get; set; }
-        public List<Usuario> titulares { get => aTitulares.ToList();  }
-        public List<Movimiento> movimientos { get => aMovimiento.ToList(); }
+        public List<Usuario> titulares { get ;  }
+        public List<Movimiento> movimientos { get ; }
 
-        public CajaDeAhorro() { }
+        public CajaDeAhorro() 
+        { 
+            titulares = new List<Usuario>();    
+            movimientos = new List<Movimiento>();
+        }
 
         public CajaDeAhorro( int Cbu, List<Usuario> Titulares)
         {
             this.cbu = Cbu;
             this.saldo = 0;
-            this.aTitulares = Titulares;
+            titulares = new List<Usuario>();    
+            this.titulares = Titulares;
+            movimientos = new List<Movimiento>();
         }
-        public void agregarMovimiento(Movimiento NuevoMovimiento)
+        public override string ToString()
         {
-            this.aMovimiento.Add(NuevoMovimiento);
+            return string.Format("CBU: {0}, Saldo: {1}", this.cbu, this.saldo);
         }
     }
 }

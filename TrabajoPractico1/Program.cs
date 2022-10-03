@@ -19,16 +19,45 @@ namespace TrabajoPractico1
 
             Banco b = new Banco();
 
+            b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseña indescifrable");
+            b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseña indescifrable");
+            foreach(Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
+
+            b.modificarUsuario(5689,"tipo@gmail.com","contraseña");
+            foreach(Usuario u  in b.usuarios){Debug.WriteLine("Post-modificacion de usuario" + u);}
             
+            //b.bajaUsuario(5689);
+            //foreach(Usuario u  in b.usuarios){Debug.WriteLine(u);}
 
+            b.altaCaja(b.usuarios);
+            Debug.WriteLine("Caja de ahorro en lista de Banco: " + b.cajas[0]);
+            Debug.WriteLine("Caja de ahorro en lista del Usuario: " + b.usuarios[0].cajas[0]);
 
-            b.altaUsuario(42419527, "agustin.giudice@davinci.edu.ar", "ContraseniaSecreta");
-            b.altaTarjeta(b.usuarios[0], 20);
+            //b.bajaCaja(b.cajas[0].cbu);
 
+            b.altaTarjeta(b.usuarios[0],50000);
+            b.altaTarjeta(b.usuarios[0],25000);
 
-            Console.WriteLine("funciono bro");
+            foreach(Tarjeta t  in b.tarjetas){Debug.WriteLine("Alta tarjeta en banco: " + t);}
+            foreach(Tarjeta t  in b.usuarios[0].tarjetas){Debug.WriteLine("Alta tarjeta en usuario: " + t);}
 
+            b.bajaTarjeta(b.usuarios[0].tarjetas[0].numero);
 
+            foreach(Tarjeta t  in b.tarjetas){Debug.WriteLine("Post-baja en banco: " + t);}
+            foreach(Tarjeta t  in b.usuarios[0].tarjetas){Debug.WriteLine("Post-baja en Usuario: " + t);}
+
+            b.nuevoPago(b.usuarios[0],"Pago 1?", 300, "Efectivo");
+            foreach(Pago p  in b.pagos){Debug.WriteLine("Nuevo pago en banco: " + p);}
+            foreach(Pago p in b.usuarios[0].pagos){Debug.WriteLine("Nuevo pago en usuarios: " + p);}
+
+            b.modificarPago(b.pagos[0].id);
+            foreach(Pago p  in b.pagos){Debug.WriteLine("Post-modificacion de pago: " + p);}
+            foreach(Pago p in b.usuarios[0].pagos){Debug.WriteLine("Post-baja en Usuario: " + p);}
+
+            b.nuevoPago(b.usuarios[0],"Tiene que quedarse", 300, "Efectivo");
+            b.quitarPago(b.pagos[0].id);
+            foreach(Pago p  in b.pagos){Debug.WriteLine("Post-modificacion de pago en banco: " + p);}
+            foreach(Pago p  in b.usuarios[0].pagos){Debug.WriteLine("Post-modificacion de pago en usuarios: " + p);}
         }
     }
 }
