@@ -11,8 +11,8 @@ namespace TrabajoPractico1
         public int id { get; set; }
         public int cbu { get; set; }
         public float saldo { get; set; }
-        public List<Usuario> titulares { get ;  }
-        public List<Movimiento> movimientos { get ; }
+        public List<Usuario> titulares { get; set; }
+        public List<Movimiento> movimientos { get; set; }
 
         public CajaDeAhorro() 
         { 
@@ -20,7 +20,7 @@ namespace TrabajoPractico1
             movimientos = new List<Movimiento>();
         }
 
-        public CajaDeAhorro( int Cbu, List<Usuario> Titulares)
+        public CajaDeAhorro(int Cbu, List<Usuario> Titulares)
         {
             this.cbu = Cbu;
             this.saldo = 0;
