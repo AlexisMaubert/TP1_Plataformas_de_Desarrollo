@@ -176,6 +176,46 @@ namespace TrabajoPractico1
             }
         }
 
+        public bool agregarUsuarioACaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        {
+            try
+            {
+                if (!caja.titulares.Contains(usuario))
+                {
+                    caja.titulares.Add(usuario);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
+        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        {
+            try
+            {
+                if (caja.titulares.Contains(usuario) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
+                {
+                    caja.titulares.Remove(usuario);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+
         //TARJETAS-----------------------------------------
         public bool altaTarjeta(Usuario titular, float monto)//Funcionando
         {
