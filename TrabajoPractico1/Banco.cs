@@ -76,7 +76,20 @@ namespace TrabajoPractico1
         {
             return usuarios.ToList();
         }
-
+        //modificar solamente el limite de la tarjeta de credito --> id y cbu por que id no es cbu duda con fran
+        public bool modificarTarjetaDeCredito(int IdTarjetaAModificar, float limite)//Funcionando
+        {
+            try
+            {
+                Tarjeta TarjetaLimiteModificar = this.tarjetas.Find(tarjeta => tarjeta.id == IdTarjetaAModificar);
+                TarjetaLimiteModificar.limite = limite;
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
 
 
     }
