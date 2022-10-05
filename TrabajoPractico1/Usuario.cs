@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TrabajoPractico1
 {
-    public class Usuario
+    public class Usuario 
     {
         public int id { get; set; }
         public int dni { get; set; }
@@ -16,30 +17,29 @@ namespace TrabajoPractico1
         public int intentosFallidos { get; set; }
         public bool bloqueado { get; set; }
         public string password { get; set; }
-        public List<CajaDeAhorro> cajas { get; }
-        public List<PlazoFijo> pf { get; }
-        public List<Tarjeta> tarjetas { get; }
-        public List<Pago> pagos { get; }
+        public List<CajaDeAhorro> cajas { get; set; }
+        public List<PlazoFijo> pf { get; set;}
+        public List<Tarjeta> tarjetas { get; set; }
+        public List<Pago> pagos { get; set; }
 
-        public Usuario(int Dni, string Mail, string Password)
+        public Usuario()
         {
-            dni = Dni;
-            mail = Mail;
-            password = Password;
+            this.pagos = new List<Pago>();
+            this.cajas = new List<CajaDeAhorro>();
+            this.pf = new List<PlazoFijo>();
+            this.tarjetas = new List<Tarjeta>();
         }
-
-        public Usuario(int Id, int Dni, string Nombre, string Apellido, string Mail, string Password)
-        {
-            id = Id;
-            dni = Dni;
-            nombre = Nombre;
-            apellido = Apellido;
-            mail = Mail;
-            password = Password;
-            cajas = new List<CajaDeAhorro>();
-            pf = new List<PlazoFijo>();
-            tarjetas = new List<Tarjeta>();
-            pagos = new List<Pago>();
+        public Usuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
+        {  
+            this.nombre = Nombre;
+            this.apellido = Apellido;
+            this.dni = Dni;
+            this.mail = Mail;
+            this.password = Password;
+            this.pagos = new List<Pago>();
+            this.cajas = new List<CajaDeAhorro>();
+            this.pf = new List<PlazoFijo>();
+            this.tarjetas = new List<Tarjeta>();
         }
         public override string ToString()
         {
