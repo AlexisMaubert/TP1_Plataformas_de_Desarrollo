@@ -31,5 +31,11 @@ namespace TrabajoPractico1
            this.tasa = Tasa;
            this.pagado = false;
         }
+
+        public override string ToString()
+        {
+            return string.Format("Monto: {0}, fechaIni: {1}, fechaFin: {2}, tasa: {3} ,pagado: {4} ,titular{5}", monto, fechaIni, fechaFin, tasa, pagado, titular);
+        }
+
     }
 }

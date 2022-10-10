@@ -21,7 +21,7 @@ namespace TrabajoPractico1
 
             b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseña indescifrable");
             b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseña indescifrable");
-            b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
+               
             foreach (Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
 
             b.modificarUsuario(5689,"tipo@gmail.com","contraseña");
@@ -36,9 +36,17 @@ namespace TrabajoPractico1
 
             //b.bajaCaja(b.cajas[0].cbu);
 
-
+            b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
             b.agregarUsuarioACaja(b.obtenerCajaDeAhorro(1234)[0] , b.usuarios[2]);
             Debug.WriteLine("Titular agregado" + b.cajas[0].titulares[2]);
+
+            foreach (CajaDeAhorro u in b.cajas) {
+                foreach (Usuario user in u.titulares)
+                {
+                    Debug.WriteLine("tituales de la caja: "+ user);
+                }
+            }
+
             b.eliminarUsuarioDeCaja(b.obtenerCajaDeAhorro(1234)[0], b.usuarios[2]);
             foreach (Usuario u in b.usuarios) { Debug.WriteLine("Verificando usuarios" + u); }
 
@@ -70,6 +78,31 @@ namespace TrabajoPractico1
             b.quitarPago(b.pagos[0].id);
             foreach(Pago p  in b.pagos){Debug.WriteLine("Post-modificacion de pago en banco: " + p);}
             foreach(Pago p  in b.usuarios[0].pagos){Debug.WriteLine("Post-modificacion de pago en usuarios: " + p);}
+
+            DateTime fecha = new DateTime(2021, 11, 11);
+            DateTime fecha2 = new DateTime(2019, 11, 11);
+
+            PlazoFijo plazito = new PlazoFijo(b.usuarios[0], 1000, fecha, 2);
+            PlazoFijo plazito2 = new PlazoFijo(b.usuarios[1], 5000, fecha2, 5);
+
+            b.agregarPlazoFijo(plazito);
+            b.agregarPlazoFijo(plazito2);
+
+            plazito.id = 0;
+            plazito.pagado = true;
+            plazito2.id = 1;
+
+
+            foreach (PlazoFijo p in b.pfs)
+            {
+                Debug.WriteLine("lista de plazos fijos: " + p);
+            }
+
+            b.eliminarPlazoFijo(0);
+            foreach (PlazoFijo p in b.pfs)
+            {
+                Debug.WriteLine("lista de plazos fijos: " + p);
+            }
         }
     }
 }
