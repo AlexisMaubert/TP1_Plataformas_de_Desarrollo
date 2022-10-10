@@ -125,7 +125,7 @@ namespace TrabajoPractico1
         }
 
         //CAJAS---------------------------------------------
-        public bool altaCaja(List<Usuario> titulares) //Sin testear
+        public bool altaCaja(List<Usuario> titulares) //Funcionando
         {
             try
             {
@@ -202,7 +202,7 @@ namespace TrabajoPractico1
             {
                 if (caja.titulares.Contains(usuario) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
                 {
-                    caja.titulares.Remove(usuario);
+                    caja.titulares.Remove(usuario);//También elimina al Usuario de la lista de usuarios del banco... No se xq
                     return true;
                 }
                 else
@@ -265,11 +265,13 @@ namespace TrabajoPractico1
         }
         
         //modificar solamente el limite de la tarjeta de credito --> id y cbu por que id no es cbu duda con fran
-        public bool modificarTarjetaDeCredito(int IdTarjetaAModificar, float limite)//Funcionando
+        //10-10 => Estabamos usando el número de la tarjeta como identificador xq todavía no sabemos como manejar el tema del id sin base de datos.
+       
+        public bool modificarTarjetaDeCredito(int numeroTarjetaAModificar, float limite)//Funcionando
         {
             try
             {
-                Tarjeta TarjetaLimiteModificar = this.tarjetas.Find(tarjeta => tarjeta.id == IdTarjetaAModificar);
+                Tarjeta TarjetaLimiteModificar = this.tarjetas.Find(tarjeta => tarjeta.numero == numeroTarjetaAModificar);//Modificando numero por id funciona perfecto.
                 TarjetaLimiteModificar.limite = limite;
                 return true;
             }
@@ -341,9 +343,21 @@ namespace TrabajoPractico1
             }
         }
 
-        public List<CajaDeAhorro> obtenerCajaDeAhorro(int Dni)
+        public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
+        }
+        public List<CajaDeAhorro> obtenerCajaDeAhorro(int Dni) //Se crea este método para ir testeando pasar valores por referencia
+                                                                                            //no se si se va a usar en el proyecto final
+        {
+            foreach (Usuario usuario in usuarios)
+            {
+                if (usuario.dni == Dni)
+                {
+                    return usuario.cajas.ToList();
+                }
+            }
+            return null;
         }
 
         public List<Movimiento> obtenerMovimientos(int Cbu)

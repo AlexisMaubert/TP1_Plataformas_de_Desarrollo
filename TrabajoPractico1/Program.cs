@@ -21,7 +21,8 @@ namespace TrabajoPractico1
 
             b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseña indescifrable");
             b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseña indescifrable");
-            foreach(Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
+            b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
+            foreach (Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
 
             b.modificarUsuario(5689,"tipo@gmail.com","contraseña");
             foreach(Usuario u  in b.usuarios){Debug.WriteLine("Post-modificacion de usuario" + u);}
@@ -35,11 +36,22 @@ namespace TrabajoPractico1
 
             //b.bajaCaja(b.cajas[0].cbu);
 
+
+            b.agregarUsuarioACaja(b.obtenerCajaDeAhorro(1234)[0] , b.usuarios[2]);
+            Debug.WriteLine("Titular agregado" + b.cajas[0].titulares[2]);
+            b.eliminarUsuarioDeCaja(b.obtenerCajaDeAhorro(1234)[0], b.usuarios[2]);
+            foreach (Usuario u in b.usuarios) { Debug.WriteLine("Verificando usuarios" + u); }
+
+
             b.altaTarjeta(b.usuarios[0],50000);
             b.altaTarjeta(b.usuarios[0],25000);
 
             foreach(Tarjeta t  in b.tarjetas){Debug.WriteLine("Alta tarjeta en banco: " + t);}
             foreach(Tarjeta t  in b.usuarios[0].tarjetas){Debug.WriteLine("Alta tarjeta en usuario: " + t);}
+
+            b.modificarTarjetaDeCredito(b.tarjetas[0].numero, 99999);
+            foreach (Tarjeta t in b.tarjetas) { Debug.WriteLine("Modificación tarjeta en banco: " + t); }
+            foreach (Tarjeta t in b.usuarios[0].tarjetas) { Debug.WriteLine("Modificación tarjeta en usuario: " + t); }
 
             b.bajaTarjeta(b.usuarios[0].tarjetas[0].numero);
 
