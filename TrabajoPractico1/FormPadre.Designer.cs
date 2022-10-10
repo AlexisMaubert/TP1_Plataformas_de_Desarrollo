@@ -1,6 +1,6 @@
 ﻿namespace TrabajoPractico1
 {
-    partial class Form1
+    partial class FormPadre
     {
         /// <summary>
         ///  Required designer variable.
