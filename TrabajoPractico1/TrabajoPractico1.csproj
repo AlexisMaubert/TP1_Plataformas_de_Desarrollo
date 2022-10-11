@@ -9,6 +9,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Update="FormLogin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormHijoProfe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormPadreProfe.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Update="FormPadre - Copia %284%29.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Update="Program.cs">
       <CopyToOutputDirectory>Never</CopyToOutputDirectory>
     </Compile>
