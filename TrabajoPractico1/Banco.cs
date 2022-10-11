@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
@@ -343,6 +344,32 @@ namespace TrabajoPractico1
             }
         }
 
+
+        public bool eliminarPlazoFijo(int idPlazoAEliminar)
+        {
+
+            PlazoFijo plazoFijoAEliminar = this.pfs.Find(pf => pf.id == idPlazoAEliminar);
+            try
+            {
+                if (plazoFijoAEliminar.pagado == true && DateTime.Now >= plazoFijoAEliminar.fechaFin.AddMonths(1))
+                {
+                    plazoFijoAEliminar.titular.pf.Remove(plazoFijoAEliminar);
+                    this.pfs.Remove(plazoFijoAEliminar);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                    Debug.WriteLine("No se a realizado el pago o la fecha no es la correctas");
+                }
+            }
+            catch
+            {
+                return false;
+            }
+
+        }
+
         public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
@@ -370,6 +397,11 @@ namespace TrabajoPractico1
                 }
             }
             return null;
+        }
+
+        public List<Pago> obtenerPagos()
+        {
+            return usuarioLogeado.pagos.ToList();
         }
     }
 }
