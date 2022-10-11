@@ -1,6 +1,6 @@
 ﻿namespace TrabajoPractico1
 {
-    partial class FormPadre
+    partial class FormLogin
     {
         /// <summary>
         ///  Required designer variable.
@@ -35,9 +35,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1357, 644);
-            this.Name = "FormPadre";
-            this.Text = "FormPadre";
-            this.Load += new System.EventHandler(this.FormPadre_Load);
+            this.Name = "FormLogin";
+            this.Text = "FormLogin";
+            this.Load += new System.EventHandler(this.FormLogin_Load);
             this.ResumeLayout(false);
 
         }

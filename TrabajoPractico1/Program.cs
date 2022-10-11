@@ -21,7 +21,7 @@ namespace TrabajoPractico1
 
             b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseña indescifrable");
             b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseña indescifrable");
-            b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
+            
             foreach (Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
 
             b.modificarUsuario(5689,"tipo@gmail.com","contraseña");
@@ -36,7 +36,7 @@ namespace TrabajoPractico1
 
             //b.bajaCaja(b.cajas[0].cbu);
 
-
+            b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
             b.agregarUsuarioACaja(b.obtenerCajaDeAhorro(1234)[0] , b.usuarios[2]);
             Debug.WriteLine("Titular agregado" + b.cajas[0].titulares[2]);
             b.eliminarUsuarioDeCaja(b.obtenerCajaDeAhorro(1234)[0], b.usuarios[2]);
