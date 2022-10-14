@@ -30,12 +30,14 @@
         {
             this.SuspendLayout();
             // 
-            // Form1
+            // FormPadre
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1357, 644);
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.IsMdiContainer = true;
             this.Name = "FormPadre";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormPadre";
             this.Load += new System.EventHandler(this.FormPadre_Load);
             this.ResumeLayout(false);

@@ -18,7 +18,7 @@ namespace TrabajoPractico1
         public List<Tarjeta> tarjetas { get ; }
         public List<Pago> pagos { get ; }
         public List<Movimiento> movimientos { get ; }
-        public Usuario usuarioLogeado { get ;} //Se crea una variable para guardar al usuario que inicie sesión
+        public Usuario usuarioLogeado { get; set; } //Se crea una variable para guardar al usuario que inicie sesión
 
         public Banco() 
         { 
@@ -370,6 +370,9 @@ namespace TrabajoPractico1
 
         }
 
+        //
+        //METODOS PARA MOSTRAR DATOS
+        //
         public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
@@ -402,6 +405,39 @@ namespace TrabajoPractico1
         public List<Pago> obtenerPagos()
         {
             return usuarioLogeado.pagos.ToList();
+        }
+        //
+        //METODOS ACCIONES DEL USUARIO
+        //
+        public bool iniciarSesion(int Dni, string Pass)
+        {
+            Usuario user = this.usuarios.Find(usuario => usuario.dni == Dni);
+            if(user == null) 
+            {
+                MessageBox.Show("Usuario no encontrado", "Log in incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(user.bloqueado)
+            {
+                MessageBox.Show("Este usuario está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(user.password != Pass) 
+            {
+                user.intentosFallidos++; 
+                if(user.intentosFallidos >= 3) //Si alcanza los 3 intentos se bloquea la cuenta
+                {
+                    MessageBox.Show("Se ha excedido el número de intentos\nEste usuario ahora está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    user.bloqueado = true;
+                }
+                else //Si todavia no se muestran los intentos restantes
+                {
+                    MessageBox.Show("La contraseña ingresada fue incorrecta \nTe quedan " + (3 - user.intentosFallidos) + " intentos.", "Contraseña incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return false;
+            }
+            this.usuarioLogeado = user; 
+            return true;
         }
     }
 }
