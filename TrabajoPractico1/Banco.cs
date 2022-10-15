@@ -406,6 +406,18 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.pagos.ToList();
         }
+
+        public List<PlazoFijo> obtenerPlzFijo()
+        {
+            return usuarioLogeado.pf.ToList();
+        }
+
+        public List<Tarjeta> obtenerTarjetas()
+        {
+            return usuarioLogeado.tarjetas.ToList();
+        }
+
+
         //
         //METODOS ACCIONES DEL USUARIO
         //
@@ -438,6 +450,11 @@ namespace TrabajoPractico1
             }
             this.usuarioLogeado = user; 
             return true;
+        }
+
+        public string mostrarUsuario()
+        {
+            return usuarioLogeado.nombre + " " + usuarioLogeado.apellido;
         }
     }
 }
