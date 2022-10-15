@@ -85,5 +85,29 @@ namespace TrabajoPractico1
             banco.altaTarjeta(banco.usuarioLogeado, 20000);
             this.refreshDataTarjetas();
         }
+
+        
+
+        private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            btnBajaCaja.Show();
+            btnModificarCaja.Show();
+            btnDepositar.Show();
+            btnRetirar.Show();
+            btnTransferir.Show();
+            btnDetalles.Show();
+            btnMovimientos.Show();
+            string usuarioSeleccionado = dataGridViewCaja.SelectedCells[0].Value.ToString();
+         }
+
+        private void btnBajaCaja_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnMovimientos_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("detalles","detalles",MessageBoxButtons.OK);
+        }
     }
 }
