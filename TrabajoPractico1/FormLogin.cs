@@ -42,9 +42,7 @@ namespace TrabajoPractico1
             this.regEvento();
         }
 
-        private void FormLogin_Load_1(object sender, EventArgs e)
-        {
-
-        }
+       
+        
     }
 }

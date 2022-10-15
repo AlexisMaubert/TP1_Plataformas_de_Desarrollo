@@ -5,6 +5,7 @@ namespace TrabajoPractico1
         private Banco banco;
         FormLogin hijoLogin;
         FormReg hijoReg;
+        FormMain hijoMain;
         public int dni;
         public string password;
 
@@ -36,12 +37,12 @@ namespace TrabajoPractico1
             this.dni = Dni;
             if(banco.iniciarSesion(this.dni, this.password))
             {
-                MessageBox.Show("Log in correcto, Usuario: " + this.banco.usuarioLogeado.nombre +" "+ this.banco.usuarioLogeado.apellido, "Inicio de sesión exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Log in correcto, Usuario: " + this.banco.mostrarUsuario(), "Inicio de sesión exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hijoLogin.Close();
-                //hijoReg = new FormReg(banco);
+                hijoMain = new FormMain(banco);
                 //hijoLogin.usuario = Usuario;
-                //hijoReg.MdiParent = this;
-                //hijoReg.Show();
+                hijoMain.MdiParent = this;
+                hijoMain.Show();
             }
             else
             {

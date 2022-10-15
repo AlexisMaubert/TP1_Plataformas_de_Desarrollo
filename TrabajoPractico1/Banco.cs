@@ -420,6 +420,18 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.pagos.ToList();
         }
+
+        public List<PlazoFijo> obtenerPlzFijo()
+        {
+            return usuarioLogeado.pf.ToList();
+        }
+
+        public List<Tarjeta> obtenerTarjetas()
+        {
+            return usuarioLogeado.tarjetas.ToList();
+        }
+
+
         //
         //METODOS ACCIONES DEL USUARIO
         //
@@ -451,60 +463,6 @@ namespace TrabajoPractico1
                 return false;
             }
             this.usuarioLogeado = user; 
-            return true;
-        }
-        public void cerrarSesion()
-        {
-            this.usuarioLogeado = null;
-        }
-        public bool crearCajaDeAhorro(float Saldo)
-        {
-            Random random = new Random();
-            int nuevoCbu = random.Next(100000000, 999999999);
-            while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
-            {  // Mientras haya alguna caja con ese CBU se crea otro CBU
-                nuevoCbu = random.Next(100000000, 999999999);
-                Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
-            }
-            CajaDeAhorro cajaNueva = new CajaDeAhorro(nuevoCbu, this.usuarioLogeado);
-            cajaNueva.saldo = Saldo;
-            try
-            {
-                this.altaCaja(this.usuarioLogeado, cajaNueva);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
-        public void depositar(CajaDeAhorro CajaDestino, float Monto)
-        {
-            CajaDestino.saldo += Monto;
-        }
-        public bool retirar(CajaDeAhorro CajaSeleccionada, float Monto)
-        {
-            if(CajaSeleccionada.saldo < Monto)
-            {
-                return false;
-            }
-            CajaSeleccionada.saldo -= Monto;
-            return true;
-        }
-        public bool transferir(CajaDeAhorro CajaOrigen, int CBU, float Monto)
-        {
-            CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CBU);
-            if (cajaDestino == null)
-            {
-                MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU "+CBU, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            if(!this.retirar(CajaOrigen, Monto))
-            {
-                MessageBox.Show("La cuenta seleccionada no posee los fondos suficientes para realizar esta transacción", "Fondos insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            this.depositar(cajaDestino, Monto);
             return true;
         }
     }

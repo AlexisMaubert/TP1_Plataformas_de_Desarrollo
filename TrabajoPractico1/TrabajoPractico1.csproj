@@ -10,9 +10,7 @@
 
   <ItemGroup>
     <Compile Update="FormLogin.cs" />
-    <Compile Update="FormHijoProfe.cs" />
     <Compile Update="FormReg.cs" />
-    <Compile Update="FormPadreProfe.cs" />
     <Compile Update="FormPadre - Copia %284%29.cs">
       <SubType>Form</SubType>
     </Compile>
