@@ -29,26 +29,16 @@
         private void InitializeComponent()
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.tabPage1 = new System.Windows.Forms.TabPage();
-            this.button2 = new System.Windows.Forms.Button();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
+            this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.btnNewCaja = new System.Windows.Forms.Button();
+            this.dataGridViewCaja = new System.Windows.Forms.DataGridView();
             this.ColumnId = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.tabPage3 = new System.Windows.Forms.TabPage();
-            this.tabPage4 = new System.Windows.Forms.TabPage();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.dataGridView2 = new System.Windows.Forms.DataGridView();
-            this.dataGridView3 = new System.Windows.Forms.DataGridView();
-            this.dataGridView4 = new System.Windows.Forms.DataGridView();
-            this.ColumnPagosRealizados = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnPagosPendientes = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.tabPlazoFijo = new System.Windows.Forms.TabPage();
+            this.btnNewPf = new System.Windows.Forms.Button();
+            this.dataGridViewPF = new System.Windows.Forms.DataGridView();
             this.ColumnIdPlf = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitularPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnMontoPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -56,74 +46,86 @@
             this.ColumnFechaFinPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTasaPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagadoPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.button5 = new System.Windows.Forms.Button();
+            this.tabPagos = new System.Windows.Forms.TabPage();
+            this.btnNewPago = new System.Windows.Forms.Button();
+            this.dataGridViewPagos = new System.Windows.Forms.DataGridView();
+            this.ColumnPagosRealizados = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnPagosPendientes = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabTarjetas = new System.Windows.Forms.TabPage();
+            this.btnNewTarjeta = new System.Windows.Forms.Button();
+            this.dataGridViewTarjetas = new System.Windows.Forms.DataGridView();
             this.ColumnIdTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitularTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nombreUsuario = new System.Windows.Forms.Label();
+            this.btnMostrarDatos = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
-            this.tabPage1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
-            this.tabPage2.SuspendLayout();
-            this.tabPage3.SuspendLayout();
-            this.tabPage4.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).BeginInit();
+            this.tabCajaDeAhorro.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
+            this.tabPlazoFijo.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).BeginInit();
+            this.tabPagos.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).BeginInit();
+            this.tabTarjetas.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.tabPage1);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Controls.Add(this.tabPage3);
-            this.tabControl1.Controls.Add(this.tabPage4);
+            this.tabControl1.Controls.Add(this.tabCajaDeAhorro);
+            this.tabControl1.Controls.Add(this.tabPlazoFijo);
+            this.tabControl1.Controls.Add(this.tabPagos);
+            this.tabControl1.Controls.Add(this.tabTarjetas);
             this.tabControl1.Location = new System.Drawing.Point(12, 61);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(692, 260);
+            this.tabControl1.Size = new System.Drawing.Size(760, 424);
             this.tabControl1.TabIndex = 0;
             // 
-            // tabPage1
+            // tabCajaDeAhorro
             // 
-            this.tabPage1.Controls.Add(this.button2);
-            this.tabPage1.Controls.Add(this.dataGridView1);
-            this.tabPage1.Location = new System.Drawing.Point(4, 24);
-            this.tabPage1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Name = "tabPage1";
-            this.tabPage1.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage1.Size = new System.Drawing.Size(684, 232);
-            this.tabPage1.TabIndex = 0;
-            this.tabPage1.Text = "CajasDeAhorro";
-            this.tabPage1.UseVisualStyleBackColor = true;
+            this.tabCajaDeAhorro.Controls.Add(this.btnNewCaja);
+            this.tabCajaDeAhorro.Controls.Add(this.dataGridViewCaja);
+            this.tabCajaDeAhorro.Location = new System.Drawing.Point(4, 24);
+            this.tabCajaDeAhorro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabCajaDeAhorro.Name = "tabCajaDeAhorro";
+            this.tabCajaDeAhorro.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabCajaDeAhorro.Size = new System.Drawing.Size(752, 396);
+            this.tabCajaDeAhorro.TabIndex = 0;
+            this.tabCajaDeAhorro.Text = "CajasDeAhorro";
+            this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
-            // button2
+            // btnNewCaja
             // 
-            this.button2.Location = new System.Drawing.Point(441, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(133, 23);
-            this.button2.TabIndex = 1;
-            this.button2.Text = "Nueva Caja de Ahorro";
-            this.button2.UseVisualStyleBackColor = true;
+            this.btnNewCaja.Location = new System.Drawing.Point(15, 361);
+            this.btnNewCaja.Name = "btnNewCaja";
+            this.btnNewCaja.Size = new System.Drawing.Size(133, 23);
+            this.btnNewCaja.TabIndex = 1;
+            this.btnNewCaja.Text = "Nueva Caja de Ahorro";
+            this.btnNewCaja.UseVisualStyleBackColor = true;
+            this.btnNewCaja.Visible = false;
+            this.btnNewCaja.Click += new System.EventHandler(this.btnNewCaja_Click);
             // 
-            // dataGridView1
+            // dataGridViewCaja
             // 
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewCaja.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewCaja.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnId,
             this.ColumnCbu,
             this.ColumnTitulares,
             this.ColumnSaldo});
-            this.dataGridView1.Location = new System.Drawing.Point(0, 0);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.RowHeadersWidth = 51;
-            this.dataGridView1.RowTemplate.Height = 29;
-            this.dataGridView1.Size = new System.Drawing.Size(419, 236);
-            this.dataGridView1.TabIndex = 0;
+            this.dataGridViewCaja.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.dataGridViewCaja.Name = "dataGridViewCaja";
+            this.dataGridViewCaja.RowHeadersWidth = 51;
+            this.dataGridViewCaja.RowTemplate.Height = 29;
+            this.dataGridViewCaja.Size = new System.Drawing.Size(435, 345);
+            this.dataGridViewCaja.TabIndex = 0;
             // 
             // ColumnId
             // 
@@ -162,76 +164,33 @@
             this.ColumnSaldo.ReadOnly = true;
             this.ColumnSaldo.Width = 125;
             // 
-            // tabPage2
+            // tabPlazoFijo
             // 
-            this.tabPage2.Controls.Add(this.button4);
-            this.tabPage2.Controls.Add(this.dataGridView2);
-            this.tabPage2.Location = new System.Drawing.Point(4, 24);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage2.Size = new System.Drawing.Size(684, 232);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "PlazoFijo";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.tabPlazoFijo.Controls.Add(this.btnNewPf);
+            this.tabPlazoFijo.Controls.Add(this.dataGridViewPF);
+            this.tabPlazoFijo.Location = new System.Drawing.Point(4, 24);
+            this.tabPlazoFijo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPlazoFijo.Name = "tabPlazoFijo";
+            this.tabPlazoFijo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPlazoFijo.Size = new System.Drawing.Size(752, 396);
+            this.tabPlazoFijo.TabIndex = 1;
+            this.tabPlazoFijo.Text = "PlazoFijo";
+            this.tabPlazoFijo.UseVisualStyleBackColor = true;
             // 
-            // tabPage3
+            // btnNewPf
             // 
-            this.tabPage3.Controls.Add(this.button3);
-            this.tabPage3.Controls.Add(this.dataGridView3);
-            this.tabPage3.Location = new System.Drawing.Point(4, 24);
-            this.tabPage3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage3.Name = "tabPage3";
-            this.tabPage3.Size = new System.Drawing.Size(684, 232);
-            this.tabPage3.TabIndex = 2;
-            this.tabPage3.Text = "Pagos";
-            this.tabPage3.UseVisualStyleBackColor = true;
+            this.btnNewPf.Location = new System.Drawing.Point(16, 358);
+            this.btnNewPf.Name = "btnNewPf";
+            this.btnNewPf.Size = new System.Drawing.Size(107, 23);
+            this.btnNewPf.TabIndex = 1;
+            this.btnNewPf.Text = "Nuevo Plazo Fijo";
+            this.btnNewPf.UseVisualStyleBackColor = true;
+            this.btnNewPf.Click += new System.EventHandler(this.btnNewPf_Click);
             // 
-            // tabPage4
+            // dataGridViewPF
             // 
-            this.tabPage4.Controls.Add(this.button5);
-            this.tabPage4.Controls.Add(this.dataGridView4);
-            this.tabPage4.Location = new System.Drawing.Point(4, 24);
-            this.tabPage4.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabPage4.Name = "tabPage4";
-            this.tabPage4.Size = new System.Drawing.Size(684, 232);
-            this.tabPage4.TabIndex = 3;
-            this.tabPage4.Text = "Tarjetas";
-            this.tabPage4.UseVisualStyleBackColor = true;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido usuario:";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(179, 21);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(38, 15);
-            this.label2.TabIndex = 1;
-            this.label2.Text = "label2";
-            // 
-            // button1
-            // 
-            this.button1.Location = new System.Drawing.Point(355, 35);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(121, 22);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "Mostrar datos";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // dataGridView2
-            // 
-            this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewPF.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPF.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIdPlf,
             this.ColumnTitularPlz,
             this.ColumnMontoPlz,
@@ -239,71 +198,11 @@
             this.ColumnFechaFinPlz,
             this.ColumnTasaPlz,
             this.ColumnPagadoPlz});
-            this.dataGridView2.Location = new System.Drawing.Point(-4, 0);
-            this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.RowTemplate.Height = 25;
-            this.dataGridView2.Size = new System.Drawing.Size(593, 232);
-            this.dataGridView2.TabIndex = 0;
-            // 
-            // dataGridView3
-            // 
-            this.dataGridView3.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView3.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnPagosRealizados,
-            this.ColumnPagosPendientes});
-            this.dataGridView3.Location = new System.Drawing.Point(-4, 0);
-            this.dataGridView3.Name = "dataGridView3";
-            this.dataGridView3.RowTemplate.Height = 25;
-            this.dataGridView3.Size = new System.Drawing.Size(423, 232);
-            this.dataGridView3.TabIndex = 0;
-            // 
-            // dataGridView4
-            // 
-            this.dataGridView4.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView4.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.ColumnIdTarjeta,
-            this.ColumnTitularTarjeta,
-            this.ColumnNumeroTarjeta,
-            this.ColumnCodigoTarjeta,
-            this.ColumnLimiteTarjeta,
-            this.ColumnConsumosTarjeta});
-            this.dataGridView4.Location = new System.Drawing.Point(-4, 0);
-            this.dataGridView4.Name = "dataGridView4";
-            this.dataGridView4.RowTemplate.Height = 25;
-            this.dataGridView4.Size = new System.Drawing.Size(423, 229);
-            this.dataGridView4.TabIndex = 0;
-            // 
-            // ColumnPagosRealizados
-            // 
-            this.ColumnPagosRealizados.Frozen = true;
-            this.ColumnPagosRealizados.HeaderText = "Pagos Realizados";
-            this.ColumnPagosRealizados.Name = "ColumnPagosRealizados";
-            this.ColumnPagosRealizados.ReadOnly = true;
-            // 
-            // ColumnPagosPendientes
-            // 
-            this.ColumnPagosPendientes.Frozen = true;
-            this.ColumnPagosPendientes.HeaderText = "PagosPendientes";
-            this.ColumnPagosPendientes.Name = "ColumnPagosPendientes";
-            this.ColumnPagosPendientes.ReadOnly = true;
-            // 
-            // button3
-            // 
-            this.button3.Location = new System.Drawing.Point(458, 3);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(100, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Nuevo Pago";
-            this.button3.UseVisualStyleBackColor = true;
-            // 
-            // button4
-            // 
-            this.button4.Location = new System.Drawing.Point(581, 63);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(107, 23);
-            this.button4.TabIndex = 1;
-            this.button4.Text = "Nuevo Plazo Fijo";
-            this.button4.UseVisualStyleBackColor = true;
+            this.dataGridViewPF.Location = new System.Drawing.Point(-4, 0);
+            this.dataGridViewPF.Name = "dataGridViewPF";
+            this.dataGridViewPF.RowTemplate.Height = 25;
+            this.dataGridViewPF.Size = new System.Drawing.Size(640, 343);
+            this.dataGridViewPF.TabIndex = 0;
             // 
             // ColumnIdPlf
             // 
@@ -316,7 +215,7 @@
             // ColumnTitularPlz
             // 
             this.ColumnTitularPlz.Frozen = true;
-            this.ColumnTitularPlz.HeaderText = "Titular/es";
+            this.ColumnTitularPlz.HeaderText = "Titular";
             this.ColumnTitularPlz.Name = "ColumnTitularPlz";
             this.ColumnTitularPlz.ReadOnly = true;
             // 
@@ -355,14 +254,91 @@
             this.ColumnPagadoPlz.Name = "ColumnPagadoPlz";
             this.ColumnPagadoPlz.ReadOnly = true;
             // 
-            // button5
+            // tabPagos
             // 
-            this.button5.Location = new System.Drawing.Point(489, 3);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(102, 23);
-            this.button5.TabIndex = 1;
-            this.button5.Text = "Nueva Tarjeta";
-            this.button5.UseVisualStyleBackColor = true;
+            this.tabPagos.Controls.Add(this.btnNewPago);
+            this.tabPagos.Controls.Add(this.dataGridViewPagos);
+            this.tabPagos.Location = new System.Drawing.Point(4, 24);
+            this.tabPagos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPagos.Name = "tabPagos";
+            this.tabPagos.Size = new System.Drawing.Size(752, 396);
+            this.tabPagos.TabIndex = 2;
+            this.tabPagos.Text = "Pagos";
+            this.tabPagos.UseVisualStyleBackColor = true;
+            // 
+            // btnNewPago
+            // 
+            this.btnNewPago.Location = new System.Drawing.Point(24, 360);
+            this.btnNewPago.Name = "btnNewPago";
+            this.btnNewPago.Size = new System.Drawing.Size(100, 23);
+            this.btnNewPago.TabIndex = 1;
+            this.btnNewPago.Text = "Nuevo Pago";
+            this.btnNewPago.UseVisualStyleBackColor = true;
+            this.btnNewPago.Click += new System.EventHandler(this.btnNewPago_Click);
+            // 
+            // dataGridViewPagos
+            // 
+            this.dataGridViewPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewPagos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnPagosRealizados,
+            this.ColumnPagosPendientes});
+            this.dataGridViewPagos.Location = new System.Drawing.Point(-4, 0);
+            this.dataGridViewPagos.Name = "dataGridViewPagos";
+            this.dataGridViewPagos.RowTemplate.Height = 25;
+            this.dataGridViewPagos.Size = new System.Drawing.Size(244, 345);
+            this.dataGridViewPagos.TabIndex = 0;
+            // 
+            // ColumnPagosRealizados
+            // 
+            this.ColumnPagosRealizados.Frozen = true;
+            this.ColumnPagosRealizados.HeaderText = "Pagos Realizados";
+            this.ColumnPagosRealizados.Name = "ColumnPagosRealizados";
+            this.ColumnPagosRealizados.ReadOnly = true;
+            // 
+            // ColumnPagosPendientes
+            // 
+            this.ColumnPagosPendientes.Frozen = true;
+            this.ColumnPagosPendientes.HeaderText = "PagosPendientes";
+            this.ColumnPagosPendientes.Name = "ColumnPagosPendientes";
+            this.ColumnPagosPendientes.ReadOnly = true;
+            // 
+            // tabTarjetas
+            // 
+            this.tabTarjetas.Controls.Add(this.btnNewTarjeta);
+            this.tabTarjetas.Controls.Add(this.dataGridViewTarjetas);
+            this.tabTarjetas.Location = new System.Drawing.Point(4, 24);
+            this.tabTarjetas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabTarjetas.Name = "tabTarjetas";
+            this.tabTarjetas.Size = new System.Drawing.Size(752, 396);
+            this.tabTarjetas.TabIndex = 3;
+            this.tabTarjetas.Text = "Tarjetas";
+            this.tabTarjetas.UseVisualStyleBackColor = true;
+            // 
+            // btnNewTarjeta
+            // 
+            this.btnNewTarjeta.Location = new System.Drawing.Point(16, 358);
+            this.btnNewTarjeta.Name = "btnNewTarjeta";
+            this.btnNewTarjeta.Size = new System.Drawing.Size(102, 23);
+            this.btnNewTarjeta.TabIndex = 1;
+            this.btnNewTarjeta.Text = "Nueva Tarjeta";
+            this.btnNewTarjeta.UseVisualStyleBackColor = true;
+            this.btnNewTarjeta.Click += new System.EventHandler(this.btnNewTarjeta_Click);
+            // 
+            // dataGridViewTarjetas
+            // 
+            this.dataGridViewTarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewTarjetas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ColumnIdTarjeta,
+            this.ColumnTitularTarjeta,
+            this.ColumnNumeroTarjeta,
+            this.ColumnCodigoTarjeta,
+            this.ColumnLimiteTarjeta,
+            this.ColumnConsumosTarjeta});
+            this.dataGridViewTarjetas.Location = new System.Drawing.Point(-4, 0);
+            this.dataGridViewTarjetas.Name = "dataGridViewTarjetas";
+            this.dataGridViewTarjetas.RowTemplate.Height = 25;
+            this.dataGridViewTarjetas.Size = new System.Drawing.Size(543, 343);
+            this.dataGridViewTarjetas.TabIndex = 0;
             // 
             // ColumnIdTarjeta
             // 
@@ -375,28 +351,28 @@
             // ColumnTitularTarjeta
             // 
             this.ColumnTitularTarjeta.Frozen = true;
-            this.ColumnTitularTarjeta.HeaderText = "Titular/res";
+            this.ColumnTitularTarjeta.HeaderText = "Titular";
             this.ColumnTitularTarjeta.Name = "ColumnTitularTarjeta";
             this.ColumnTitularTarjeta.ReadOnly = true;
             // 
             // ColumnNumeroTarjeta
             // 
             this.ColumnNumeroTarjeta.Frozen = true;
-            this.ColumnNumeroTarjeta.HeaderText = "Numero Tarjeta";
+            this.ColumnNumeroTarjeta.HeaderText = "Número Tarjeta";
             this.ColumnNumeroTarjeta.Name = "ColumnNumeroTarjeta";
             this.ColumnNumeroTarjeta.ReadOnly = true;
             // 
             // ColumnCodigoTarjeta
             // 
             this.ColumnCodigoTarjeta.Frozen = true;
-            this.ColumnCodigoTarjeta.HeaderText = "Codigo";
+            this.ColumnCodigoTarjeta.HeaderText = "Código";
             this.ColumnCodigoTarjeta.Name = "ColumnCodigoTarjeta";
             this.ColumnCodigoTarjeta.ReadOnly = true;
             // 
             // ColumnLimiteTarjeta
             // 
             this.ColumnLimiteTarjeta.Frozen = true;
-            this.ColumnLimiteTarjeta.HeaderText = "Limite";
+            this.ColumnLimiteTarjeta.HeaderText = "Límite";
             this.ColumnLimiteTarjeta.Name = "ColumnLimiteTarjeta";
             this.ColumnLimiteTarjeta.ReadOnly = true;
             // 
@@ -407,27 +383,63 @@
             this.ColumnConsumosTarjeta.Name = "ColumnConsumosTarjeta";
             this.ColumnConsumosTarjeta.ReadOnly = true;
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(53, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(111, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Bienvenido usuario:";
+            // 
+            // nombreUsuario
+            // 
+            this.nombreUsuario.AutoSize = true;
+            this.nombreUsuario.Location = new System.Drawing.Point(179, 21);
+            this.nombreUsuario.Name = "nombreUsuario";
+            this.nombreUsuario.Size = new System.Drawing.Size(38, 15);
+            this.nombreUsuario.TabIndex = 1;
+            this.nombreUsuario.Text = "label2";
+            // 
+            // btnMostrarDatos
+            // 
+            this.btnMostrarDatos.Location = new System.Drawing.Point(609, 21);
+            this.btnMostrarDatos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnMostrarDatos.Name = "btnMostrarDatos";
+            this.btnMostrarDatos.Size = new System.Drawing.Size(121, 22);
+            this.btnMostrarDatos.TabIndex = 2;
+            this.btnMostrarDatos.Text = "Mostrar datos";
+            this.btnMostrarDatos.UseVisualStyleBackColor = true;
+            this.btnMostrarDatos.Click += new System.EventHandler(this.btnMostrarDatos_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(700, 338);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.label2);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(784, 561);
+            this.ControlBox = false;
+            this.Controls.Add(this.btnMostrarDatos);
+            this.Controls.Add(this.nombreUsuario);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormMain";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabControl1.ResumeLayout(false);
-            this.tabPage1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
-            this.tabPage2.ResumeLayout(false);
-            this.tabPage3.ResumeLayout(false);
-            this.tabPage4.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView4)).EndInit();
+            this.tabCajaDeAhorro.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).EndInit();
+            this.tabPlazoFijo.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).EndInit();
+            this.tabPagos.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).EndInit();
+            this.tabTarjetas.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -436,26 +448,27 @@
         #endregion
 
         private TabControl tabControl1;
-        private TabPage tabPage1;
-        private TabPage tabPage2;
+        private TabPage tabCajaDeAhorro;
+        private TabPage tabPlazoFijo;
         private Label label1;
-        private Label label2;
-        private TabPage tabPage3;
-        private TabPage tabPage4;
-        private DataGridView dataGridView1;
+        private Label nombreUsuario;
+        private TabPage tabPagos;
+        private TabPage tabTarjetas;
+        private DataGridView dataGridViewCaja;
         private DataGridViewTextBoxColumn ColumnId;
         private DataGridViewTextBoxColumn ColumnCbu;
         private DataGridViewTextBoxColumn ColumnTitulares;
         private DataGridViewTextBoxColumn ColumnSaldo;
-        private Button button1;
-        private Button button2;
-        private Button button4;
-        private DataGridView dataGridView2;
-        private Button button3;
-        private DataGridView dataGridView3;
+        private Button btnMostrarDatos;
+        private Button btnNewCaja;
+        private Button btnNewPf;
+        private DataGridView dataGridViewPF;
+        private Button btnNewPago;
+        private DataGridView dataGridViewPagos;
         private DataGridViewTextBoxColumn ColumnPagosRealizados;
         private DataGridViewTextBoxColumn ColumnPagosPendientes;
-        private DataGridView dataGridView4;
+        private DataGridView dataGridViewTarjetas;
+        private Button btnNewTarjeta;
         private DataGridViewTextBoxColumn ColumnIdPlf;
         private DataGridViewTextBoxColumn ColumnTitularPlz;
         private DataGridViewTextBoxColumn ColumnMontoPlz;
@@ -463,7 +476,6 @@
         private DataGridViewTextBoxColumn ColumnFechaFinPlz;
         private DataGridViewTextBoxColumn ColumnTasaPlz;
         private DataGridViewTextBoxColumn ColumnPagadoPlz;
-        private Button button5;
         private DataGridViewTextBoxColumn ColumnIdTarjeta;
         private DataGridViewTextBoxColumn ColumnTitularTarjeta;
         private DataGridViewTextBoxColumn ColumnNumeroTarjeta;

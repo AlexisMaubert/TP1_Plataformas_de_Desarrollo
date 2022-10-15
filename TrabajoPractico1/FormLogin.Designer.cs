@@ -55,14 +55,14 @@
             // 
             this.inputDni.Location = new System.Drawing.Point(75, 55);
             this.inputDni.Name = "inputDni";
-            this.inputDni.Size = new System.Drawing.Size(174, 32);
+            this.inputDni.Size = new System.Drawing.Size(174, 27);
             this.inputDni.TabIndex = 1;
             // 
             // inputPass
             // 
             this.inputPass.Location = new System.Drawing.Point(75, 118);
             this.inputPass.Name = "inputPass";
-            this.inputPass.Size = new System.Drawing.Size(174, 32);
+            this.inputPass.Size = new System.Drawing.Size(174, 27);
             this.inputPass.TabIndex = 2;
             // 
             // textDni
@@ -71,7 +71,7 @@
             this.textDni.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.textDni.Location = new System.Drawing.Point(134, 27);
             this.textDni.Name = "textDni";
-            this.textDni.Size = new System.Drawing.Size(57, 25);
+            this.textDni.Size = new System.Drawing.Size(42, 18);
             this.textDni.TabIndex = 3;
             this.textDni.Text = "DNI";
             // 
@@ -81,7 +81,7 @@
             this.textPass.Font = new System.Drawing.Font("Verdana", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
             this.textPass.Location = new System.Drawing.Point(93, 90);
             this.textPass.Name = "textPass";
-            this.textPass.Size = new System.Drawing.Size(138, 25);
+            this.textPass.Size = new System.Drawing.Size(110, 18);
             this.textPass.TabIndex = 4;
             this.textPass.Text = "Contraseña";
             this.textPass.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -93,7 +93,7 @@
             this.linkReg.Location = new System.Drawing.Point(265, 232);
             this.linkReg.Name = "linkReg";
             this.linkReg.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.linkReg.Size = new System.Drawing.Size(38, 20);
+            this.linkReg.Size = new System.Drawing.Size(31, 16);
             this.linkReg.TabIndex = 5;
             this.linkReg.TabStop = true;
             this.linkReg.Text = "aca";
@@ -105,7 +105,7 @@
             this.textReg.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
             this.textReg.Location = new System.Drawing.Point(16, 232);
             this.textReg.Name = "textReg";
-            this.textReg.Size = new System.Drawing.Size(252, 20);
+            this.textReg.Size = new System.Drawing.Size(196, 16);
             this.textReg.TabIndex = 6;
             this.textReg.Text = "No tenes cuenta? Registrate";
             // 
@@ -113,9 +113,9 @@
             // 
             this.titulo.AutoSize = true;
             this.titulo.Font = new System.Drawing.Font("Verdana", 36F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.titulo.Location = new System.Drawing.Point(198, 116);
+            this.titulo.Location = new System.Drawing.Point(185, 54);
             this.titulo.Name = "titulo";
-            this.titulo.Size = new System.Drawing.Size(463, 73);
+            this.titulo.Size = new System.Drawing.Size(364, 59);
             this.titulo.TabIndex = 7;
             this.titulo.Text = "Iniciá sesión";
             // 
@@ -139,7 +139,7 @@
             // 
             // FormLogin
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(13F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Desktop;
             this.ClientSize = new System.Drawing.Size(800, 600);
