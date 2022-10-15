@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -521,6 +522,31 @@ namespace TrabajoPractico1
             }
             this.depositar(cajaDestino, Monto);
             return true;
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha, float Monto)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha == Fecha);
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha == Fecha);
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto);
+        }
+        public bool pagarTarjeta(Tarjeta Tarjeta, CajaDeAhorro Caja)
+        {
+            if(Caja.saldo >= Tarjeta.consumo)
+            {
+                Caja.saldo = Caja.saldo - Tarjeta.consumo;
+                this.altaMovimiento(Caja, "Pago de Tarjeta " + Tarjeta.numero, Tarjeta.consumo);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
