@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -143,6 +144,19 @@ namespace TrabajoPractico1
                 {
                     titular.cajas.Add(cajaAgregar); // Agrego a la lista de cajas de ahorro de todos los titulares la caja de ahorro
                 }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
+        public bool altaCaja(Usuario Titular, CajaDeAhorro Caja) //Método alternativo para agregar cajas de ahorros a la lista del banco y del usuario
+        {
+            try
+            {
+                this.cajas.Add(Caja);
+                Titular.cajas.Add(Caja); 
                 return true;
             }
             catch (Exception ex)
@@ -437,6 +451,60 @@ namespace TrabajoPractico1
                 return false;
             }
             this.usuarioLogeado = user; 
+            return true;
+        }
+        public void cerrarSesion()
+        {
+            this.usuarioLogeado = null;
+        }
+        public bool crearCajaDeAhorro(float Saldo)
+        {
+            Random random = new Random();
+            int nuevoCbu = random.Next(100000000, 999999999);
+            while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
+            {  // Mientras haya alguna caja con ese CBU se crea otro CBU
+                nuevoCbu = random.Next(100000000, 999999999);
+                Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
+            }
+            CajaDeAhorro cajaNueva = new CajaDeAhorro(nuevoCbu, this.usuarioLogeado);
+            cajaNueva.saldo = Saldo;
+            try
+            {
+                this.altaCaja(this.usuarioLogeado, cajaNueva);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public void depositar(CajaDeAhorro CajaDestino, float Monto)
+        {
+            CajaDestino.saldo += Monto;
+        }
+        public bool retirar(CajaDeAhorro CajaSeleccionada, float Monto)
+        {
+            if(CajaSeleccionada.saldo < Monto)
+            {
+                return false;
+            }
+            CajaSeleccionada.saldo -= Monto;
+            return true;
+        }
+        public bool transferir(CajaDeAhorro CajaOrigen, int CBU, float Monto)
+        {
+            CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CBU);
+            if (cajaDestino == null)
+            {
+                MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU "+CBU, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(!this.retirar(CajaOrigen, Monto))
+            {
+                MessageBox.Show("La cuenta seleccionada no posee los fondos suficientes para realizar esta transacción", "Fondos insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            this.depositar(cajaDestino, Monto);
             return true;
         }
     }

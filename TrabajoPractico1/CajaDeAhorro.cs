@@ -28,6 +28,14 @@ namespace TrabajoPractico1
             this.titulares = Titulares;
             movimientos = new List<Movimiento>();
         }
+        public CajaDeAhorro(int Cbu, Usuario Titular)//Constructor alternativo
+        {
+            this.cbu = Cbu;
+            this.saldo = 0;
+            titulares = new List<Usuario>();
+            this.titulares.Add(Titular);
+            movimientos = new List<Movimiento>();
+        }
         public override string ToString()
         {
             return string.Format("CBU: {0}, Saldo: {1}", this.cbu, this.saldo);
