@@ -90,10 +90,11 @@
             this.tabControl1.Controls.Add(this.tabPlazoFijo);
             this.tabControl1.Controls.Add(this.tabPagos);
             this.tabControl1.Controls.Add(this.tabTarjetas);
-            this.tabControl1.Location = new System.Drawing.Point(14, 81);
+            this.tabControl1.Location = new System.Drawing.Point(12, 61);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabControl1.Name = "tabControl1";
             this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(869, 565);
+            this.tabControl1.Size = new System.Drawing.Size(760, 424);
             this.tabControl1.TabIndex = 0;
             // 
             // tabCajaDeAhorro
@@ -108,19 +109,21 @@
             this.tabCajaDeAhorro.Controls.Add(this.btnBajaCaja);
             this.tabCajaDeAhorro.Controls.Add(this.btnNewCaja);
             this.tabCajaDeAhorro.Controls.Add(this.dataGridViewCaja);
-            this.tabCajaDeAhorro.Location = new System.Drawing.Point(4, 29);
+            this.tabCajaDeAhorro.Location = new System.Drawing.Point(4, 24);
+            this.tabCajaDeAhorro.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabCajaDeAhorro.Name = "tabCajaDeAhorro";
-            this.tabCajaDeAhorro.Padding = new System.Windows.Forms.Padding(3);
-            this.tabCajaDeAhorro.Size = new System.Drawing.Size(861, 532);
+            this.tabCajaDeAhorro.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabCajaDeAhorro.Size = new System.Drawing.Size(752, 396);
             this.tabCajaDeAhorro.TabIndex = 0;
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
             // btnEliminarTitular
             // 
-            this.btnEliminarTitular.Location = new System.Drawing.Point(618, 188);
+            this.btnEliminarTitular.Location = new System.Drawing.Point(541, 141);
+            this.btnEliminarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminarTitular.Name = "btnEliminarTitular";
-            this.btnEliminarTitular.Size = new System.Drawing.Size(130, 29);
+            this.btnEliminarTitular.Size = new System.Drawing.Size(114, 22);
             this.btnEliminarTitular.TabIndex = 9;
             this.btnEliminarTitular.Text = "Eliminar Titular";
             this.btnEliminarTitular.UseVisualStyleBackColor = true;
@@ -129,9 +132,10 @@
             // 
             // btnMovimientos
             // 
-            this.btnMovimientos.Location = new System.Drawing.Point(618, 393);
+            this.btnMovimientos.Location = new System.Drawing.Point(541, 295);
+            this.btnMovimientos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMovimientos.Name = "btnMovimientos";
-            this.btnMovimientos.Size = new System.Drawing.Size(130, 29);
+            this.btnMovimientos.Size = new System.Drawing.Size(114, 22);
             this.btnMovimientos.TabIndex = 8;
             this.btnMovimientos.Text = "Movimientos";
             this.btnMovimientos.UseVisualStyleBackColor = true;
@@ -140,9 +144,10 @@
             // 
             // btnDetalles
             // 
-            this.btnDetalles.Location = new System.Drawing.Point(637, 338);
+            this.btnDetalles.Location = new System.Drawing.Point(557, 254);
+            this.btnDetalles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDetalles.Name = "btnDetalles";
-            this.btnDetalles.Size = new System.Drawing.Size(94, 29);
+            this.btnDetalles.Size = new System.Drawing.Size(82, 22);
             this.btnDetalles.TabIndex = 7;
             this.btnDetalles.Text = "Detalles";
             this.btnDetalles.UseVisualStyleBackColor = true;
@@ -150,9 +155,10 @@
             // 
             // btnTransferir
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(637, 303);
+            this.btnTransferir.Location = new System.Drawing.Point(557, 227);
+            this.btnTransferir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTransferir.Name = "btnTransferir";
-            this.btnTransferir.Size = new System.Drawing.Size(94, 29);
+            this.btnTransferir.Size = new System.Drawing.Size(82, 22);
             this.btnTransferir.TabIndex = 6;
             this.btnTransferir.Text = "Transferir";
             this.btnTransferir.UseVisualStyleBackColor = true;
@@ -160,9 +166,10 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(637, 268);
+            this.btnRetirar.Location = new System.Drawing.Point(557, 201);
+            this.btnRetirar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRetirar.Name = "btnRetirar";
-            this.btnRetirar.Size = new System.Drawing.Size(94, 29);
+            this.btnRetirar.Size = new System.Drawing.Size(82, 22);
             this.btnRetirar.TabIndex = 5;
             this.btnRetirar.Text = "Retirar";
             this.btnRetirar.UseVisualStyleBackColor = true;
@@ -170,19 +177,22 @@
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(637, 233);
+            this.btnDepositar.Location = new System.Drawing.Point(557, 175);
+            this.btnDepositar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDepositar.Name = "btnDepositar";
-            this.btnDepositar.Size = new System.Drawing.Size(94, 29);
+            this.btnDepositar.Size = new System.Drawing.Size(82, 22);
             this.btnDepositar.TabIndex = 4;
             this.btnDepositar.Text = "Depositar";
             this.btnDepositar.UseVisualStyleBackColor = true;
             this.btnDepositar.Visible = false;
+            this.btnDepositar.Click += new System.EventHandler(this.btnDepositar_Click);
             // 
             // btnAgregarTitular
             // 
-            this.btnAgregarTitular.Location = new System.Drawing.Point(618, 153);
+            this.btnAgregarTitular.Location = new System.Drawing.Point(541, 115);
+            this.btnAgregarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAgregarTitular.Name = "btnAgregarTitular";
-            this.btnAgregarTitular.Size = new System.Drawing.Size(130, 29);
+            this.btnAgregarTitular.Size = new System.Drawing.Size(114, 22);
             this.btnAgregarTitular.TabIndex = 3;
             this.btnAgregarTitular.Text = "Agregar Titular";
             this.btnAgregarTitular.UseVisualStyleBackColor = true;
@@ -191,9 +201,10 @@
             // 
             // btnBajaCaja
             // 
-            this.btnBajaCaja.Location = new System.Drawing.Point(618, 118);
+            this.btnBajaCaja.Location = new System.Drawing.Point(541, 88);
+            this.btnBajaCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBajaCaja.Name = "btnBajaCaja";
-            this.btnBajaCaja.Size = new System.Drawing.Size(130, 29);
+            this.btnBajaCaja.Size = new System.Drawing.Size(114, 22);
             this.btnBajaCaja.TabIndex = 2;
             this.btnBajaCaja.Text = "Borrar Caja";
             this.btnBajaCaja.UseVisualStyleBackColor = true;
@@ -202,10 +213,9 @@
             // 
             // btnNewCaja
             // 
-            this.btnNewCaja.Location = new System.Drawing.Point(17, 481);
-            this.btnNewCaja.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnNewCaja.Location = new System.Drawing.Point(15, 361);
             this.btnNewCaja.Name = "btnNewCaja";
-            this.btnNewCaja.Size = new System.Drawing.Size(171, 31);
+            this.btnNewCaja.Size = new System.Drawing.Size(150, 23);
             this.btnNewCaja.TabIndex = 1;
             this.btnNewCaja.Text = "Nueva Caja de Ahorro";
             this.btnNewCaja.UseVisualStyleBackColor = true;
@@ -220,11 +230,13 @@
             this.ColumnTitulares,
             this.ColumnSaldo});
             this.dataGridViewCaja.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dataGridViewCaja.Name = "dataGridViewCaja";
             this.dataGridViewCaja.RowHeadersWidth = 51;
             this.dataGridViewCaja.RowTemplate.Height = 29;
-            this.dataGridViewCaja.Size = new System.Drawing.Size(497, 460);
+            this.dataGridViewCaja.Size = new System.Drawing.Size(435, 345);
             this.dataGridViewCaja.TabIndex = 0;
+            this.dataGridViewCaja.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
             this.dataGridViewCaja.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
             // 
             // ColumnId
@@ -268,20 +280,20 @@
             // 
             this.tabPlazoFijo.Controls.Add(this.btnNewPf);
             this.tabPlazoFijo.Controls.Add(this.dataGridViewPF);
-            this.tabPlazoFijo.Location = new System.Drawing.Point(4, 29);
+            this.tabPlazoFijo.Location = new System.Drawing.Point(4, 24);
+            this.tabPlazoFijo.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPlazoFijo.Name = "tabPlazoFijo";
-            this.tabPlazoFijo.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPlazoFijo.Size = new System.Drawing.Size(861, 532);
+            this.tabPlazoFijo.Padding = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabPlazoFijo.Size = new System.Drawing.Size(752, 396);
             this.tabPlazoFijo.TabIndex = 1;
             this.tabPlazoFijo.Text = "PlazoFijo";
             this.tabPlazoFijo.UseVisualStyleBackColor = true;
             // 
             // btnNewPf
             // 
-            this.btnNewPf.Location = new System.Drawing.Point(18, 477);
-            this.btnNewPf.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnNewPf.Location = new System.Drawing.Point(16, 358);
             this.btnNewPf.Name = "btnNewPf";
-            this.btnNewPf.Size = new System.Drawing.Size(122, 31);
+            this.btnNewPf.Size = new System.Drawing.Size(107, 23);
             this.btnNewPf.TabIndex = 1;
             this.btnNewPf.Text = "Nuevo Plazo Fijo";
             this.btnNewPf.UseVisualStyleBackColor = true;
@@ -298,12 +310,11 @@
             this.ColumnFechaFinPlz,
             this.ColumnTasaPlz,
             this.ColumnPagadoPlz});
-            this.dataGridViewPF.Location = new System.Drawing.Point(-5, 0);
-            this.dataGridViewPF.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dataGridViewPF.Location = new System.Drawing.Point(-4, 0);
             this.dataGridViewPF.Name = "dataGridViewPF";
             this.dataGridViewPF.RowHeadersWidth = 51;
             this.dataGridViewPF.RowTemplate.Height = 25;
-            this.dataGridViewPF.Size = new System.Drawing.Size(731, 457);
+            this.dataGridViewPF.Size = new System.Drawing.Size(640, 343);
             this.dataGridViewPF.TabIndex = 0;
             // 
             // ColumnIdPlf
@@ -376,37 +387,39 @@
             this.tabPagos.Controls.Add(this.btnEliminarPago);
             this.tabPagos.Controls.Add(this.btnNewPago);
             this.tabPagos.Controls.Add(this.dataGridViewPagos);
-            this.tabPagos.Location = new System.Drawing.Point(4, 29);
+            this.tabPagos.Location = new System.Drawing.Point(4, 24);
+            this.tabPagos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabPagos.Name = "tabPagos";
-            this.tabPagos.Size = new System.Drawing.Size(861, 532);
+            this.tabPagos.Size = new System.Drawing.Size(752, 396);
             this.tabPagos.TabIndex = 2;
             this.tabPagos.Text = "Pagos";
             this.tabPagos.UseVisualStyleBackColor = true;
             // 
             // btnPagarPago
             // 
-            this.btnPagarPago.Location = new System.Drawing.Point(495, 118);
+            this.btnPagarPago.Location = new System.Drawing.Point(433, 88);
+            this.btnPagarPago.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnPagarPago.Name = "btnPagarPago";
-            this.btnPagarPago.Size = new System.Drawing.Size(94, 29);
+            this.btnPagarPago.Size = new System.Drawing.Size(82, 22);
             this.btnPagarPago.TabIndex = 3;
             this.btnPagarPago.Text = "Pagar";
             this.btnPagarPago.UseVisualStyleBackColor = true;
             // 
             // btnEliminarPago
             // 
-            this.btnEliminarPago.Location = new System.Drawing.Point(495, 83);
+            this.btnEliminarPago.Location = new System.Drawing.Point(433, 62);
+            this.btnEliminarPago.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminarPago.Name = "btnEliminarPago";
-            this.btnEliminarPago.Size = new System.Drawing.Size(94, 29);
+            this.btnEliminarPago.Size = new System.Drawing.Size(82, 22);
             this.btnEliminarPago.TabIndex = 2;
             this.btnEliminarPago.Text = "Eliminar";
             this.btnEliminarPago.UseVisualStyleBackColor = true;
             // 
             // btnNewPago
             // 
-            this.btnNewPago.Location = new System.Drawing.Point(27, 480);
-            this.btnNewPago.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnNewPago.Location = new System.Drawing.Point(24, 360);
             this.btnNewPago.Name = "btnNewPago";
-            this.btnNewPago.Size = new System.Drawing.Size(114, 31);
+            this.btnNewPago.Size = new System.Drawing.Size(100, 23);
             this.btnNewPago.TabIndex = 1;
             this.btnNewPago.Text = "Nuevo Pago";
             this.btnNewPago.UseVisualStyleBackColor = true;
@@ -418,12 +431,11 @@
             this.dataGridViewPagos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnPagosRealizados,
             this.ColumnPagosPendientes});
-            this.dataGridViewPagos.Location = new System.Drawing.Point(-5, 0);
-            this.dataGridViewPagos.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dataGridViewPagos.Location = new System.Drawing.Point(-4, 0);
             this.dataGridViewPagos.Name = "dataGridViewPagos";
             this.dataGridViewPagos.RowHeadersWidth = 51;
             this.dataGridViewPagos.RowTemplate.Height = 25;
-            this.dataGridViewPagos.Size = new System.Drawing.Size(303, 460);
+            this.dataGridViewPagos.Size = new System.Drawing.Size(265, 345);
             this.dataGridViewPagos.TabIndex = 0;
             // 
             // ColumnPagosRealizados
@@ -448,19 +460,19 @@
             // 
             this.tabTarjetas.Controls.Add(this.btnNewTarjeta);
             this.tabTarjetas.Controls.Add(this.dataGridViewTarjetas);
-            this.tabTarjetas.Location = new System.Drawing.Point(4, 29);
+            this.tabTarjetas.Location = new System.Drawing.Point(4, 24);
+            this.tabTarjetas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.tabTarjetas.Name = "tabTarjetas";
-            this.tabTarjetas.Size = new System.Drawing.Size(861, 532);
+            this.tabTarjetas.Size = new System.Drawing.Size(752, 396);
             this.tabTarjetas.TabIndex = 3;
             this.tabTarjetas.Text = "Tarjetas";
             this.tabTarjetas.UseVisualStyleBackColor = true;
             // 
             // btnNewTarjeta
             // 
-            this.btnNewTarjeta.Location = new System.Drawing.Point(18, 477);
-            this.btnNewTarjeta.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.btnNewTarjeta.Location = new System.Drawing.Point(16, 358);
             this.btnNewTarjeta.Name = "btnNewTarjeta";
-            this.btnNewTarjeta.Size = new System.Drawing.Size(117, 31);
+            this.btnNewTarjeta.Size = new System.Drawing.Size(102, 23);
             this.btnNewTarjeta.TabIndex = 1;
             this.btnNewTarjeta.Text = "Nueva Tarjeta";
             this.btnNewTarjeta.UseVisualStyleBackColor = true;
@@ -476,12 +488,11 @@
             this.ColumnCodigoTarjeta,
             this.ColumnLimiteTarjeta,
             this.ColumnConsumosTarjeta});
-            this.dataGridViewTarjetas.Location = new System.Drawing.Point(-5, 0);
-            this.dataGridViewTarjetas.Margin = new System.Windows.Forms.Padding(3, 4, 3, 4);
+            this.dataGridViewTarjetas.Location = new System.Drawing.Point(-4, 0);
             this.dataGridViewTarjetas.Name = "dataGridViewTarjetas";
             this.dataGridViewTarjetas.RowHeadersWidth = 51;
             this.dataGridViewTarjetas.RowTemplate.Height = 25;
-            this.dataGridViewTarjetas.Size = new System.Drawing.Size(621, 457);
+            this.dataGridViewTarjetas.Size = new System.Drawing.Size(543, 343);
             this.dataGridViewTarjetas.TabIndex = 0;
             // 
             // ColumnIdTarjeta
@@ -542,26 +553,27 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(61, 28);
+            this.label1.Location = new System.Drawing.Point(53, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(138, 20);
+            this.label1.Size = new System.Drawing.Size(111, 15);
             this.label1.TabIndex = 0;
             this.label1.Text = "Bienvenido usuario:";
             // 
             // nombreUsuario
             // 
             this.nombreUsuario.AutoSize = true;
-            this.nombreUsuario.Location = new System.Drawing.Point(205, 28);
+            this.nombreUsuario.Location = new System.Drawing.Point(179, 21);
             this.nombreUsuario.Name = "nombreUsuario";
-            this.nombreUsuario.Size = new System.Drawing.Size(50, 20);
+            this.nombreUsuario.Size = new System.Drawing.Size(38, 15);
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
             // 
             // btnMostrarDatos
             // 
-            this.btnMostrarDatos.Location = new System.Drawing.Point(696, 28);
+            this.btnMostrarDatos.Location = new System.Drawing.Point(609, 21);
+            this.btnMostrarDatos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnMostrarDatos.Name = "btnMostrarDatos";
-            this.btnMostrarDatos.Size = new System.Drawing.Size(138, 29);
+            this.btnMostrarDatos.Size = new System.Drawing.Size(121, 22);
             this.btnMostrarDatos.TabIndex = 2;
             this.btnMostrarDatos.Text = "Mostrar datos";
             this.btnMostrarDatos.UseVisualStyleBackColor = true;
@@ -569,16 +581,17 @@
             // 
             // FormMain
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 20F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(896, 748);
+            this.ClientSize = new System.Drawing.Size(784, 561);
             this.ControlBox = false;
             this.Controls.Add(this.btnMostrarDatos);
             this.Controls.Add(this.nombreUsuario);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.Name = "FormMain";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;

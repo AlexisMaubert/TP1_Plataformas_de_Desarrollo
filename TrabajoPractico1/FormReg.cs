@@ -38,6 +38,7 @@ namespace TrabajoPractico1
              
 
         }
+
         public delegate void regBotonDelegado();
         
         

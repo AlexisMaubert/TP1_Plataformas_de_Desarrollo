@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
@@ -194,8 +195,6 @@ namespace TrabajoPractico1
 
         public bool agregarUsuarioACaja(CajaDeAhorro caja, int Dni)
         {
-            
-            
                 Usuario userAdd = this.usuarios.Find(usuario => usuario.dni == Dni);
                 if (userAdd == null)
                 {
@@ -209,29 +208,27 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-                    MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                    MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
-            
-            
         }
 
-        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) //In CajaDeAhorro y Usuario, out Boolean
         {
-            try
+            Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
+            if(titular == null)
             {
-                if (caja.titulares.Contains(usuario) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
-                {
-                    caja.titulares.Remove(usuario);//También elimina al Usuario de la lista de usuarios del banco... No se xq
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-            catch (Exception ex)
+            if (caja.titulares.Contains(titular) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
             {
+                caja.titulares.Remove(titular);//También elimina al Usuario de la lista de usuarios del banco... No se xq
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Ha ocurrido un error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

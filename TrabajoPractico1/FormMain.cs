@@ -14,7 +14,7 @@ namespace TrabajoPractico1
     public partial class FormMain : Form
     {
         private Banco banco;
-        int usuarioSeleccionado;
+        private int cbuSeleccionado;
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -87,36 +87,33 @@ namespace TrabajoPractico1
             banco.altaTarjeta(banco.usuarioLogeado, 20000);
             this.refreshDataTarjetas();
         }
-
-        
         public void esconderBtns()
         {
             btnBajaCaja.Visible = false;
             btnAgregarTitular.Visible = false;
+            btnEliminarTitular.Visible = false;
             btnDepositar.Visible = false;
             btnRetirar.Visible = false;
             btnTransferir.Visible = false;
             btnDetalles.Visible = false;
             btnMovimientos.Visible = false;
-
         }
-
         public void mostrarBtns()
         {
             btnBajaCaja.Show();
             btnAgregarTitular.Show();
+            btnEliminarTitular.Show();
             btnDepositar.Show();
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
             btnMovimientos.Show();
         }
-
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            esconderBtns();
             mostrarBtns();
-            Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out usuarioSeleccionado);
-
+            Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado);
         }
 
         private void btnMovimientos_Click(object sender, EventArgs e)
@@ -126,13 +123,10 @@ namespace TrabajoPractico1
 
         private void btnBajaCaja_Click(object sender, EventArgs e)
         {
-            
-            
-            if (banco.bajaCaja(usuarioSeleccionado)) {
+            if (banco.bajaCaja(cbuSeleccionado)) {
                 MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 esconderBtns();
                 refreshDataCaja();
-
             }
             else
             {
@@ -144,20 +138,30 @@ namespace TrabajoPractico1
         {
             int nuevodni;
             Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni);
-            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == usuarioSeleccionado);
-            banco.agregarUsuarioACaja(caja, nuevodni);
-            refreshDataCaja();
+            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
             if (banco.agregarUsuarioACaja(caja, nuevodni))
             {
                 MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
+                refreshDataCaja();
             }
-
         }
 
         private void btnEliminarTitular_Click(object sender, EventArgs e)
         {
+            int nuevodni;
+            Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni);
+            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+            if (banco.eliminarUsuarioDeCaja(caja, nuevodni))
+            {
+                MessageBox.Show("Se removió titular con dni nro "+nuevodni, "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataCaja();
+            }
+        }
 
+        private void btnDepositar_Click(object sender, EventArgs e)
+        {
+            int deposito;
+            Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out deposito);
         }
     }
 }
