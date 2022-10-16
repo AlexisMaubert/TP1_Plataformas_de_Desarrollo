@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualBasic;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -13,6 +14,7 @@ namespace TrabajoPractico1
     public partial class FormMain : Form
     {
         private Banco banco;
+        int usuarioSeleccionado;
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -87,27 +89,75 @@ namespace TrabajoPractico1
         }
 
         
+        public void esconderBtns()
+        {
+            btnBajaCaja.Visible = false;
+            btnAgregarTitular.Visible = false;
+            btnDepositar.Visible = false;
+            btnRetirar.Visible = false;
+            btnTransferir.Visible = false;
+            btnDetalles.Visible = false;
+            btnMovimientos.Visible = false;
 
-        private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        }
+
+        public void mostrarBtns()
         {
             btnBajaCaja.Show();
-            btnModificarCaja.Show();
+            btnAgregarTitular.Show();
             btnDepositar.Show();
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
             btnMovimientos.Show();
-            string usuarioSeleccionado = dataGridViewCaja.SelectedCells[0].Value.ToString();
-         }
+        }
 
-        private void btnBajaCaja_Click(object sender, EventArgs e)
+        private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
+            mostrarBtns();
+            Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out usuarioSeleccionado);
 
         }
 
         private void btnMovimientos_Click(object sender, EventArgs e)
         {
             MessageBox.Show("detalles","detalles",MessageBoxButtons.OK);
+        }
+
+        private void btnBajaCaja_Click(object sender, EventArgs e)
+        {
+            
+            
+            if (banco.bajaCaja(usuarioSeleccionado)) {
+                MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK,MessageBoxIcon.Information);
+                esconderBtns();
+                refreshDataCaja();
+
+            }
+            else
+            {
+               MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+            }
+        }
+
+        private void btnAgregarTitular_Click(object sender, EventArgs e)
+        {
+            int nuevodni;
+            Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni);
+            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == usuarioSeleccionado);
+            banco.agregarUsuarioACaja(caja, nuevodni);
+            refreshDataCaja();
+            if (banco.agregarUsuarioACaja(caja, nuevodni))
+            {
+                MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+            }
+
+        }
+
+        private void btnEliminarTitular_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

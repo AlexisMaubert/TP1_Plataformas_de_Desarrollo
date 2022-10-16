@@ -25,6 +25,17 @@ namespace TrabajoPractico1
             this.hijoReg.regBotonEvento += regBotonDelegado;
             this.hijoLogin.Show();
 
+
+            banco.altaUsuario("Admin", "Admin", 1, "admin@admin.com", "1");
+            banco.altaUsuario("Admin2", "Admin2", 2, "admin@admin2.com", "2");
+
+
+            banco.usuarioLogeado = banco.usuarios[0];
+            banco.crearCajaDeAhorro(0);
+            banco.crearCajaDeAhorro(0);
+            banco.crearCajaDeAhorro(0);
+            banco.crearCajaDeAhorro(0);
+
         }
 
         private void FormPadre_Load(object sender, EventArgs e)

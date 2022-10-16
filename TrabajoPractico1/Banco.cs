@@ -192,24 +192,28 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool agregarUsuarioACaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        public bool agregarUsuarioACaja(CajaDeAhorro caja, int Dni)
         {
-            try
-            {
-                if (!caja.titulares.Contains(usuario))
+            
+            
+                Usuario userAdd = this.usuarios.Find(usuario => usuario.dni == Dni);
+                if (userAdd == null)
                 {
-                    caja.titulares.Add(usuario);
+                    MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!caja.titulares.Contains(userAdd))
+                {
+                    caja.titulares.Add(userAdd);
                     return true;
                 }
                 else
                 {
+                    MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
+            
+            
         }
 
         public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean

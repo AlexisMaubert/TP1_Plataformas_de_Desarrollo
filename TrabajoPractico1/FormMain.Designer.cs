@@ -30,12 +30,13 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.btnEliminarTitular = new System.Windows.Forms.Button();
             this.btnMovimientos = new System.Windows.Forms.Button();
             this.btnDetalles = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
             this.btnRetirar = new System.Windows.Forms.Button();
             this.btnDepositar = new System.Windows.Forms.Button();
-            this.btnModificarCaja = new System.Windows.Forms.Button();
+            this.btnAgregarTitular = new System.Windows.Forms.Button();
             this.btnBajaCaja = new System.Windows.Forms.Button();
             this.btnNewCaja = new System.Windows.Forms.Button();
             this.dataGridViewCaja = new System.Windows.Forms.DataGridView();
@@ -54,6 +55,8 @@
             this.ColumnTasaPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagadoPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPagos = new System.Windows.Forms.TabPage();
+            this.btnPagarPago = new System.Windows.Forms.Button();
+            this.btnEliminarPago = new System.Windows.Forms.Button();
             this.btnNewPago = new System.Windows.Forms.Button();
             this.dataGridViewPagos = new System.Windows.Forms.DataGridView();
             this.ColumnPagosRealizados = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -95,12 +98,13 @@
             // 
             // tabCajaDeAhorro
             // 
+            this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
             this.tabCajaDeAhorro.Controls.Add(this.btnMovimientos);
             this.tabCajaDeAhorro.Controls.Add(this.btnDetalles);
             this.tabCajaDeAhorro.Controls.Add(this.btnTransferir);
             this.tabCajaDeAhorro.Controls.Add(this.btnRetirar);
             this.tabCajaDeAhorro.Controls.Add(this.btnDepositar);
-            this.tabCajaDeAhorro.Controls.Add(this.btnModificarCaja);
+            this.tabCajaDeAhorro.Controls.Add(this.btnAgregarTitular);
             this.tabCajaDeAhorro.Controls.Add(this.btnBajaCaja);
             this.tabCajaDeAhorro.Controls.Add(this.btnNewCaja);
             this.tabCajaDeAhorro.Controls.Add(this.dataGridViewCaja);
@@ -112,11 +116,22 @@
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
+            // btnEliminarTitular
+            // 
+            this.btnEliminarTitular.Location = new System.Drawing.Point(618, 188);
+            this.btnEliminarTitular.Name = "btnEliminarTitular";
+            this.btnEliminarTitular.Size = new System.Drawing.Size(130, 29);
+            this.btnEliminarTitular.TabIndex = 9;
+            this.btnEliminarTitular.Text = "Eliminar Titular";
+            this.btnEliminarTitular.UseVisualStyleBackColor = true;
+            this.btnEliminarTitular.Visible = false;
+            this.btnEliminarTitular.Click += new System.EventHandler(this.btnEliminarTitular_Click);
+            // 
             // btnMovimientos
             // 
-            this.btnMovimientos.Location = new System.Drawing.Point(624, 349);
+            this.btnMovimientos.Location = new System.Drawing.Point(618, 393);
             this.btnMovimientos.Name = "btnMovimientos";
-            this.btnMovimientos.Size = new System.Drawing.Size(121, 29);
+            this.btnMovimientos.Size = new System.Drawing.Size(130, 29);
             this.btnMovimientos.TabIndex = 8;
             this.btnMovimientos.Text = "Movimientos";
             this.btnMovimientos.UseVisualStyleBackColor = true;
@@ -125,7 +140,7 @@
             // 
             // btnDetalles
             // 
-            this.btnDetalles.Location = new System.Drawing.Point(639, 302);
+            this.btnDetalles.Location = new System.Drawing.Point(637, 338);
             this.btnDetalles.Name = "btnDetalles";
             this.btnDetalles.Size = new System.Drawing.Size(94, 29);
             this.btnDetalles.TabIndex = 7;
@@ -135,7 +150,7 @@
             // 
             // btnTransferir
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(639, 267);
+            this.btnTransferir.Location = new System.Drawing.Point(637, 303);
             this.btnTransferir.Name = "btnTransferir";
             this.btnTransferir.Size = new System.Drawing.Size(94, 29);
             this.btnTransferir.TabIndex = 6;
@@ -145,7 +160,7 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(639, 232);
+            this.btnRetirar.Location = new System.Drawing.Point(637, 268);
             this.btnRetirar.Name = "btnRetirar";
             this.btnRetirar.Size = new System.Drawing.Size(94, 29);
             this.btnRetirar.TabIndex = 5;
@@ -155,7 +170,7 @@
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(639, 197);
+            this.btnDepositar.Location = new System.Drawing.Point(637, 233);
             this.btnDepositar.Name = "btnDepositar";
             this.btnDepositar.Size = new System.Drawing.Size(94, 29);
             this.btnDepositar.TabIndex = 4;
@@ -163,21 +178,22 @@
             this.btnDepositar.UseVisualStyleBackColor = true;
             this.btnDepositar.Visible = false;
             // 
-            // btnModificarCaja
+            // btnAgregarTitular
             // 
-            this.btnModificarCaja.Location = new System.Drawing.Point(624, 153);
-            this.btnModificarCaja.Name = "btnModificarCaja";
-            this.btnModificarCaja.Size = new System.Drawing.Size(121, 29);
-            this.btnModificarCaja.TabIndex = 3;
-            this.btnModificarCaja.Text = "Modificar Caja";
-            this.btnModificarCaja.UseVisualStyleBackColor = true;
-            this.btnModificarCaja.Visible = false;
+            this.btnAgregarTitular.Location = new System.Drawing.Point(618, 153);
+            this.btnAgregarTitular.Name = "btnAgregarTitular";
+            this.btnAgregarTitular.Size = new System.Drawing.Size(130, 29);
+            this.btnAgregarTitular.TabIndex = 3;
+            this.btnAgregarTitular.Text = "Agregar Titular";
+            this.btnAgregarTitular.UseVisualStyleBackColor = true;
+            this.btnAgregarTitular.Visible = false;
+            this.btnAgregarTitular.Click += new System.EventHandler(this.btnAgregarTitular_Click);
             // 
             // btnBajaCaja
             // 
-            this.btnBajaCaja.Location = new System.Drawing.Point(624, 118);
+            this.btnBajaCaja.Location = new System.Drawing.Point(618, 118);
             this.btnBajaCaja.Name = "btnBajaCaja";
-            this.btnBajaCaja.Size = new System.Drawing.Size(121, 29);
+            this.btnBajaCaja.Size = new System.Drawing.Size(130, 29);
             this.btnBajaCaja.TabIndex = 2;
             this.btnBajaCaja.Text = "Borrar Caja";
             this.btnBajaCaja.UseVisualStyleBackColor = true;
@@ -356,6 +372,8 @@
             // 
             // tabPagos
             // 
+            this.tabPagos.Controls.Add(this.btnPagarPago);
+            this.tabPagos.Controls.Add(this.btnEliminarPago);
             this.tabPagos.Controls.Add(this.btnNewPago);
             this.tabPagos.Controls.Add(this.dataGridViewPagos);
             this.tabPagos.Location = new System.Drawing.Point(4, 29);
@@ -364,6 +382,24 @@
             this.tabPagos.TabIndex = 2;
             this.tabPagos.Text = "Pagos";
             this.tabPagos.UseVisualStyleBackColor = true;
+            // 
+            // btnPagarPago
+            // 
+            this.btnPagarPago.Location = new System.Drawing.Point(495, 118);
+            this.btnPagarPago.Name = "btnPagarPago";
+            this.btnPagarPago.Size = new System.Drawing.Size(94, 29);
+            this.btnPagarPago.TabIndex = 3;
+            this.btnPagarPago.Text = "Pagar";
+            this.btnPagarPago.UseVisualStyleBackColor = true;
+            // 
+            // btnEliminarPago
+            // 
+            this.btnEliminarPago.Location = new System.Drawing.Point(495, 83);
+            this.btnEliminarPago.Name = "btnEliminarPago";
+            this.btnEliminarPago.Size = new System.Drawing.Size(94, 29);
+            this.btnEliminarPago.TabIndex = 2;
+            this.btnEliminarPago.Text = "Eliminar";
+            this.btnEliminarPago.UseVisualStyleBackColor = true;
             // 
             // btnNewPago
             // 
@@ -387,7 +423,7 @@
             this.dataGridViewPagos.Name = "dataGridViewPagos";
             this.dataGridViewPagos.RowHeadersWidth = 51;
             this.dataGridViewPagos.RowTemplate.Height = 25;
-            this.dataGridViewPagos.Size = new System.Drawing.Size(279, 460);
+            this.dataGridViewPagos.Size = new System.Drawing.Size(303, 460);
             this.dataGridViewPagos.TabIndex = 0;
             // 
             // ColumnPagosRealizados
@@ -604,8 +640,11 @@
         private Button btnTransferir;
         private Button btnRetirar;
         private Button btnDepositar;
-        private Button btnModificarCaja;
+        private Button btnAgregarTitular;
         private Button btnBajaCaja;
         private Button btnMovimientos;
+        private Button btnPagarPago;
+        private Button btnEliminarPago;
+        private Button btnEliminarTitular;
     }
 }
