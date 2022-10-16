@@ -31,7 +31,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
             this.btnEliminarTitular = new System.Windows.Forms.Button();
-            this.btnMovimientos = new System.Windows.Forms.Button();
             this.btnDetalles = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
             this.btnRetirar = new System.Windows.Forms.Button();
@@ -72,7 +71,6 @@
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
-            this.btnMostrarDatos = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -100,7 +98,6 @@
             // tabCajaDeAhorro
             // 
             this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
-            this.tabCajaDeAhorro.Controls.Add(this.btnMovimientos);
             this.tabCajaDeAhorro.Controls.Add(this.btnDetalles);
             this.tabCajaDeAhorro.Controls.Add(this.btnTransferir);
             this.tabCajaDeAhorro.Controls.Add(this.btnRetirar);
@@ -130,18 +127,6 @@
             this.btnEliminarTitular.Visible = false;
             this.btnEliminarTitular.Click += new System.EventHandler(this.btnEliminarTitular_Click);
             // 
-            // btnMovimientos
-            // 
-            this.btnMovimientos.Location = new System.Drawing.Point(541, 295);
-            this.btnMovimientos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnMovimientos.Name = "btnMovimientos";
-            this.btnMovimientos.Size = new System.Drawing.Size(114, 22);
-            this.btnMovimientos.TabIndex = 8;
-            this.btnMovimientos.Text = "Movimientos";
-            this.btnMovimientos.UseVisualStyleBackColor = true;
-            this.btnMovimientos.Visible = false;
-            this.btnMovimientos.Click += new System.EventHandler(this.btnMovimientos_Click);
-            // 
             // btnDetalles
             // 
             this.btnDetalles.Location = new System.Drawing.Point(557, 254);
@@ -152,6 +137,7 @@
             this.btnDetalles.Text = "Detalles";
             this.btnDetalles.UseVisualStyleBackColor = true;
             this.btnDetalles.Visible = false;
+            this.btnDetalles.Click += new System.EventHandler(this.btnDetalles_Click);
             // 
             // btnTransferir
             // 
@@ -163,6 +149,7 @@
             this.btnTransferir.Text = "Transferir";
             this.btnTransferir.UseVisualStyleBackColor = true;
             this.btnTransferir.Visible = false;
+            this.btnTransferir.Click += new System.EventHandler(this.btnTransferir_Click);
             // 
             // btnRetirar
             // 
@@ -174,6 +161,7 @@
             this.btnRetirar.Text = "Retirar";
             this.btnRetirar.UseVisualStyleBackColor = true;
             this.btnRetirar.Visible = false;
+            this.btnRetirar.Click += new System.EventHandler(this.btnRetirar_Click);
             // 
             // btnDepositar
             // 
@@ -568,17 +556,6 @@
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
             // 
-            // btnMostrarDatos
-            // 
-            this.btnMostrarDatos.Location = new System.Drawing.Point(609, 21);
-            this.btnMostrarDatos.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.btnMostrarDatos.Name = "btnMostrarDatos";
-            this.btnMostrarDatos.Size = new System.Drawing.Size(121, 22);
-            this.btnMostrarDatos.TabIndex = 2;
-            this.btnMostrarDatos.Text = "Mostrar datos";
-            this.btnMostrarDatos.UseVisualStyleBackColor = true;
-            this.btnMostrarDatos.Click += new System.EventHandler(this.btnMostrarDatos_Click);
-            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -586,7 +563,6 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.ControlBox = false;
-            this.Controls.Add(this.btnMostrarDatos);
             this.Controls.Add(this.nombreUsuario);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
@@ -626,7 +602,6 @@
         private DataGridViewTextBoxColumn ColumnCbu;
         private DataGridViewTextBoxColumn ColumnTitulares;
         private DataGridViewTextBoxColumn ColumnSaldo;
-        private Button btnMostrarDatos;
         private Button btnNewCaja;
         private Button btnNewPf;
         private DataGridView dataGridViewPF;
@@ -655,7 +630,6 @@
         private Button btnDepositar;
         private Button btnAgregarTitular;
         private Button btnBajaCaja;
-        private Button btnMovimientos;
         private Button btnPagarPago;
         private Button btnEliminarPago;
         private Button btnEliminarTitular;

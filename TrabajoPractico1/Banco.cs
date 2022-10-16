@@ -498,6 +498,7 @@ namespace TrabajoPractico1
         public void depositar(CajaDeAhorro CajaDestino, float Monto)
         {
             CajaDestino.saldo += Monto;
+            this.altaMovimiento(CajaDestino, "Deposito", Monto);
         }
         public bool retirar(CajaDeAhorro CajaSeleccionada, float Monto)
         {
@@ -506,6 +507,7 @@ namespace TrabajoPractico1
                 return false;
             }
             CajaSeleccionada.saldo -= Monto;
+            this.altaMovimiento(CajaSeleccionada, "Retiro", Monto);
             return true;
         }
         public bool transferir(CajaDeAhorro CajaOrigen, int CBU, float Monto)
@@ -516,25 +518,30 @@ namespace TrabajoPractico1
                 MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + CBU, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            if (!this.retirar(CajaOrigen, Monto))
+            if(CajaOrigen.saldo < Monto)
             {
-                MessageBox.Show("La cuenta seleccionada no posee los fondos suficientes para realizar esta transacción", "Fondos insuficientes", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
+            } 
+            else
+            {
+                CajaOrigen.saldo -= Monto;
+                this.altaMovimiento(CajaOrigen, "Transferencia realizada" , Monto);
+                cajaDestino.saldo += Monto;
+                this.altaMovimiento(cajaDestino, "Transferencia recibida" , Monto);
+                return true;
             }
-            this.depositar(cajaDestino, Monto);
-            return true;
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha, float Monto)
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha == Fecha);
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha == Fecha).ToList();
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha)
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha == Fecha);
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha == Fecha).ToList();
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto);
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto).ToList();
         }
         public bool pagarTarjeta(Tarjeta Tarjeta, CajaDeAhorro Caja)
         {

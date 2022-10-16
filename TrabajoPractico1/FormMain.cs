@@ -130,7 +130,7 @@ namespace TrabajoPractico1
             }
             else
             {
-               MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+               MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -161,7 +161,79 @@ namespace TrabajoPractico1
         private void btnDepositar_Click(object sender, EventArgs e)
         {
             int deposito;
-            Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out deposito);
+            if(!Int32.TryParse(Interaction.InputBox("Monto a depositar : ", "ingresar monto"), out deposito)|| deposito <= 0)
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+                banco.depositar(caja, deposito);
+                MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataCaja();
+            }
+        }
+        private void btnRetirar_Click(object sender, EventArgs e)
+        {
+            int retiro;
+            if (!Int32.TryParse(Interaction.InputBox("Monto a retirar : ", "ingresar monto"), out retiro) || retiro <= 0)
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+                if (banco.retirar(caja, retiro))
+                {
+                    MessageBox.Show("Se retiró el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataCaja();
+                }
+                else
+                {
+                    MessageBox.Show("El monto que desea retirar excede el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void btnTransferir_Click(object sender, EventArgs e)
+        {
+            int monto;
+            int cbu;
+            if (!Int32.TryParse(Interaction.InputBox("Monto a transferir : ", "ingresar monto"), out monto) || monto <= 0)
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+                if (monto > caja.saldo)
+                {
+                    MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (!Int32.TryParse(Interaction.InputBox("Ingrese el CBU de la cuenta destino : ", "ingresar CBU"), out cbu))
+                {
+                    MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+
+                    if (banco.transferir(caja, cbu, monto))
+                    {
+                        MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        refreshDataCaja();
+                    }
+                }
+            }
+        }
+
+        private void btnDetalles_Click(object sender, EventArgs e)
+        {
+            string movimientos = "";
+            foreach(Movimiento movimiento in banco.obtenerMovimientos(cbuSeleccionado))
+            {
+                movimientos = movimientos + movimiento.ToString() + "\n";
+            }
+            MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
         }
     }
 }
