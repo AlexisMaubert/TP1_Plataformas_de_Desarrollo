@@ -299,12 +299,12 @@ namespace TrabajoPractico1
         }
 
         //PAGOS-----------------------------
-        public bool nuevoPago(Usuario Usuario, string Nombre, float Monto, string Metodo)//Funcionando
+        public bool nuevoPago(Usuario Usuario, string Nombre, float Monto)//Funcionando
         {
             try
             {
                 int nuevoId = this.pagos.Count() + 1;
-                Pago nuevoPago = new Pago(nuevoId, Usuario, Nombre, Monto, Metodo);
+                Pago nuevoPago = new Pago(nuevoId, Usuario, Nombre, Monto);
                 this.pagos.Add(nuevoPago);
                 Usuario.pagos.Add(nuevoPago);
                 return true;
@@ -554,6 +554,43 @@ namespace TrabajoPractico1
             else
             {
                 return false;
+            }
+        }
+        public bool pagarPago(int idPago, int numero)
+        {
+            Pago pago = this.pagos.Find(pago => pago.id == idPago);
+            CajaDeAhorro caja = this.cajas.Find(caja => caja.cbu == numero);
+            if(pago.pagado)
+            {
+                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(caja == null)
+            {
+                Tarjeta tarjeta = this.tarjetas.Find(tarjeta => tarjeta.numero == numero);
+                if(tarjeta.limite - tarjeta.consumo > pago.monto)
+                {
+                    tarjeta.consumo += pago.monto;
+                    this.modificarPago(idPago);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            else
+            {
+                if(caja.saldo < pago.monto)
+                {
+                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                caja.saldo = caja.saldo - pago.monto;
+                this.modificarPago(idPago);
+                this.altaMovimiento(caja, "Pago de " + pago.nombre, pago.monto);
+                return true;
             }
         }
     }

@@ -41,6 +41,9 @@ namespace TrabajoPractico1
             banco.altaTarjeta(banco.usuarios[0], 1000);
             banco.tarjetas[0].consumo = 100;
 
+            banco.nuevoPago(banco.usuarios[0], "Pochoclo", 200);
+            banco.nuevoPago(banco.usuarios[0], "Tutuca", 300);
+
 
         }
 

@@ -18,6 +18,7 @@ namespace TrabajoPractico1
         private Banco banco;
         private int cbuSeleccionado;
         private int numeroTarjetaSeleccionado;
+        private int idPago;
         private DateTime fechaElegida;
 
         public FormMain(Banco b)
@@ -32,6 +33,11 @@ namespace TrabajoPractico1
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
+                this.comboBoxCajaPago.Items.Add(caja.cbu);
+            }
+            foreach(Tarjeta tarjeta in banco.obtenerTarjetas())
+            {
+                this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
         }
 
@@ -64,7 +70,18 @@ namespace TrabajoPractico1
         private void refreshDataPagos()
         {
             dataGridViewPagos.Rows.Clear();
-            //Aca se tienen que agregar las cosas de los pagos pero no se como manejar el tema de los pagos
+            foreach (Pago pago in banco.obtenerPagos())
+            {
+                if(pago.pagado)
+                {
+                    dataGridViewPagos.Rows.Add( pago.id, pago.nombre, pago.monto, " - " );
+                }
+                else
+                {
+                    dataGridViewPagos.Rows.Add( pago.id, pago.nombre, " - ", pago.monto);
+                }
+            }
+
         }
         private void refreshDataTarjetas()
         {
@@ -85,11 +102,7 @@ namespace TrabajoPractico1
             this.refreshDataPF();
         }
 
-        private void btnNewPago_Click(object sender, EventArgs e)
-        {
-            banco.nuevoPago(banco.usuarioLogeado, "Nombre del pago", 0, "efectivo"); // hay que modificar esto para que al tocar el boton aparezcan opciones el algun lado del formulario para completar dinamicamente estos datos
-            this.refreshDataPagos();
-        }
+        
 
         private void btnNewTarjeta_Click(object sender, EventArgs e)
         {
@@ -126,7 +139,12 @@ namespace TrabajoPractico1
         {
             esconderBtns();
             mostrarBtns();
-            Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado);
+            if(Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+                
         }
 
         private void btnMovimientos_Click(object sender, EventArgs e)
@@ -313,16 +331,22 @@ namespace TrabajoPractico1
 
         private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado);
-            btnDarDeBajaTarjeta.Show();
-            btnPagarTarjeta.Show();
+            if(Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                btnDarDeBajaTarjeta.Show();
+                btnPagarTarjeta.Show();
+            }
         }
 
         private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
         {
             if (banco.bajaTarjeta(numeroTarjetaSeleccionado))
             {
-                MessageBox.Show("Se ah dado de baja la tarjeta", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 esconderBtns();
                 refreshDataTarjetas();
             }
@@ -336,10 +360,88 @@ namespace TrabajoPractico1
         {
             comboBoxTraerCajasATarjetas.Show();
         }
-
-        private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
+        //
+        //PAGOS
+        //
+        private void btnNewPago_Click(object sender, EventArgs e)
         {
-           
+            float monto;
+            string nombre = Interaction.InputBox("Ingresar nombre del pago", "Ingresar nombre del pago");
+            if (!float.TryParse(Interaction.InputBox("Ingresar el monto del pago", "Ingresar monto"), out monto))
+            {
+                MessageBox.Show("El monto ingresado no es válido", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                banco.nuevoPago(banco.usuarioLogeado, nombre, monto); // hay que modificar esto para que al tocar el boton aparezcan opciones el algun lado del formulario para completar dinamicamente estos datos
+                this.refreshDataPagos();
+            }
+        }
+        private void dataGridViewPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Int32.TryParse(dataGridViewPagos.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPago))
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                btnEliminarPago.Show();
+                btnPagarPago.Show();
+            }
+
+        }
+        private void btnEliminarPago_Click(object sender, EventArgs e)
+        {
+            Pago pago = banco.obtenerPagos().Find(pago1 => pago1.id == idPago);
+            if(pago.pagado)
+            {
+                banco.quitarPago(idPago);
+                MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataPagos();
+            }
+            else
+            {
+                MessageBox.Show("El Pago necesita estar pagado😒", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnPagarPago_Click(object sender, EventArgs e)
+        {
+            this.comboBoxCajaPago.Show();
+            this.comboBoxTarjetaPago.Show();
+        }
+
+        private void comboBoxCajaPago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxCajaPago.SelectedIndex;
+            string seleccion = comboBoxCajaPago.Items[index].ToString();
+
+            int cbu;
+            Int32.TryParse(seleccion, out cbu);
+
+            if(banco.pagarPago(idPago, cbu))
+            {
+                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataPagos();
+                refreshDataCaja();
+            }
+        }
+
+        private void comboBoxTarjetaPago_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxTarjetaPago.SelectedIndex;
+            string seleccion = comboBoxTarjetaPago.Items[index].ToString();
+
+            int numero;
+            Int32.TryParse(seleccion, out numero);
+
+            if (banco.pagarPago(idPago, numero))
+            {
+                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataPagos();
+                refreshDataCaja();
+                refreshDataTarjetas();
+            }
         }
     }
 

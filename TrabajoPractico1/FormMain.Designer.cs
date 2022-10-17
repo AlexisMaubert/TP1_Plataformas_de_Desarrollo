@@ -57,10 +57,14 @@
             this.ColumnTasaPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagadoPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPagos = new System.Windows.Forms.TabPage();
+            this.comboBoxTarjetaPago = new System.Windows.Forms.ComboBox();
+            this.comboBoxCajaPago = new System.Windows.Forms.ComboBox();
             this.btnPagarPago = new System.Windows.Forms.Button();
             this.btnEliminarPago = new System.Windows.Forms.Button();
             this.btnNewPago = new System.Windows.Forms.Button();
             this.dataGridViewPagos = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagosRealizados = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagosPendientes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabTarjetas = new System.Windows.Forms.TabPage();
@@ -417,6 +421,8 @@
             // 
             // tabPagos
             // 
+            this.tabPagos.Controls.Add(this.comboBoxTarjetaPago);
+            this.tabPagos.Controls.Add(this.comboBoxCajaPago);
             this.tabPagos.Controls.Add(this.btnPagarPago);
             this.tabPagos.Controls.Add(this.btnEliminarPago);
             this.tabPagos.Controls.Add(this.btnNewPago);
@@ -429,6 +435,29 @@
             this.tabPagos.Text = "Pagos";
             this.tabPagos.UseVisualStyleBackColor = true;
             // 
+            // comboBoxTarjetaPago
+            // 
+            this.comboBoxTarjetaPago.FormattingEnabled = true;
+            this.comboBoxTarjetaPago.Location = new System.Drawing.Point(574, 125);
+            this.comboBoxTarjetaPago.Name = "comboBoxTarjetaPago";
+            this.comboBoxTarjetaPago.Size = new System.Drawing.Size(120, 23);
+            this.comboBoxTarjetaPago.TabIndex = 5;
+            this.comboBoxTarjetaPago.Text = "Tarjetas";
+            this.comboBoxTarjetaPago.Visible = false;
+            this.comboBoxTarjetaPago.SelectedIndexChanged += new System.EventHandler(this.comboBoxTarjetaPago_SelectedIndexChanged);
+            // 
+            // comboBoxCajaPago
+            // 
+            this.comboBoxCajaPago.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.comboBoxCajaPago.FormattingEnabled = true;
+            this.comboBoxCajaPago.Location = new System.Drawing.Point(433, 125);
+            this.comboBoxCajaPago.Name = "comboBoxCajaPago";
+            this.comboBoxCajaPago.Size = new System.Drawing.Size(120, 21);
+            this.comboBoxCajaPago.TabIndex = 4;
+            this.comboBoxCajaPago.Text = "Cajas De Ahorro";
+            this.comboBoxCajaPago.Visible = false;
+            this.comboBoxCajaPago.SelectedIndexChanged += new System.EventHandler(this.comboBoxCajaPago_SelectedIndexChanged);
+            // 
             // btnPagarPago
             // 
             this.btnPagarPago.Location = new System.Drawing.Point(433, 88);
@@ -438,6 +467,8 @@
             this.btnPagarPago.TabIndex = 3;
             this.btnPagarPago.Text = "Pagar";
             this.btnPagarPago.UseVisualStyleBackColor = true;
+            this.btnPagarPago.Visible = false;
+            this.btnPagarPago.Click += new System.EventHandler(this.btnPagarPago_Click);
             // 
             // btnEliminarPago
             // 
@@ -448,6 +479,8 @@
             this.btnEliminarPago.TabIndex = 2;
             this.btnEliminarPago.Text = "Eliminar";
             this.btnEliminarPago.UseVisualStyleBackColor = true;
+            this.btnEliminarPago.Visible = false;
+            this.btnEliminarPago.Click += new System.EventHandler(this.btnEliminarPago_Click);
             // 
             // btnNewPago
             // 
@@ -463,14 +496,34 @@
             // 
             this.dataGridViewPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPagos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.Nombre,
             this.ColumnPagosRealizados,
             this.ColumnPagosPendientes});
             this.dataGridViewPagos.Location = new System.Drawing.Point(-4, 0);
             this.dataGridViewPagos.Name = "dataGridViewPagos";
             this.dataGridViewPagos.RowHeadersWidth = 51;
             this.dataGridViewPagos.RowTemplate.Height = 25;
-            this.dataGridViewPagos.Size = new System.Drawing.Size(265, 345);
+            this.dataGridViewPagos.Size = new System.Drawing.Size(406, 345);
             this.dataGridViewPagos.TabIndex = 0;
+            this.dataGridViewPagos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            this.dataGridViewPagos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            this.dataGridViewPagos.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            // 
+            // ID
+            // 
+            this.ID.Frozen = true;
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // Nombre
+            // 
+            this.Nombre.Frozen = true;
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
             // 
             // ColumnPagosRealizados
             // 
@@ -696,8 +749,6 @@
         private DataGridView dataGridViewPF;
         private Button btnNewPago;
         private DataGridView dataGridViewPagos;
-        private DataGridViewTextBoxColumn ColumnPagosRealizados;
-        private DataGridViewTextBoxColumn ColumnPagosPendientes;
         private DataGridView dataGridViewTarjetas;
         private Button btnNewTarjeta;
         private DataGridViewTextBoxColumn ColumnIdPlf;
@@ -726,5 +777,11 @@
         private Button btnDarDeBajaTarjeta;
         private ComboBox comboBoxTraerCajasATarjetas;
         private Label label2;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn Nombre;
+        private DataGridViewTextBoxColumn ColumnPagosRealizados;
+        private DataGridViewTextBoxColumn ColumnPagosPendientes;
+        private ComboBox comboBoxTarjetaPago;
+        private ComboBox comboBoxCajaPago;
     }
 }
