@@ -6,8 +6,10 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TrabajoPractico1
 {
@@ -15,6 +17,7 @@ namespace TrabajoPractico1
     {
         private Banco banco;
         private int cbuSeleccionado;
+        private DateTime fechaElegida;
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -96,7 +99,8 @@ namespace TrabajoPractico1
             btnRetirar.Visible = false;
             btnTransferir.Visible = false;
             btnDetalles.Visible = false;
-            btnMovimientos.Visible = false;
+            //btnMovimientos.Visible = false;
+            comboBox1.Visible = false;
         }
         public void mostrarBtns()
         {
@@ -107,7 +111,8 @@ namespace TrabajoPractico1
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
-            btnMovimientos.Show();
+            //btnMovimientos.Show();
+            comboBox1.Show();
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -234,6 +239,63 @@ namespace TrabajoPractico1
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
             MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBox1.SelectedIndex;
+            string seleccion = comboBox1.Items[index].ToString();
+
+            if(index == 0)
+            {
+                string movimientos = "";
+                foreach (Movimiento movimiento in banco.obtenerMovimientos(cbuSeleccionado))
+                {
+                    movimientos = movimientos + movimiento.ToString() + "\n";
+                }
+                MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
+            } else if(index == 1)
+            {
+        
+                dateTimePicker1.Visible = true;
+                
+               
+            } else if (index == 2)
+            {
+                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+                float monto;
+                float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
+                string movimientos = "";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(caja, monto))
+                {
+                    movimientos = movimientos + movimiento.ToString() + "\n";
+                }
+                if (monto <= 0)
+                {
+                    MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                } else { 
+                    MessageBox.Show(movimientos, "Movimientos por monto", MessageBoxButtons.OK); 
+                }
+                    
+            } else
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+           
+        }
+
+        private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
+        {
+            fechaElegida = dateTimePicker1.Value;
+            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
+            string movimientos = "";
+            foreach (Movimiento movimiento in banco.buscarMovimiento(caja, fechaElegida))
+            {
+                movimientos = movimientos + movimiento.ToString() + "\n";
+            }
+            MessageBox.Show(movimientos, "Movimientos por fecha", MessageBoxButtons.OK);
+            dateTimePicker1.Visible = false;
+
         }
     }
 }

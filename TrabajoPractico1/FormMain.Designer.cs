@@ -30,6 +30,8 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnEliminarTitular = new System.Windows.Forms.Button();
             this.btnDetalles = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
@@ -97,6 +99,8 @@
             // 
             // tabCajaDeAhorro
             // 
+            this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
+            this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
             this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
             this.tabCajaDeAhorro.Controls.Add(this.btnDetalles);
             this.tabCajaDeAhorro.Controls.Add(this.btnTransferir);
@@ -114,6 +118,31 @@
             this.tabCajaDeAhorro.TabIndex = 0;
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
+            // 
+            // dateTimePicker1
+            // 
+            this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.dateTimePicker1.Location = new System.Drawing.Point(482, 347);
+            this.dateTimePicker1.Name = "dateTimePicker1";
+            this.dateTimePicker1.Size = new System.Drawing.Size(200, 23);
+            this.dateTimePicker1.TabIndex = 11;
+            this.dateTimePicker1.Visible = false;
+            this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Detalle",
+            "Fecha",
+            "Monto"});
+            this.comboBox1.Location = new System.Drawing.Point(541, 298);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.TabIndex = 10;
+            this.comboBox1.Text = "Movimientos";
+            this.comboBox1.Visible = false;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // btnEliminarTitular
             // 
@@ -633,5 +662,7 @@
         private Button btnPagarPago;
         private Button btnEliminarPago;
         private Button btnEliminarTitular;
+        private ComboBox comboBox1;
+        private DateTimePicker dateTimePicker1;
     }
 }
