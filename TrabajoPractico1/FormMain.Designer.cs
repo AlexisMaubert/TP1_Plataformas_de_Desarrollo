@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -73,15 +74,14 @@
             this.btnDarDeBajaTarjeta = new System.Windows.Forms.Button();
             this.btnNewTarjeta = new System.Windows.Forms.Button();
             this.dataGridViewTarjetas = new System.Windows.Forms.DataGridView();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nombreUsuario = new System.Windows.Forms.Label();
             this.ColumnIdTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitularTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nombreUsuario = new System.Windows.Forms.Label();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -108,7 +108,6 @@
             // 
             // tabCajaDeAhorro
             // 
-
             this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
@@ -130,6 +129,18 @@
             this.tabCajaDeAhorro.TabIndex = 0;
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
+            this.btnCerrarSesion.TabIndex = 13;
+            this.btnCerrarSesion.Text = "Cerrar Sesión";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            // 
+            // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(530, 259);
@@ -157,12 +168,10 @@
             "Detalle",
             "Fecha",
             "Monto"});
-
             this.comboBox1.Location = new System.Drawing.Point(547, 276);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(106, 23);
-
             this.comboBox1.TabIndex = 10;
             this.comboBox1.Text = "Movimientos";
             this.comboBox1.Visible = false;
@@ -264,6 +273,8 @@
             // 
             // dataGridViewCaja
             // 
+            this.dataGridViewCaja.AllowUserToAddRows = false;
+            this.dataGridViewCaja.AllowUserToDeleteRows = false;
             this.dataGridViewCaja.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewCaja.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnId,
@@ -342,6 +353,8 @@
             // 
             // dataGridViewPF
             // 
+            this.dataGridViewPF.AllowUserToAddRows = false;
+            this.dataGridViewPF.AllowUserToDeleteRows = false;
             this.dataGridViewPF.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPF.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIdPlf,
@@ -497,6 +510,8 @@
             // 
             // dataGridViewPagos
             // 
+            this.dataGridViewPagos.AllowUserToAddRows = false;
+            this.dataGridViewPagos.AllowUserToDeleteRows = false;
             this.dataGridViewPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPagos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ID,
@@ -609,6 +624,8 @@
             // 
             // dataGridViewTarjetas
             // 
+            this.dataGridViewTarjetas.AllowUserToAddRows = false;
+            this.dataGridViewTarjetas.AllowUserToDeleteRows = false;
             this.dataGridViewTarjetas.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewTarjetas.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.ColumnIdTarjeta,
@@ -621,9 +638,28 @@
             this.dataGridViewTarjetas.Name = "dataGridViewTarjetas";
             this.dataGridViewTarjetas.RowHeadersWidth = 51;
             this.dataGridViewTarjetas.RowTemplate.Height = 25;
-            this.dataGridViewTarjetas.Size = new System.Drawing.Size(578, 343);
+            this.dataGridViewTarjetas.Size = new System.Drawing.Size(606, 343);
             this.dataGridViewTarjetas.TabIndex = 0;
             this.dataGridViewTarjetas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTarjetas_CellContentClick);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(53, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Bienvenido :";
+            // 
+            // nombreUsuario
+            // 
+            this.nombreUsuario.AutoSize = true;
+            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
+            this.nombreUsuario.Name = "nombreUsuario";
+            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
+            this.nombreUsuario.TabIndex = 1;
+            this.nombreUsuario.Text = "label2";
             // 
             // ColumnIdTarjeta
             // 
@@ -660,7 +696,7 @@
             this.ColumnCodigoTarjeta.MinimumWidth = 6;
             this.ColumnCodigoTarjeta.Name = "ColumnCodigoTarjeta";
             this.ColumnCodigoTarjeta.ReadOnly = true;
-            this.ColumnCodigoTarjeta.Width = 125;
+            this.ColumnCodigoTarjeta.Width = 70;
             // 
             // ColumnLimiteTarjeta
             // 
@@ -679,35 +715,6 @@
             this.ColumnConsumosTarjeta.Name = "ColumnConsumosTarjeta";
             this.ColumnConsumosTarjeta.ReadOnly = true;
             this.ColumnConsumosTarjeta.Width = 125;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido :";
-            // 
-            // nombreUsuario
-            // 
-            this.nombreUsuario.AutoSize = true;
-            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
-            this.nombreUsuario.Name = "nombreUsuario";
-            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
-            this.nombreUsuario.TabIndex = 1;
-            this.nombreUsuario.Text = "label2";
-            // 
-            // btnCerrarSesion
-            // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
-            this.btnCerrarSesion.TabIndex = 13;
-            this.btnCerrarSesion.Text = "Cerrar Sesión";
-            this.btnCerrarSesion.UseVisualStyleBackColor = true;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // FormMain
             // 
@@ -772,12 +779,6 @@
         private DataGridViewTextBoxColumn ColumnFechaFinPlz;
         private DataGridViewTextBoxColumn ColumnTasaPlz;
         private DataGridViewTextBoxColumn ColumnPagadoPlz;
-        private DataGridViewTextBoxColumn ColumnIdTarjeta;
-        private DataGridViewTextBoxColumn ColumnTitularTarjeta;
-        private DataGridViewTextBoxColumn ColumnNumeroTarjeta;
-        private DataGridViewTextBoxColumn ColumnCodigoTarjeta;
-        private DataGridViewTextBoxColumn ColumnLimiteTarjeta;
-        private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
         private Button btnDetalles;
         private Button btnTransferir;
         private Button btnRetirar;
@@ -798,6 +799,11 @@
         private ComboBox comboBoxTarjetaPago;
         private ComboBox comboBoxCajaPago;
         private Button btnCerrarSesion;
-
+        private DataGridViewTextBoxColumn ColumnIdTarjeta;
+        private DataGridViewTextBoxColumn ColumnTitularTarjeta;
+        private DataGridViewTextBoxColumn ColumnNumeroTarjeta;
+        private DataGridViewTextBoxColumn ColumnCodigoTarjeta;
+        private DataGridViewTextBoxColumn ColumnLimiteTarjeta;
+        private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
     }
 }

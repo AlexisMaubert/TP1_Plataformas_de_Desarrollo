@@ -26,6 +26,11 @@ namespace TrabajoPractico1
             InitializeComponent();
             this.banco = b;
             nombreUsuario.Text = banco.mostrarUsuario(); //Se muestra el nombre del usuario en la vista
+
+            this.refreshDataCaja();
+            this.refreshDataPF();
+            this.refreshDataPagos();
+            this.refreshDataTarjetas();
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
@@ -36,23 +41,7 @@ namespace TrabajoPractico1
                 this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
             
-            banco.crearCajaDeAhorro();
-            banco.crearCajaDeAhorro();
-            banco.crearCajaDeAhorro();
-            banco.crearCajaDeAhorro();
-
-
-            banco.altaTarjeta();
-            banco.altaTarjeta();
-            banco.tarjetas[0].consumo = 100;
-
-            banco.nuevoPago(banco.usuarios[0], "Pochoclo", 200);
-            banco.nuevoPago(banco.usuarios[0], "Tutuca", 300);
-
-            this.refreshDataCaja();
-            this.refreshDataPF();
-            this.refreshDataPagos();
-            this.refreshDataTarjetas();
+            
         }
         public delegate void cerrarSesionDelegado();
 
@@ -472,7 +461,12 @@ namespace TrabajoPractico1
         }
         public void btnCerrarSesion_Click(object sender, EventArgs e)
         {
+            dataGridViewCaja.Rows.Clear();
+            dataGridViewPagos.Rows.Clear();
+            dataGridViewTarjetas.Rows.Clear();
+            dataGridViewPF.Rows.Clear();
             this.cerrarSesionEvento();
+            
         }
 
     }
