@@ -20,16 +20,13 @@ namespace TrabajoPractico1
         private int numeroTarjetaSeleccionado;
         private int idPago;
         private DateTime fechaElegida;
+        public cerrarSesionDelegado cerrarSesionEvento;
 
         public FormMain(Banco b)
         {
             InitializeComponent();
             this.banco = b;
             nombreUsuario.Text = banco.mostrarUsuario(); //Se muestra el nombre del usuario en la vista
-            this.refreshDataCaja();
-            this.refreshDataPF();
-            this.refreshDataPagos();
-            this.refreshDataTarjetas();
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
@@ -39,7 +36,26 @@ namespace TrabajoPractico1
             {
                 this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
+            
+            banco.crearCajaDeAhorro();
+            banco.crearCajaDeAhorro();
+            banco.crearCajaDeAhorro();
+            banco.crearCajaDeAhorro();
+
+
+            banco.altaTarjeta();
+            banco.altaTarjeta();
+            banco.tarjetas[0].consumo = 100;
+
+            banco.nuevoPago(banco.usuarios[0], "Pochoclo", 200);
+            banco.nuevoPago(banco.usuarios[0], "Tutuca", 300);
+
+            this.refreshDataCaja();
+            this.refreshDataPF();
+            this.refreshDataPagos();
+            this.refreshDataTarjetas();
         }
+        public delegate void cerrarSesionDelegado();
 
         private void btnMostrarDatos_Click(object sender, EventArgs e) //Si pongo el metodo refreshData en el boton de crear caja no está medio al pedo este?????
         {
@@ -93,7 +109,7 @@ namespace TrabajoPractico1
         }
         private void btnNewCaja_Click(object sender, EventArgs e)
         {
-            banco.crearCajaDeAhorro(0);
+            banco.crearCajaDeAhorro(); // Las cajas de ahorro se crean con el saldo en 0
             this.refreshDataCaja();
         }
         private void btnNewPf_Click(object sender, EventArgs e)
@@ -102,11 +118,9 @@ namespace TrabajoPractico1
             this.refreshDataPF();
         }
 
-        
-
         private void btnNewTarjeta_Click(object sender, EventArgs e)
         {
-            banco.altaTarjeta(banco.usuarioLogeado, 20000);
+            banco.altaTarjeta(); // Las tarjetas se crean con un monto de 20 mil 
             this.refreshDataTarjetas();
         }
         public void esconderBtns()
@@ -139,7 +153,7 @@ namespace TrabajoPractico1
         {
             esconderBtns();
             mostrarBtns();
-            if(Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
+            if(!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
             {
                 MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -168,24 +182,34 @@ namespace TrabajoPractico1
         private void btnAgregarTitular_Click(object sender, EventArgs e)
         {
             int nuevodni;
-            Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni);
-            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
-            if (banco.agregarUsuarioACaja(caja, nuevodni))
+            if(Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni))
             {
-                MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataCaja();
+                if (banco.agregarUsuarioACaja(banco.BuscarCajaDeAhorro(cbuSeleccionado), nuevodni))
+                {
+                    MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataCaja();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnEliminarTitular_Click(object sender, EventArgs e)
         {
             int nuevodni;
-            Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni);
-            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
-            if (banco.eliminarUsuarioDeCaja(caja, nuevodni))
+            if(Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni))
             {
-                MessageBox.Show("Se removió titular con dni nro "+nuevodni, "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataCaja();
+                if (banco.eliminarUsuarioDeCaja(banco.BuscarCajaDeAhorro(cbuSeleccionado), nuevodni))
+                {
+                    MessageBox.Show("Se removió titular con dni nro " + nuevodni, "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataCaja();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -198,8 +222,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
-                banco.depositar(caja, deposito);
+                banco.depositar(banco.BuscarCajaDeAhorro(cbuSeleccionado), deposito);
                 MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataCaja();
             }
@@ -213,8 +236,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
-                if (banco.retirar(caja, retiro))
+                if (banco.retirar(banco.BuscarCajaDeAhorro(cbuSeleccionado), retiro))
                 {
                     MessageBox.Show("Se retiró el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataCaja();
@@ -236,8 +258,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
-                if (monto > caja.saldo)
+                if (monto > banco.BuscarCajaDeAhorro(cbuSeleccionado).saldo)
                 {
                     MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -248,7 +269,7 @@ namespace TrabajoPractico1
                 else
                 {
 
-                    if (banco.transferir(caja, cbu, monto))
+                    if (banco.transferir(banco.BuscarCajaDeAhorro(cbuSeleccionado), cbu, monto))
                     {
                         MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         refreshDataCaja();
@@ -288,11 +309,10 @@ namespace TrabajoPractico1
             else if (index == 2)
             {
                 dateTimePicker1.Visible = false;
-                CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
                 float monto;
                 float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
                 string movimientos = "";
-                foreach (Movimiento movimiento in banco.buscarMovimiento(caja, monto))
+                foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), monto))
                 {
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
@@ -317,9 +337,8 @@ namespace TrabajoPractico1
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             fechaElegida = dateTimePicker1.Value;
-            CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
             string movimientos = "";
-            foreach (Movimiento movimiento in banco.buscarMovimiento(caja, fechaElegida))
+            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), fechaElegida))
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
@@ -331,7 +350,7 @@ namespace TrabajoPractico1
 
         private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+            if(!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
             {
                 MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -367,19 +386,23 @@ namespace TrabajoPractico1
         {
             float monto;
             string nombre = Interaction.InputBox("Ingresar nombre del pago", "Ingresar nombre del pago");
-            if (!float.TryParse(Interaction.InputBox("Ingresar el monto del pago", "Ingresar monto"), out monto))
+            if(nombre == "" || nombre == null)
+            {
+                MessageBox.Show("Error en el ingreso de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else if (!float.TryParse(Interaction.InputBox("Ingresar el monto del pago", "Ingresar monto"), out monto))
             {
                 MessageBox.Show("El monto ingresado no es válido", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                banco.nuevoPago(banco.usuarioLogeado, nombre, monto); // hay que modificar esto para que al tocar el boton aparezcan opciones el algun lado del formulario para completar dinamicamente estos datos
+                banco.nuevoPago(banco.buscarUsuarioLogeado(), nombre, monto); // hay que modificar esto para que al tocar el boton aparezcan opciones el algun lado del formulario para completar dinamicamente estos datos
                 this.refreshDataPagos();
             }
         }
         private void dataGridViewPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (Int32.TryParse(dataGridViewPagos.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPago))
+            if (!Int32.TryParse(dataGridViewPagos.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPago))
             {
                 MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -392,8 +415,7 @@ namespace TrabajoPractico1
         }
         private void btnEliminarPago_Click(object sender, EventArgs e)
         {
-            Pago pago = banco.obtenerPagos().Find(pago1 => pago1.id == idPago);
-            if(pago.pagado)
+            if(banco.buscarPago(idPago).pagado)
             {
                 banco.quitarPago(idPago);
                 MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -443,13 +465,11 @@ namespace TrabajoPractico1
                 refreshDataTarjetas();
             }
         }
+        public void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            this.cerrarSesionEvento();
+        }
     }
-
-
-    
-
-    
-
 }
 
 

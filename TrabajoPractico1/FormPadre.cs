@@ -1,4 +1,4 @@
-namespace TrabajoPractico1
+﻿namespace TrabajoPractico1
 {
     public partial class FormPadre : Form //Formulario "vacio" que va a contener todas las distintas vistas.
     {
@@ -6,17 +6,15 @@ namespace TrabajoPractico1
         FormLogin hijoLogin;
         FormReg hijoReg;
         FormMain hijoMain;
-        public int dni;
-        public string password;
 
         public bool logued;
 
         public FormPadre()
         {
             InitializeComponent();
-            this.banco = new Banco();  //�nica instancia de banco.
+            this.banco = new Banco();  //Única instancia de banco.
             this.logued = false;
-            this.hijoLogin = new FormLogin(this.banco); //Creo un formulario hijo y le paso como par�metro al banco.
+            this.hijoLogin = new FormLogin(this.banco); //Creo un formulario hijo y le paso como parámetro al banco.
             this.hijoLogin.MdiParent = this; //Indico que el formulario creado va a ser un hijo MDI de este formulario.
             this.hijoLogin.loginEvento += loginDelegado;
             this.hijoLogin.regEvento += regDelegado;
@@ -25,25 +23,8 @@ namespace TrabajoPractico1
             this.hijoReg.regBotonEvento += regBotonDelegado;
             this.hijoLogin.Show();
 
-
-            banco.altaUsuario("Admin", "Admin", 1, "admin@admin.com", "1");
+            banco.altaUsuario("Admin", "Admin", 1, "admin@admin.com", "1"); //SE CREAN 2 USUARIOS PARA LAS PRUEBAS Y DENTRO DE MAINFORM SE LE HARDCODEAN CAJAS PAGOS Y TARJETAS.
             banco.altaUsuario("Admin2", "Admin2", 2, "admin@admin2.com", "2");
-
-
-            banco.usuarioLogeado = banco.usuarios[0];
-            banco.crearCajaDeAhorro(0);
-            banco.crearCajaDeAhorro(0);
-            banco.crearCajaDeAhorro(0);
-            banco.crearCajaDeAhorro(0);
-
-
-            banco.altaTarjeta(banco.usuarios[0] , 500);
-            banco.altaTarjeta(banco.usuarios[0], 1000);
-            banco.tarjetas[0].consumo = 100;
-
-            banco.nuevoPago(banco.usuarios[0], "Pochoclo", 200);
-            banco.nuevoPago(banco.usuarios[0], "Tutuca", 300);
-
 
         }
 
@@ -53,15 +34,14 @@ namespace TrabajoPractico1
         }
         private void loginDelegado(int Dni, string Pass)
         {
-            this.password = Pass;
-            this.dni = Dni;
-            if(banco.iniciarSesion(this.dni, this.password))
+            if(banco.iniciarSesion(Dni, Pass))
             {
-                MessageBox.Show("Log in correcto, Usuario: " + this.banco.mostrarUsuario(), "Inicio de sesi�n exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Log in correcto, Usuario: " + this.banco.mostrarUsuario(), "Inicio de sesión exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hijoLogin.Close();
                 hijoMain = new FormMain(banco);
                 //hijoLogin.usuario = Usuario;
                 hijoMain.MdiParent = this;
+                hijoMain.cerrarSesionEvento += cerrarSesionDelegado;
                 hijoMain.Show();
             }
             else
@@ -81,6 +61,17 @@ namespace TrabajoPractico1
         {
             hijoReg.Close();
             this.hijoLogin = new FormLogin(this.banco); 
+            this.hijoLogin.MdiParent = this;
+            this.hijoLogin.loginEvento += loginDelegado;
+            this.hijoLogin.regEvento += regDelegado;
+            hijoLogin.Show();
+        }
+        private void cerrarSesionDelegado()
+        {
+            banco.cerrarSesion();
+            MessageBox.Show("Muchas gracias por usar nuestra app", "Sesión finalizada 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            hijoMain.Close();
+            this.hijoLogin = new FormLogin(this.banco);
             this.hijoLogin.MdiParent = this;
             this.hijoLogin.loginEvento += loginDelegado;
             this.hijoLogin.regEvento += regDelegado;

@@ -81,6 +81,7 @@
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -107,6 +108,7 @@
             // 
             // tabCajaDeAhorro
             // 
+            this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
             this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
@@ -682,18 +684,29 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(53, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 15);
+            this.label1.Size = new System.Drawing.Size(72, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido usuario:";
+            this.label1.Text = "Bienvenido :";
             // 
             // nombreUsuario
             // 
             this.nombreUsuario.AutoSize = true;
-            this.nombreUsuario.Location = new System.Drawing.Point(179, 21);
+            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
             this.nombreUsuario.Name = "nombreUsuario";
-            this.nombreUsuario.Size = new System.Drawing.Size(38, 15);
+            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
+            this.btnCerrarSesion.TabIndex = 13;
+            this.btnCerrarSesion.Text = "Cerrar Sesión";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // FormMain
             // 
@@ -783,5 +796,6 @@
         private DataGridViewTextBoxColumn ColumnPagosPendientes;
         private ComboBox comboBoxTarjetaPago;
         private ComboBox comboBoxCajaPago;
+        private Button btnCerrarSesion;
     }
 }

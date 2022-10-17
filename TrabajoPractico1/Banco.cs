@@ -71,28 +71,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool altaUsuario(Usuario nuevoUsuario) //No está testeado... Se hizo por sí las dudas.
-        {
-            try
-            {
-                if (!this.usuarios.Any(usuario => usuario.dni == nuevoUsuario.dni)) //Agregue la condición de que no exista el usuario
-                {
-                    Usuario usuarioNuevo = new Usuario(nuevoUsuario.nombre, nuevoUsuario.apellido, nuevoUsuario.dni, nuevoUsuario.mail, nuevoUsuario.password);
-                    this.usuarios.Add(nuevoUsuario); //arreglar esto!!!
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public bool bajaUsuario(int dni)//Funcionando
+        public bool bajaUsuario(int dni)
         {
             try
             {
@@ -106,7 +85,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool modificarUsuario(int dni, string mail, string pass)//Funcionando
+        public bool modificarUsuario(int dni, string mail, string pass)
         {
             try
             {
@@ -129,31 +108,7 @@ namespace TrabajoPractico1
         }
 
         //CAJAS---------------------------------------------
-        public bool altaCaja(List<Usuario> titulares) //Funcionando
-        {
-            try
-            {
-                Random random = new Random();
-                int nuevoCbu = random.Next(100000000, 999999999);
-                while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
-                {  // Mientras haya alguna caja con ese CBU se crea otro CBU
-                    nuevoCbu = random.Next(100000000, 999999999);
-                    Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
-                }
-                CajaDeAhorro cajaAgregar = new CajaDeAhorro(nuevoCbu, titulares);
-                this.cajas.Add(cajaAgregar);
-                foreach (Usuario titular in titulares)
-                {
-                    titular.cajas.Add(cajaAgregar); // Agrego a la lista de cajas de ahorro de todos los titulares la caja de ahorro
-                }
-                return true;
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-        public bool altaCaja(Usuario Titular, CajaDeAhorro Caja) //Método alternativo para agregar cajas de ahorros a la lista del banco y del usuario
+        public bool altaCaja(Usuario Titular, CajaDeAhorro Caja)
         {
             try
             {
@@ -167,7 +122,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaCaja(int cbu)//Funcionando, todavía no se probó tratar de eliminar una con saldo !=0
+        public bool bajaCaja(int cbu)
         {
             try
             {
@@ -213,7 +168,7 @@ namespace TrabajoPractico1
                 }
         }
 
-        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) //In CajaDeAhorro y Usuario, out Boolean
+        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) 
         {
             Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
             if(titular == null)
@@ -234,7 +189,7 @@ namespace TrabajoPractico1
         }
 
         //TARJETAS-----------------------------------------
-        public bool altaTarjeta(Usuario titular, float monto)//Funcionando
+        public bool altaTarjeta()
         {
             try
             {
@@ -246,9 +201,9 @@ namespace TrabajoPractico1
                     Debug.WriteLine("El número de tarjeta generado ya existe, creado uno nuevo...");
                 }
                 int nuevoCodigo = random.Next(100, 999); //Creo un codigo de tarjeta aleatorio
-                Tarjeta tarjetaNueva = new Tarjeta(nuevoNumero, nuevoCodigo, titular, monto);
+                Tarjeta tarjetaNueva = new Tarjeta(nuevoNumero, nuevoCodigo, this.usuarioLogeado, 20000);
                 this.tarjetas.Add(tarjetaNueva); //Agrego la tarjeta a la lista de tarjetas del banco
-                titular.tarjetas.Add(tarjetaNueva); //Agrego la tarjeta a la lista de tarjetas del usuario
+                this.usuarioLogeado.tarjetas.Add(tarjetaNueva); //Agrego la tarjeta a la lista de tarjetas del usuario
 
                 return true;
             }
@@ -258,7 +213,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaTarjeta(int numeroTarjeta)//Funciona, todavía no se probó tratar de eliminar una con consumos
+        public bool bajaTarjeta(int numeroTarjeta)//Todavía sin aplicación en el programa
         {
             try
             {
@@ -281,10 +236,7 @@ namespace TrabajoPractico1
             }
         }
         
-        //modificar solamente el limite de la tarjeta de credito --> id y cbu por que id no es cbu duda con fran
-        //10-10 => Estabamos usando el número de la tarjeta como identificador xq todavía no sabemos como manejar el tema del id sin base de datos.
-       
-        public bool modificarTarjetaDeCredito(int numeroTarjetaAModificar, float limite)//Funcionando
+        public bool modificarTarjetaDeCredito(int numeroTarjetaAModificar, float limite) //Todavía sin aplicación en el programa
         {
             try
             {
@@ -299,7 +251,7 @@ namespace TrabajoPractico1
         }
 
         //PAGOS-----------------------------
-        public bool nuevoPago(Usuario Usuario, string Nombre, float Monto)//Funcionando
+        public bool nuevoPago(Usuario Usuario, string Nombre, float Monto)
         {
             try
             {
@@ -315,7 +267,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool quitarPago(int IdpagoABorrar)//Funcionando
+        public bool quitarPago(int IdpagoABorrar)
         {
             try
             {
@@ -330,7 +282,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool modificarPago(int IdPagoAModificar)//Funcionando
+        public bool modificarPago(int IdPagoAModificar)
         {
             try
             {
@@ -345,7 +297,7 @@ namespace TrabajoPractico1
         }
 
         //PLAZO FIJO--------------------------------------------------
-        public bool agregarPlazoFijo(PlazoFijo NuevoPlazoFijo)
+        public bool agregarPlazoFijo(PlazoFijo NuevoPlazoFijo)//Todavía sin aplicación en el programa
         {
             try
             {
@@ -359,9 +311,7 @@ namespace TrabajoPractico1
                 return false;
             }
         }
-
-
-        public bool eliminarPlazoFijo(int idPlazoAEliminar)
+        public bool eliminarPlazoFijo(int idPlazoAEliminar)//Todavía sin aplicación en el programa
         {
 
             PlazoFijo plazoFijoAEliminar = this.pfs.Find(pf => pf.id == idPlazoAEliminar);
@@ -383,27 +333,21 @@ namespace TrabajoPractico1
             {
                 return false;
             }
-
         }
-
         //
         //METODOS PARA MOSTRAR DATOS
         //
+        public Usuario buscarUsuarioLogeado()
+        {
+            return this.usuarioLogeado;
+        }
         public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
         }
-        public List<CajaDeAhorro> obtenerCajaDeAhorro(int Dni) //Se crea este método para ir testeando pasar valores por referencia
-                                                                                            //no se si se va a usar en el proyecto final
+        public CajaDeAhorro BuscarCajaDeAhorro(int CBU)
         {
-            foreach (Usuario usuario in usuarios)
-            {
-                if (usuario.dni == Dni)
-                {
-                    return usuario.cajas.ToList();
-                }
-            }
-            return null;
+            return this.cajas.Find(caja => caja.cbu == CBU);
         }
 
         public List<Movimiento> obtenerMovimientos(int Cbu)
@@ -421,6 +365,10 @@ namespace TrabajoPractico1
         public List<Pago> obtenerPagos()
         {
             return usuarioLogeado.pagos.ToList();
+        }
+        public Pago buscarPago(int idPago)
+        {
+            return this.pagos.Find(pago => pago.id == idPago);
         }
 
         public List<PlazoFijo> obtenerPlzFijo()
@@ -474,7 +422,7 @@ namespace TrabajoPractico1
         {
             this.usuarioLogeado = null;
         }
-        public bool crearCajaDeAhorro(float Saldo)
+        public bool crearCajaDeAhorro()
         {
             Random random = new Random();
             int nuevoCbu = random.Next(100000000, 999999999);
@@ -484,7 +432,7 @@ namespace TrabajoPractico1
                 Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
             }
             CajaDeAhorro cajaNueva = new CajaDeAhorro(nuevoCbu, this.usuarioLogeado);
-            cajaNueva.saldo = Saldo;
+            cajaNueva.saldo = 0;
             try
             {
                 this.altaCaja(this.usuarioLogeado, cajaNueva);
@@ -572,6 +520,7 @@ namespace TrabajoPractico1
                 {
                     tarjeta.consumo += pago.monto;
                     this.modificarPago(idPago);
+                    pago.metodo = "Tarjeta";
                     return true;
                 }
                 else
@@ -590,6 +539,7 @@ namespace TrabajoPractico1
                 caja.saldo = caja.saldo - pago.monto;
                 this.modificarPago(idPago);
                 this.altaMovimiento(caja, "Pago de " + pago.nombre, pago.monto);
+                pago.metodo = "Caja de ahorro";
                 return true;
             }
         }
