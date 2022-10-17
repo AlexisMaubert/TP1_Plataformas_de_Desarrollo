@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TrabajoPractico1
 {
@@ -15,6 +16,9 @@ namespace TrabajoPractico1
     {
         private Banco banco;
         private int cbuSeleccionado;
+        private int numeroTarjetaSeleccionado;
+        private DateTime fechaElegida;
+
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -96,7 +100,7 @@ namespace TrabajoPractico1
             btnRetirar.Visible = false;
             btnTransferir.Visible = false;
             btnDetalles.Visible = false;
-            btnMovimientos.Visible = false;
+            //btnMovimientos.Visible = false;
         }
         public void mostrarBtns()
         {
@@ -107,7 +111,7 @@ namespace TrabajoPractico1
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
-            btnMovimientos.Show();
+            //btnMovimientos.Show();
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -235,5 +239,53 @@ namespace TrabajoPractico1
             }
             MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
         }
+
+        //TARJETAS ------------------------
+
+        private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado);
+            btnDarDeBajaTarjeta.Show();
+            btnPagarTarjeta.Show();
+        }
+
+        private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
+        {
+            if (banco.bajaTarjeta(numeroTarjetaSeleccionado))
+            {
+                MessageBox.Show("Se ah dado de baja la tarjeta", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                esconderBtns();
+                refreshDataTarjetas();
+            }
+            else
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void btnPagarTarjeta_Click(object sender, EventArgs e)
+        {
+            comboBoxTraerCajasATarjetas.Show();
+        }
+
+        //private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
+        //{
+        //    for(int i = 0; i <= banco.usuarioLogeado.cajas.LongCount(); i++)
+        //    {
+                
+        //    }
+        //}
     }
+
+
+    
+
+    
+
 }
+
+
+
+
+
+

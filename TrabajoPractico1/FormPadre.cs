@@ -36,6 +36,12 @@ namespace TrabajoPractico1
             banco.crearCajaDeAhorro(0);
             banco.crearCajaDeAhorro(0);
 
+
+            banco.altaTarjeta(banco.usuarios[0] , 500);
+            banco.altaTarjeta(banco.usuarios[0], 1000);
+            banco.tarjetas[0].consumo = 100;
+
+
         }
 
         private void FormPadre_Load(object sender, EventArgs e)
