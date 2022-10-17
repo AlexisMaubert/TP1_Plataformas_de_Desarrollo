@@ -537,7 +537,7 @@ namespace TrabajoPractico1
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha)
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha == Fecha).ToList();
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha.Day == Fecha.Day && movimiento.fecha.Month == Fecha.Month && movimiento.fecha.Year == Fecha.Year).ToList();
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
         {
