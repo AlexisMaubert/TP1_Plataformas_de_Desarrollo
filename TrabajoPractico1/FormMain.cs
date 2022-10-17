@@ -21,7 +21,6 @@ namespace TrabajoPractico1
         private int idPago;
         private DateTime fechaElegida;
         public cerrarSesionDelegado cerrarSesionEvento;
-
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -135,6 +134,7 @@ namespace TrabajoPractico1
             //btnMovimientos.Visible = false;
             comboBox1.Visible = false;
             label2.Visible = false;
+
         }
         public void mostrarBtns()
         {
@@ -148,6 +148,7 @@ namespace TrabajoPractico1
             //btnMovimientos.Show();
             comboBox1.Show();
             label2.Show();
+
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -287,11 +288,11 @@ namespace TrabajoPractico1
             }
             MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
         }
+
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBox1.SelectedIndex;
             string seleccion = comboBox1.Items[index].ToString();
-
             if (index == 0)
             {
                 dateTimePicker1.Visible = false;
@@ -301,6 +302,7 @@ namespace TrabajoPractico1
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
                 MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
+
             }
             else if (index == 1)
             {
@@ -313,6 +315,7 @@ namespace TrabajoPractico1
                 float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
                 string movimientos = "";
                 foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), monto))
+
                 {
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
@@ -332,6 +335,7 @@ namespace TrabajoPractico1
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
+
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -339,6 +343,7 @@ namespace TrabajoPractico1
             fechaElegida = dateTimePicker1.Value;
             string movimientos = "";
             foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), fechaElegida))
+
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
@@ -469,6 +474,7 @@ namespace TrabajoPractico1
         {
             this.cerrarSesionEvento();
         }
+
     }
 }
 

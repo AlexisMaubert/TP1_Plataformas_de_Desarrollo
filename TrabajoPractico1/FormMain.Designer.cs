@@ -108,6 +108,7 @@
             // 
             // tabCajaDeAhorro
             // 
+
             this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
@@ -129,8 +130,6 @@
             this.tabCajaDeAhorro.TabIndex = 0;
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
-            // 
-            // label2
             // 
             this.label2.AutoSize = true;
             this.label2.Location = new System.Drawing.Point(530, 259);
@@ -158,10 +157,12 @@
             "Detalle",
             "Fecha",
             "Monto"});
+
             this.comboBox1.Location = new System.Drawing.Point(547, 276);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(106, 23);
+
             this.comboBox1.TabIndex = 10;
             this.comboBox1.Text = "Movimientos";
             this.comboBox1.Visible = false;
@@ -797,5 +798,6 @@
         private ComboBox comboBoxTarjetaPago;
         private ComboBox comboBoxCajaPago;
         private Button btnCerrarSesion;
+
     }
 }

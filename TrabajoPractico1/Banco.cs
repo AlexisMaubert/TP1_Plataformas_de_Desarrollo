@@ -490,6 +490,8 @@ namespace TrabajoPractico1
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
         {
             return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto).ToList();
+
+            
         }
         public bool pagarTarjeta(Tarjeta Tarjeta, CajaDeAhorro Caja)
         {
