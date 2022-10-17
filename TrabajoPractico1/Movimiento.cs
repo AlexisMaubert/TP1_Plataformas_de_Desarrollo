@@ -25,5 +25,9 @@ namespace TrabajoPractico1
             this.monto = Monto;
             this.fecha = DateTime.Now;
         }
+        public override string ToString()
+        {
+            return string.Format("Detalle: {0}, Monto: {1}, Fecha: {2}", this.detalle, this.monto, this.fecha);
+        }
     }
 }

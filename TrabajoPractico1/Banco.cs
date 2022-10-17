@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Microsoft.VisualBasic.ApplicationServices;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Drawing;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,7 +21,7 @@ namespace TrabajoPractico1
         public List<Tarjeta> tarjetas { get ; }
         public List<Pago> pagos { get ; }
         public List<Movimiento> movimientos { get ; }
-        public Usuario usuarioLogeado { get ;} //Se crea una variable para guardar al usuario que inicie sesión
+        public Usuario usuarioLogeado { get; set; } //Se crea una variable para guardar al usuario que inicie sesión
 
         public Banco() 
         { 
@@ -150,6 +153,19 @@ namespace TrabajoPractico1
                 return false;
             }
         }
+        public bool altaCaja(Usuario Titular, CajaDeAhorro Caja) //Método alternativo para agregar cajas de ahorros a la lista del banco y del usuario
+        {
+            try
+            {
+                this.cajas.Add(Caja);
+                Titular.cajas.Add(Caja); 
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
 
         public bool bajaCaja(int cbu)//Funcionando, todavía no se probó tratar de eliminar una con saldo !=0
         {
@@ -177,42 +193,42 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool agregarUsuarioACaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        public bool agregarUsuarioACaja(CajaDeAhorro caja, int Dni)
         {
-            try
-            {
-                if (!caja.titulares.Contains(usuario))
+                Usuario userAdd = this.usuarios.Find(usuario => usuario.dni == Dni);
+                if (userAdd == null)
                 {
-                    caja.titulares.Add(usuario);
+                    MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+                if (!caja.titulares.Contains(userAdd))
+                {
+                    caja.titulares.Add(userAdd);
                     return true;
                 }
                 else
                 {
+                    MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
                 }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
         }
 
-        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, Usuario usuario) //In CajaDeAhorro y Usuario, out Boolean
+        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) //In CajaDeAhorro y Usuario, out Boolean
         {
-            try
+            Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
+            if(titular == null)
             {
-                if (caja.titulares.Contains(usuario) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
-                {
-                    caja.titulares.Remove(usuario);//También elimina al Usuario de la lista de usuarios del banco... No se xq
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
+                MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
-            catch (Exception ex)
+            if (caja.titulares.Contains(titular) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
             {
+                caja.titulares.Remove(titular);//También elimina al Usuario de la lista de usuarios del banco... No se xq
+                return true;
+            }
+            else
+            {
+                MessageBox.Show("Ha ocurrido un error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
@@ -370,6 +386,9 @@ namespace TrabajoPractico1
 
         }
 
+        //
+        //METODOS PARA MOSTRAR DATOS
+        //
         public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
@@ -402,6 +421,142 @@ namespace TrabajoPractico1
         public List<Pago> obtenerPagos()
         {
             return usuarioLogeado.pagos.ToList();
+        }
+
+        public List<PlazoFijo> obtenerPlzFijo()
+        {
+            return usuarioLogeado.pf.ToList();
+        }
+
+        public List<Tarjeta> obtenerTarjetas()
+        {
+            return usuarioLogeado.tarjetas.ToList();
+        }
+        public string mostrarUsuario()
+        {
+            return usuarioLogeado.nombre + " " + usuarioLogeado.apellido;
+        }
+
+        //
+        //METODOS ACCIONES DEL USUARIO
+        //
+        public bool iniciarSesion(int Dni, string Pass)
+        {
+            Usuario user = this.usuarios.Find(usuario => usuario.dni == Dni);
+            if(user == null) 
+            {
+                MessageBox.Show("Usuario no encontrado", "Log in incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(user.bloqueado)
+            {
+                MessageBox.Show("Este usuario está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(user.password != Pass) 
+            {
+                user.intentosFallidos++; 
+                if(user.intentosFallidos >= 3) //Si alcanza los 3 intentos se bloquea la cuenta
+                {
+                    MessageBox.Show("Se ha excedido el número de intentos\nEste usuario ahora está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    user.bloqueado = true;
+                }
+                else //Si todavia no se muestran los intentos restantes
+                {
+                    MessageBox.Show("La contraseña ingresada fue incorrecta \nTe quedan " + (3 - user.intentosFallidos) + " intentos.", "Contraseña incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                return false;
+            }
+            this.usuarioLogeado = user; 
+            return true;
+        }
+        public void cerrarSesion()
+        {
+            this.usuarioLogeado = null;
+        }
+        public bool crearCajaDeAhorro(float Saldo)
+        {
+            Random random = new Random();
+            int nuevoCbu = random.Next(100000000, 999999999);
+            while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
+            {  // Mientras haya alguna caja con ese CBU se crea otro CBU
+                nuevoCbu = random.Next(100000000, 999999999);
+                Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
+            }
+            CajaDeAhorro cajaNueva = new CajaDeAhorro(nuevoCbu, this.usuarioLogeado);
+            cajaNueva.saldo = Saldo;
+            try
+            {
+                this.altaCaja(this.usuarioLogeado, cajaNueva);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+        public void depositar(CajaDeAhorro CajaDestino, float Monto)
+        {
+            CajaDestino.saldo += Monto;
+            this.altaMovimiento(CajaDestino, "Deposito", Monto);
+        }
+        public bool retirar(CajaDeAhorro CajaSeleccionada, float Monto)
+        {
+            if (CajaSeleccionada.saldo < Monto)
+            {
+                return false;
+            }
+            CajaSeleccionada.saldo -= Monto;
+            this.altaMovimiento(CajaSeleccionada, "Retiro", Monto);
+            return true;
+        }
+        public bool transferir(CajaDeAhorro CajaOrigen, int CBU, float Monto)
+        {
+            CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CBU);
+            if (cajaDestino == null)
+            {
+                MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + CBU, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            }
+            if(CajaOrigen.saldo < Monto)
+            {
+                return false;
+            } 
+            else
+            {
+                CajaOrigen.saldo -= Monto;
+                this.altaMovimiento(CajaOrigen, "Transferencia realizada" , Monto);
+                cajaDestino.saldo += Monto;
+                this.altaMovimiento(cajaDestino, "Transferencia recibida" , Monto);
+                return true;
+            }
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha, float Monto)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha == Fecha).ToList();
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha.Day == Fecha.Day && movimiento.fecha.Month == Fecha.Month && movimiento.fecha.Year == Fecha.Year).ToList();
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto).ToList();
+
+            
+        }
+        public bool pagarTarjeta(Tarjeta Tarjeta, CajaDeAhorro Caja)
+        {
+            if(Caja.saldo >= Tarjeta.consumo)
+            {
+                Caja.saldo = Caja.saldo - Tarjeta.consumo;
+                this.altaMovimiento(Caja, "Pago de Tarjeta " + Tarjeta.numero, Tarjeta.consumo);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
