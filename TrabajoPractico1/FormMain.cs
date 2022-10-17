@@ -29,6 +29,10 @@ namespace TrabajoPractico1
             this.refreshDataPF();
             this.refreshDataPagos();
             this.refreshDataTarjetas();
+            foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
+            {
+                this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
+            }
         }
 
         private void btnMostrarDatos_Click(object sender, EventArgs e) //Si pongo el metodo refreshData en el boton de crear caja no está medio al pedo este?????
@@ -103,6 +107,7 @@ namespace TrabajoPractico1
             btnDetalles.Visible = false;
             //btnMovimientos.Visible = false;
             comboBox1.Visible = false;
+            label2.Visible = false;
         }
         public void mostrarBtns()
         {
@@ -115,6 +120,7 @@ namespace TrabajoPractico1
             btnDetalles.Show();
             //btnMovimientos.Show();
             comboBox1.Show();
+            label2.Show();
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -249,6 +255,7 @@ namespace TrabajoPractico1
 
             if (index == 0)
             {
+                dateTimePicker1.Visible = false;
                 string movimientos = "";
                 foreach (Movimiento movimiento in banco.obtenerMovimientos(cbuSeleccionado))
                 {
@@ -258,13 +265,11 @@ namespace TrabajoPractico1
             }
             else if (index == 1)
             {
-
                 dateTimePicker1.Visible = true;
-
-
             }
             else if (index == 2)
             {
+                dateTimePicker1.Visible = false;
                 CajaDeAhorro caja = banco.obtenerCajaDeAhorro().Find(caja => caja.cbu == cbuSeleccionado);
                 float monto;
                 float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
@@ -285,6 +290,7 @@ namespace TrabajoPractico1
             }
             else
             {
+                dateTimePicker1.Visible = false;
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
@@ -331,13 +337,10 @@ namespace TrabajoPractico1
             comboBoxTraerCajasATarjetas.Show();
         }
 
-        //private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
-        //{
-        //    for(int i = 0; i <= banco.usuarioLogeado.cajas.LongCount(); i++)
-        //    {
-                
-        //    }
-        //}
+        private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+           
+        }
     }
 
 
