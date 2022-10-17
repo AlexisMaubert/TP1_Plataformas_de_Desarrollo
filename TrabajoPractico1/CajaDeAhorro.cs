@@ -20,14 +20,6 @@ namespace TrabajoPractico1
             movimientos = new List<Movimiento>();
         }
 
-        public CajaDeAhorro(int Cbu, List<Usuario> Titulares)
-        {
-            this.cbu = Cbu;
-            this.saldo = 0;
-            titulares = new List<Usuario>();    
-            this.titulares = Titulares;
-            movimientos = new List<Movimiento>();
-        }
         public CajaDeAhorro(int Cbu, Usuario Titular)//Constructor alternativo
         {
             this.cbu = Cbu;

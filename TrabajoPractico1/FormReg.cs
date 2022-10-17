@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using static TrabajoPractico1.FormLogin;
 
 namespace TrabajoPractico1
@@ -26,10 +27,16 @@ namespace TrabajoPractico1
             bool tryDni = Int32.TryParse(inputDni.Text, out this.dni);
             this.email = inputMail.Text;
             this.password = inputPass.Text;
-            if(password != "" && email != "" && tryDni && apellido !="" && nombre != "")
+            if(password != "" && email != "" && Regex.IsMatch(email, @"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$") && tryDni && this.dni>999999 && apellido !="" && nombre != "")
             {
-                banco.altaUsuario(nombre, apellido, dni, email, password);
-                this.regBotonEvento();
+                if (banco.altaUsuario(nombre, apellido, dni, email, password))
+                {
+                    this.regBotonEvento();
+                }
+                else
+                {
+                    MessageBox.Show("Ya existe un usuario con ese DNI", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
             else
             {

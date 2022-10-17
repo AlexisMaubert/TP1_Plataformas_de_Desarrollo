@@ -74,14 +74,14 @@
             this.btnDarDeBajaTarjeta = new System.Windows.Forms.Button();
             this.btnNewTarjeta = new System.Windows.Forms.Button();
             this.dataGridViewTarjetas = new System.Windows.Forms.DataGridView();
-            this.label1 = new System.Windows.Forms.Label();
-            this.nombreUsuario = new System.Windows.Forms.Label();
             this.ColumnIdTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitularTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnNumeroTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.label1 = new System.Windows.Forms.Label();
+            this.nombreUsuario = new System.Windows.Forms.Label();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -286,6 +286,7 @@
             this.dataGridViewCaja.Name = "dataGridViewCaja";
             this.dataGridViewCaja.RowHeadersWidth = 51;
             this.dataGridViewCaja.RowTemplate.Height = 29;
+            this.dataGridViewCaja.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
             this.dataGridViewCaja.Size = new System.Drawing.Size(435, 345);
             this.dataGridViewCaja.TabIndex = 0;
             this.dataGridViewCaja.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
@@ -642,25 +643,6 @@
             this.dataGridViewTarjetas.TabIndex = 0;
             this.dataGridViewTarjetas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTarjetas_CellContentClick);
             // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 21);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(72, 15);
-            this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido :";
-            // 
-            // nombreUsuario
-            // 
-            this.nombreUsuario.AutoSize = true;
-            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
-            this.nombreUsuario.Name = "nombreUsuario";
-            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
-            this.nombreUsuario.TabIndex = 1;
-            this.nombreUsuario.Text = "label2";
-            // 
             // ColumnIdTarjeta
             // 
             this.ColumnIdTarjeta.Frozen = true;
@@ -715,6 +697,25 @@
             this.ColumnConsumosTarjeta.Name = "ColumnConsumosTarjeta";
             this.ColumnConsumosTarjeta.ReadOnly = true;
             this.ColumnConsumosTarjeta.Width = 125;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(53, 21);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(72, 15);
+            this.label1.TabIndex = 0;
+            this.label1.Text = "Bienvenido :";
+            // 
+            // nombreUsuario
+            // 
+            this.nombreUsuario.AutoSize = true;
+            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
+            this.nombreUsuario.Name = "nombreUsuario";
+            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
+            this.nombreUsuario.TabIndex = 1;
+            this.nombreUsuario.Text = "label2";
             // 
             // FormMain
             // 

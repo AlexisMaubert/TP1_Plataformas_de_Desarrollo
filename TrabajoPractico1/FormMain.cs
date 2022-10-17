@@ -141,14 +141,22 @@ namespace TrabajoPractico1
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            esconderBtns();
-            mostrarBtns();
-            if(!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
+            if(e.RowIndex >= 0)
             {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    esconderBtns();
+                    mostrarBtns();
+                }
             }
-
-                
+            else
+            {
+                esconderBtns();
+            }
         }
 
         private void btnMovimientos_Click(object sender, EventArgs e)
@@ -344,15 +352,23 @@ namespace TrabajoPractico1
 
         private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+            if(e.RowIndex >= 0)
             {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    btnDarDeBajaTarjeta.Show();
+                    btnPagarTarjeta.Show();
+                }
             }
             else
             {
-                btnDarDeBajaTarjeta.Show();
-                btnPagarTarjeta.Show();
+                esconderBtns();
             }
+            
         }
 
         private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
@@ -396,14 +412,21 @@ namespace TrabajoPractico1
         }
         private void dataGridViewPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (!Int32.TryParse(dataGridViewPagos.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPago))
+            if (e.RowIndex >= 0)
             {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (!Int32.TryParse(dataGridViewPagos.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPago))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    btnEliminarPago.Show();
+                    btnPagarPago.Show();
+                }
             }
             else
             {
-                btnEliminarPago.Show();
-                btnPagarPago.Show();
+                esconderBtns();
             }
 
         }

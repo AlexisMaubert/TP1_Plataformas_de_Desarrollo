@@ -60,6 +60,7 @@
         private void regBotonDelegado()
         {
             hijoReg.Close();
+            MessageBox.Show("Usuario registrado correctamente " , "Registro exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             this.hijoLogin = new FormLogin(this.banco); 
             this.hijoLogin.MdiParent = this;
             this.hijoLogin.loginEvento += loginDelegado;
