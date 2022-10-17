@@ -30,13 +30,13 @@
         {
             this.btn_login = new System.Windows.Forms.Button();
             this.inputDni = new System.Windows.Forms.TextBox();
-            this.inputPass = new System.Windows.Forms.TextBox();
             this.textDni = new System.Windows.Forms.Label();
             this.textPass = new System.Windows.Forms.Label();
             this.linkReg = new System.Windows.Forms.LinkLabel();
             this.textReg = new System.Windows.Forms.Label();
             this.titulo = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.inputPass = new System.Windows.Forms.MaskedTextBox();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -57,13 +57,6 @@
             this.inputDni.Name = "inputDni";
             this.inputDni.Size = new System.Drawing.Size(174, 27);
             this.inputDni.TabIndex = 1;
-            // 
-            // inputPass
-            // 
-            this.inputPass.Location = new System.Drawing.Point(75, 118);
-            this.inputPass.Name = "inputPass";
-            this.inputPass.Size = new System.Drawing.Size(174, 27);
-            this.inputPass.TabIndex = 2;
             // 
             // textDni
             // 
@@ -123,9 +116,9 @@
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.groupBox1.Controls.Add(this.inputPass);
             this.groupBox1.Controls.Add(this.inputDni);
             this.groupBox1.Controls.Add(this.btn_login);
-            this.groupBox1.Controls.Add(this.inputPass);
             this.groupBox1.Controls.Add(this.textReg);
             this.groupBox1.Controls.Add(this.textDni);
             this.groupBox1.Controls.Add(this.linkReg);
@@ -136,6 +129,15 @@
             this.groupBox1.TabIndex = 8;
             this.groupBox1.TabStop = false;
             this.groupBox1.UseCompatibleTextRendering = true;
+            // 
+            // inputPass
+            // 
+            this.inputPass.InsertKeyMode = System.Windows.Forms.InsertKeyMode.Insert;
+            this.inputPass.Location = new System.Drawing.Point(70, 121);
+            this.inputPass.Name = "inputPass";
+            this.inputPass.PasswordChar = '*';
+            this.inputPass.Size = new System.Drawing.Size(179, 27);
+            this.inputPass.TabIndex = 7;
             // 
             // FormLogin
             // 
@@ -165,12 +167,12 @@
 
         private Button btn_login;
         private TextBox inputDni;
-        private TextBox inputPass;
         private Label textDni;
         private Label textPass;
         private LinkLabel linkReg;
         private Label textReg;
         private Label titulo;
         private GroupBox groupBox1;
+        private MaskedTextBox inputPass;
     }
 }

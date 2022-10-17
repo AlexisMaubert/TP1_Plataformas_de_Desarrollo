@@ -17,10 +17,10 @@ namespace TrabajoPractico1
 
         public Pago() 
         {
-            user = new Usuario();
+            
         }
 
-        public Pago( int Id,Usuario User, string Nombre, float Monto, string Metodo)
+        public Pago( int Id,Usuario User, string Nombre, float Monto)
         {
             this.id = Id;
             user = new Usuario();
@@ -28,7 +28,6 @@ namespace TrabajoPractico1
             this.nombre = Nombre;
             this.monto = Monto;
             this.pagado = false;
-            this.metodo = Metodo;
         }
         public override string ToString()
         {

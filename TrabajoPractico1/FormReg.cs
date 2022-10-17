@@ -35,12 +35,13 @@ namespace TrabajoPractico1
             {
                 MessageBox.Show("Por favor ingresar correctamente todos los datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-             
-
         }
 
         public delegate void regBotonDelegado();
-        
-        
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.regBotonEvento();
+        }
     }
 }

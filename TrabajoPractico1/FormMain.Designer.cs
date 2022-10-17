@@ -30,6 +30,7 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnEliminarTitular = new System.Windows.Forms.Button();
@@ -56,13 +57,20 @@
             this.ColumnTasaPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagadoPlz = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPagos = new System.Windows.Forms.TabPage();
+            this.comboBoxTarjetaPago = new System.Windows.Forms.ComboBox();
+            this.comboBoxCajaPago = new System.Windows.Forms.ComboBox();
             this.btnPagarPago = new System.Windows.Forms.Button();
             this.btnEliminarPago = new System.Windows.Forms.Button();
             this.btnNewPago = new System.Windows.Forms.Button();
             this.dataGridViewPagos = new System.Windows.Forms.DataGridView();
+            this.ID = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Nombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagosRealizados = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnPagosPendientes = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabTarjetas = new System.Windows.Forms.TabPage();
+            this.comboBoxTraerCajasATarjetas = new System.Windows.Forms.ComboBox();
+            this.btnPagarTarjeta = new System.Windows.Forms.Button();
+            this.btnDarDeBajaTarjeta = new System.Windows.Forms.Button();
             this.btnNewTarjeta = new System.Windows.Forms.Button();
             this.dataGridViewTarjetas = new System.Windows.Forms.DataGridView();
             this.ColumnIdTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -73,6 +81,7 @@
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -99,6 +108,9 @@
             // 
             // tabCajaDeAhorro
             // 
+
+            this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
+            this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
             this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
             this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
@@ -119,12 +131,21 @@
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(530, 259);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(134, 15);
+            this.label2.TabIndex = 12;
+            this.label2.Text = "Filtrar movimientos por:";
+            this.label2.Visible = false;
+            // 
             // dateTimePicker1
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(482, 347);
+            this.dateTimePicker1.Location = new System.Drawing.Point(547, 303);
+            this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker1.Name = "dateTimePicker1";
-            this.dateTimePicker1.Size = new System.Drawing.Size(200, 23);
+            this.dateTimePicker1.Size = new System.Drawing.Size(106, 23);
             this.dateTimePicker1.TabIndex = 11;
             this.dateTimePicker1.Visible = false;
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
@@ -136,9 +157,12 @@
             "Detalle",
             "Fecha",
             "Monto"});
-            this.comboBox1.Location = new System.Drawing.Point(541, 298);
+
+            this.comboBox1.Location = new System.Drawing.Point(547, 276);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 23);
+            this.comboBox1.Size = new System.Drawing.Size(106, 23);
+
             this.comboBox1.TabIndex = 10;
             this.comboBox1.Text = "Movimientos";
             this.comboBox1.Visible = false;
@@ -146,7 +170,7 @@
             // 
             // btnEliminarTitular
             // 
-            this.btnEliminarTitular.Location = new System.Drawing.Point(541, 141);
+            this.btnEliminarTitular.Location = new System.Drawing.Point(539, 112);
             this.btnEliminarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminarTitular.Name = "btnEliminarTitular";
             this.btnEliminarTitular.Size = new System.Drawing.Size(114, 22);
@@ -158,22 +182,22 @@
             // 
             // btnDetalles
             // 
-            this.btnDetalles.Location = new System.Drawing.Point(557, 254);
+            this.btnDetalles.Location = new System.Drawing.Point(555, 225);
             this.btnDetalles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDetalles.Name = "btnDetalles";
-            this.btnDetalles.Size = new System.Drawing.Size(82, 22);
+            this.btnDetalles.Size = new System.Drawing.Size(98, 22);
             this.btnDetalles.TabIndex = 7;
-            this.btnDetalles.Text = "Detalles";
+            this.btnDetalles.Text = "Movimientos";
             this.btnDetalles.UseVisualStyleBackColor = true;
             this.btnDetalles.Visible = false;
             this.btnDetalles.Click += new System.EventHandler(this.btnDetalles_Click);
             // 
             // btnTransferir
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(557, 227);
+            this.btnTransferir.Location = new System.Drawing.Point(555, 198);
             this.btnTransferir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTransferir.Name = "btnTransferir";
-            this.btnTransferir.Size = new System.Drawing.Size(82, 22);
+            this.btnTransferir.Size = new System.Drawing.Size(98, 22);
             this.btnTransferir.TabIndex = 6;
             this.btnTransferir.Text = "Transferir";
             this.btnTransferir.UseVisualStyleBackColor = true;
@@ -182,10 +206,10 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(557, 201);
+            this.btnRetirar.Location = new System.Drawing.Point(555, 172);
             this.btnRetirar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRetirar.Name = "btnRetirar";
-            this.btnRetirar.Size = new System.Drawing.Size(82, 22);
+            this.btnRetirar.Size = new System.Drawing.Size(98, 22);
             this.btnRetirar.TabIndex = 5;
             this.btnRetirar.Text = "Retirar";
             this.btnRetirar.UseVisualStyleBackColor = true;
@@ -194,10 +218,10 @@
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(557, 175);
+            this.btnDepositar.Location = new System.Drawing.Point(555, 146);
             this.btnDepositar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDepositar.Name = "btnDepositar";
-            this.btnDepositar.Size = new System.Drawing.Size(82, 22);
+            this.btnDepositar.Size = new System.Drawing.Size(98, 22);
             this.btnDepositar.TabIndex = 4;
             this.btnDepositar.Text = "Depositar";
             this.btnDepositar.UseVisualStyleBackColor = true;
@@ -206,7 +230,7 @@
             // 
             // btnAgregarTitular
             // 
-            this.btnAgregarTitular.Location = new System.Drawing.Point(541, 115);
+            this.btnAgregarTitular.Location = new System.Drawing.Point(539, 86);
             this.btnAgregarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAgregarTitular.Name = "btnAgregarTitular";
             this.btnAgregarTitular.Size = new System.Drawing.Size(114, 22);
@@ -218,7 +242,7 @@
             // 
             // btnBajaCaja
             // 
-            this.btnBajaCaja.Location = new System.Drawing.Point(541, 88);
+            this.btnBajaCaja.Location = new System.Drawing.Point(539, 59);
             this.btnBajaCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBajaCaja.Name = "btnBajaCaja";
             this.btnBajaCaja.Size = new System.Drawing.Size(114, 22);
@@ -331,7 +355,7 @@
             this.dataGridViewPF.Name = "dataGridViewPF";
             this.dataGridViewPF.RowHeadersWidth = 51;
             this.dataGridViewPF.RowTemplate.Height = 25;
-            this.dataGridViewPF.Size = new System.Drawing.Size(640, 343);
+            this.dataGridViewPF.Size = new System.Drawing.Size(664, 343);
             this.dataGridViewPF.TabIndex = 0;
             // 
             // ColumnIdPlf
@@ -400,6 +424,8 @@
             // 
             // tabPagos
             // 
+            this.tabPagos.Controls.Add(this.comboBoxTarjetaPago);
+            this.tabPagos.Controls.Add(this.comboBoxCajaPago);
             this.tabPagos.Controls.Add(this.btnPagarPago);
             this.tabPagos.Controls.Add(this.btnEliminarPago);
             this.tabPagos.Controls.Add(this.btnNewPago);
@@ -412,6 +438,29 @@
             this.tabPagos.Text = "Pagos";
             this.tabPagos.UseVisualStyleBackColor = true;
             // 
+            // comboBoxTarjetaPago
+            // 
+            this.comboBoxTarjetaPago.FormattingEnabled = true;
+            this.comboBoxTarjetaPago.Location = new System.Drawing.Point(574, 125);
+            this.comboBoxTarjetaPago.Name = "comboBoxTarjetaPago";
+            this.comboBoxTarjetaPago.Size = new System.Drawing.Size(120, 23);
+            this.comboBoxTarjetaPago.TabIndex = 5;
+            this.comboBoxTarjetaPago.Text = "Tarjetas";
+            this.comboBoxTarjetaPago.Visible = false;
+            this.comboBoxTarjetaPago.SelectedIndexChanged += new System.EventHandler(this.comboBoxTarjetaPago_SelectedIndexChanged);
+            // 
+            // comboBoxCajaPago
+            // 
+            this.comboBoxCajaPago.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+            this.comboBoxCajaPago.FormattingEnabled = true;
+            this.comboBoxCajaPago.Location = new System.Drawing.Point(433, 125);
+            this.comboBoxCajaPago.Name = "comboBoxCajaPago";
+            this.comboBoxCajaPago.Size = new System.Drawing.Size(120, 21);
+            this.comboBoxCajaPago.TabIndex = 4;
+            this.comboBoxCajaPago.Text = "Cajas De Ahorro";
+            this.comboBoxCajaPago.Visible = false;
+            this.comboBoxCajaPago.SelectedIndexChanged += new System.EventHandler(this.comboBoxCajaPago_SelectedIndexChanged);
+            // 
             // btnPagarPago
             // 
             this.btnPagarPago.Location = new System.Drawing.Point(433, 88);
@@ -421,6 +470,8 @@
             this.btnPagarPago.TabIndex = 3;
             this.btnPagarPago.Text = "Pagar";
             this.btnPagarPago.UseVisualStyleBackColor = true;
+            this.btnPagarPago.Visible = false;
+            this.btnPagarPago.Click += new System.EventHandler(this.btnPagarPago_Click);
             // 
             // btnEliminarPago
             // 
@@ -431,6 +482,8 @@
             this.btnEliminarPago.TabIndex = 2;
             this.btnEliminarPago.Text = "Eliminar";
             this.btnEliminarPago.UseVisualStyleBackColor = true;
+            this.btnEliminarPago.Visible = false;
+            this.btnEliminarPago.Click += new System.EventHandler(this.btnEliminarPago_Click);
             // 
             // btnNewPago
             // 
@@ -446,14 +499,34 @@
             // 
             this.dataGridViewPagos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridViewPagos.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.ID,
+            this.Nombre,
             this.ColumnPagosRealizados,
             this.ColumnPagosPendientes});
             this.dataGridViewPagos.Location = new System.Drawing.Point(-4, 0);
             this.dataGridViewPagos.Name = "dataGridViewPagos";
             this.dataGridViewPagos.RowHeadersWidth = 51;
             this.dataGridViewPagos.RowTemplate.Height = 25;
-            this.dataGridViewPagos.Size = new System.Drawing.Size(265, 345);
+            this.dataGridViewPagos.Size = new System.Drawing.Size(406, 345);
             this.dataGridViewPagos.TabIndex = 0;
+            this.dataGridViewPagos.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            this.dataGridViewPagos.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            this.dataGridViewPagos.CellContentDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPagos_CellContentClick);
+            // 
+            // ID
+            // 
+            this.ID.Frozen = true;
+            this.ID.HeaderText = "ID";
+            this.ID.Name = "ID";
+            this.ID.ReadOnly = true;
+            this.ID.Visible = false;
+            // 
+            // Nombre
+            // 
+            this.Nombre.Frozen = true;
+            this.Nombre.HeaderText = "Nombre";
+            this.Nombre.Name = "Nombre";
+            this.Nombre.ReadOnly = true;
             // 
             // ColumnPagosRealizados
             // 
@@ -475,6 +548,9 @@
             // 
             // tabTarjetas
             // 
+            this.tabTarjetas.Controls.Add(this.comboBoxTraerCajasATarjetas);
+            this.tabTarjetas.Controls.Add(this.btnPagarTarjeta);
+            this.tabTarjetas.Controls.Add(this.btnDarDeBajaTarjeta);
             this.tabTarjetas.Controls.Add(this.btnNewTarjeta);
             this.tabTarjetas.Controls.Add(this.dataGridViewTarjetas);
             this.tabTarjetas.Location = new System.Drawing.Point(4, 24);
@@ -484,6 +560,42 @@
             this.tabTarjetas.TabIndex = 3;
             this.tabTarjetas.Text = "Tarjetas";
             this.tabTarjetas.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxTraerCajasATarjetas
+            // 
+            this.comboBoxTraerCajasATarjetas.FormattingEnabled = true;
+            this.comboBoxTraerCajasATarjetas.Location = new System.Drawing.Point(608, 129);
+            this.comboBoxTraerCajasATarjetas.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBoxTraerCajasATarjetas.Name = "comboBoxTraerCajasATarjetas";
+            this.comboBoxTraerCajasATarjetas.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.comboBoxTraerCajasATarjetas.Size = new System.Drawing.Size(117, 23);
+            this.comboBoxTraerCajasATarjetas.TabIndex = 4;
+            this.comboBoxTraerCajasATarjetas.Text = "Cajas de ahorro";
+            this.comboBoxTraerCajasATarjetas.Visible = false;
+            // 
+            // btnPagarTarjeta
+            // 
+            this.btnPagarTarjeta.Location = new System.Drawing.Point(608, 96);
+            this.btnPagarTarjeta.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnPagarTarjeta.Name = "btnPagarTarjeta";
+            this.btnPagarTarjeta.Size = new System.Drawing.Size(117, 22);
+            this.btnPagarTarjeta.TabIndex = 3;
+            this.btnPagarTarjeta.Text = "Pagar Consumos";
+            this.btnPagarTarjeta.UseVisualStyleBackColor = true;
+            this.btnPagarTarjeta.Visible = false;
+            this.btnPagarTarjeta.Click += new System.EventHandler(this.btnPagarTarjeta_Click);
+            // 
+            // btnDarDeBajaTarjeta
+            // 
+            this.btnDarDeBajaTarjeta.Location = new System.Drawing.Point(608, 70);
+            this.btnDarDeBajaTarjeta.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnDarDeBajaTarjeta.Name = "btnDarDeBajaTarjeta";
+            this.btnDarDeBajaTarjeta.Size = new System.Drawing.Size(117, 22);
+            this.btnDarDeBajaTarjeta.TabIndex = 2;
+            this.btnDarDeBajaTarjeta.Text = "Dar de baja";
+            this.btnDarDeBajaTarjeta.UseVisualStyleBackColor = true;
+            this.btnDarDeBajaTarjeta.Visible = false;
+            this.btnDarDeBajaTarjeta.Click += new System.EventHandler(this.btnDarDeBajaTarjeta_Click);
             // 
             // btnNewTarjeta
             // 
@@ -509,8 +621,9 @@
             this.dataGridViewTarjetas.Name = "dataGridViewTarjetas";
             this.dataGridViewTarjetas.RowHeadersWidth = 51;
             this.dataGridViewTarjetas.RowTemplate.Height = 25;
-            this.dataGridViewTarjetas.Size = new System.Drawing.Size(543, 343);
+            this.dataGridViewTarjetas.Size = new System.Drawing.Size(578, 343);
             this.dataGridViewTarjetas.TabIndex = 0;
+            this.dataGridViewTarjetas.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewTarjetas_CellContentClick);
             // 
             // ColumnIdTarjeta
             // 
@@ -572,18 +685,29 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(53, 21);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(111, 15);
+            this.label1.Size = new System.Drawing.Size(72, 15);
             this.label1.TabIndex = 0;
-            this.label1.Text = "Bienvenido usuario:";
+            this.label1.Text = "Bienvenido :";
             // 
             // nombreUsuario
             // 
             this.nombreUsuario.AutoSize = true;
-            this.nombreUsuario.Location = new System.Drawing.Point(179, 21);
+            this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
             this.nombreUsuario.Name = "nombreUsuario";
-            this.nombreUsuario.Size = new System.Drawing.Size(38, 15);
+            this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
+            // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
+            this.btnCerrarSesion.TabIndex = 13;
+            this.btnCerrarSesion.Text = "Cerrar Sesión";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // FormMain
             // 
@@ -605,6 +729,7 @@
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.tabControl1.ResumeLayout(false);
             this.tabCajaDeAhorro.ResumeLayout(false);
+            this.tabCajaDeAhorro.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).EndInit();
             this.tabPlazoFijo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).EndInit();
@@ -630,14 +755,14 @@
         private DataGridViewTextBoxColumn ColumnId;
         private DataGridViewTextBoxColumn ColumnCbu;
         private DataGridViewTextBoxColumn ColumnTitulares;
+        private ComboBox comboBox1;
+        private DateTimePicker dateTimePicker1;
         private DataGridViewTextBoxColumn ColumnSaldo;
         private Button btnNewCaja;
         private Button btnNewPf;
         private DataGridView dataGridViewPF;
         private Button btnNewPago;
         private DataGridView dataGridViewPagos;
-        private DataGridViewTextBoxColumn ColumnPagosRealizados;
-        private DataGridViewTextBoxColumn ColumnPagosPendientes;
         private DataGridView dataGridViewTarjetas;
         private Button btnNewTarjeta;
         private DataGridViewTextBoxColumn ColumnIdPlf;
@@ -662,7 +787,17 @@
         private Button btnPagarPago;
         private Button btnEliminarPago;
         private Button btnEliminarTitular;
-        private ComboBox comboBox1;
-        private DateTimePicker dateTimePicker1;
+        private Button btnPagarTarjeta;
+        private Button btnDarDeBajaTarjeta;
+        private ComboBox comboBoxTraerCajasATarjetas;
+        private Label label2;
+        private DataGridViewTextBoxColumn ID;
+        private DataGridViewTextBoxColumn Nombre;
+        private DataGridViewTextBoxColumn ColumnPagosRealizados;
+        private DataGridViewTextBoxColumn ColumnPagosPendientes;
+        private ComboBox comboBoxTarjetaPago;
+        private ComboBox comboBoxCajaPago;
+        private Button btnCerrarSesion;
+
     }
 }

@@ -41,6 +41,7 @@
             this.inputDni = new System.Windows.Forms.TextBox();
             this.inputApellido = new System.Windows.Forms.TextBox();
             this.inputNombre = new System.Windows.Forms.TextBox();
+            this.btnCancelar = new System.Windows.Forms.Button();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -58,6 +59,7 @@
             // groupBox1
             // 
             this.groupBox1.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.groupBox1.Controls.Add(this.btnCancelar);
             this.groupBox1.Controls.Add(this.btnReg);
             this.groupBox1.Controls.Add(this.textPass);
             this.groupBox1.Controls.Add(this.textEmail);
@@ -73,13 +75,13 @@
             this.groupBox1.Margin = new System.Windows.Forms.Padding(4);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Padding = new System.Windows.Forms.Padding(4);
-            this.groupBox1.Size = new System.Drawing.Size(544, 384);
+            this.groupBox1.Size = new System.Drawing.Size(544, 402);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             // 
             // btnReg
             // 
-            this.btnReg.Location = new System.Drawing.Point(204, 311);
+            this.btnReg.Location = new System.Drawing.Point(204, 301);
             this.btnReg.Name = "btnReg";
             this.btnReg.Size = new System.Drawing.Size(120, 35);
             this.btnReg.TabIndex = 10;
@@ -176,6 +178,16 @@
             this.inputNombre.Size = new System.Drawing.Size(320, 27);
             this.inputNombre.TabIndex = 0;
             // 
+            // btnCancelar
+            // 
+            this.btnCancelar.Location = new System.Drawing.Point(204, 354);
+            this.btnCancelar.Name = "btnCancelar";
+            this.btnCancelar.Size = new System.Drawing.Size(120, 29);
+            this.btnCancelar.TabIndex = 11;
+            this.btnCancelar.Text = "Cancelar";
+            this.btnCancelar.UseVisualStyleBackColor = true;
+            this.btnCancelar.Click += new System.EventHandler(this.btnCancelar_Click);
+            // 
             // FormReg
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 18F);
@@ -213,5 +225,6 @@
         private Button btnReg;
         private Label textPass;
         private Label textEmail;
+        private Button btnCancelar;
     }
 }
