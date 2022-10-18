@@ -31,23 +31,25 @@ namespace TrabajoPractico1
             this.refreshDataPF();
             this.refreshDataPagos();
             this.refreshDataTarjetas();
+            
+            
+            
+        }
+        public delegate void cerrarSesionDelegado();
+        private void refreshListas()
+        {
+            this.comboBoxTraerCajasATarjetas.Items.Clear();
+            this.comboBoxCajaPago.Items.Clear();
+            this.comboBoxTarjetaPago.Items.Clear();
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
                 this.comboBoxCajaPago.Items.Add(caja.cbu);
             }
-            foreach(Tarjeta tarjeta in banco.obtenerTarjetas())
+            foreach (Tarjeta tarjeta in banco.obtenerTarjetas())
             {
                 this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
-            
-            
-        }
-        public delegate void cerrarSesionDelegado();
-
-        private void btnMostrarDatos_Click(object sender, EventArgs e) //Si pongo el metodo refreshData en el boton de crear caja no está medio al pedo este?????
-        {
-            refreshDataCaja();
         }
         private void refreshDataCaja()
         {
@@ -61,6 +63,7 @@ namespace TrabajoPractico1
                 }
                 dataGridViewCaja.Rows.Add("", caja.cbu, nombres, caja.saldo);
             }
+            this.refreshListas();
         }
         private void refreshDataPF()
         {
@@ -70,9 +73,11 @@ namespace TrabajoPractico1
                 string pagado = (pf.pagado) ? "Sí" : "No"; 
                 dataGridViewPF.Rows.Add("", pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa,pagado );
             }
+
         }
         private void refreshDataPagos()
         {
+            
             dataGridViewPagos.Rows.Clear();
             foreach (Pago pago in banco.obtenerPagos())
             {
@@ -85,7 +90,7 @@ namespace TrabajoPractico1
                     dataGridViewPagos.Rows.Add( pago.id, pago.nombre, " - ", pago.monto);
                 }
             }
-
+            this.refreshListas();
         }
         private void refreshDataTarjetas()
         {
@@ -94,6 +99,7 @@ namespace TrabajoPractico1
             {
                 dataGridViewTarjetas.Rows.Add("", tarjeta.titular.apellido + " " + tarjeta.titular.nombre, tarjeta.numero, tarjeta.codigoV, tarjeta.limite, tarjeta.consumo);
             }
+            this.refreshListas();
         }
         private void btnNewCaja_Click(object sender, EventArgs e)
         {
@@ -492,6 +498,28 @@ namespace TrabajoPractico1
             
         }
 
+        private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxTraerCajasATarjetas.SelectedIndex;
+            string seleccion = comboBoxTraerCajasATarjetas.Items[index].ToString();
+
+            int cbu;
+            Int32.TryParse(seleccion, out cbu);
+
+            CajaDeAhorro caja = banco.BuscarCajaDeAhorro(cbu);
+            Tarjeta tarjeta = banco.buscarTarjeta(numeroTarjetaSeleccionado);
+            if (banco.pagarTarjeta(tarjeta, caja))
+            {
+                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                refreshDataPagos();
+                refreshDataCaja();
+                refreshDataTarjetas();
+            }
+            else
+            {
+                MessageBox.Show("El pago no se ha podido efectuar", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
     }
 }
 

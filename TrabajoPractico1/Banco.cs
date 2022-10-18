@@ -255,7 +255,13 @@ namespace TrabajoPractico1
         {
             try
             {
-                int nuevoId = this.pagos.Count() + 1;
+                Random random = new Random();
+                int nuevoId = random.Next(10000, 99999);
+                while (this.pagos.Any(pago => pago.id == nuevoId))
+                {  // Mientras haya alguna tarjeta con ese numero se crea otro numero
+                    nuevoId = random.Next(10000, 99999);
+                    Debug.WriteLine("El número de pago generado ya existe, creado uno nuevo...");
+                }
                 Pago nuevoPago = new Pago(nuevoId, Usuario, Nombre, Monto);
                 this.pagos.Add(nuevoPago);
                 Usuario.pagos.Add(nuevoPago);
@@ -380,6 +386,10 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.tarjetas.ToList();
         }
+        public Tarjeta buscarTarjeta(int numero)
+        {
+            return this.tarjetas.Find(tarjeta => tarjeta.numero == numero);
+        }
         public string mostrarUsuario()
         {
             return usuarioLogeado.nombre + " " + usuarioLogeado.apellido;
@@ -499,6 +509,7 @@ namespace TrabajoPractico1
             {
                 Caja.saldo = Caja.saldo - Tarjeta.consumo;
                 this.altaMovimiento(Caja, "Pago de Tarjeta " + Tarjeta.numero, Tarjeta.consumo);
+                Tarjeta.consumo = 0;
                 return true;
             }
             else

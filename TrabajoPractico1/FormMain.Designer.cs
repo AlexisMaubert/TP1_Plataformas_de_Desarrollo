@@ -588,6 +588,7 @@
             this.comboBoxTraerCajasATarjetas.TabIndex = 4;
             this.comboBoxTraerCajasATarjetas.Text = "Cajas de ahorro";
             this.comboBoxTraerCajasATarjetas.Visible = false;
+            this.comboBoxTraerCajasATarjetas.SelectedIndexChanged += new System.EventHandler(this.comboBoxTraerCajasATarjetas_SelectedIndexChanged);
             // 
             // btnPagarTarjeta
             // 
