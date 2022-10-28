@@ -13,6 +13,8 @@ namespace TrabajoPractico1
         public float saldo { get; set; }
         public List<Usuario> titulares { get; set; }
         public List<Movimiento> movimientos { get; set; }
+        public int id_movimiento { get; set; }
+        public int id_banco { get; set; }
 
         public CajaDeAhorro() 
         { 

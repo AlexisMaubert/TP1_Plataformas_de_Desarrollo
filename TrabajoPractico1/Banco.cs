@@ -14,14 +14,17 @@ namespace TrabajoPractico1
 {
 
     public class Banco
-    {   
-        public List<Usuario> usuarios { get ; }
+    {
+        public int id { get; set; }
+        public List<Usuario> usuarios { get; set; }
         public List<CajaDeAhorro> cajas { get ; }
-        public List<PlazoFijo> pfs { get ; }
-        public List<Tarjeta> tarjetas { get ; }
-        public List<Pago> pagos { get ; }
-        public List<Movimiento> movimientos { get ; }
+        public List<PlazoFijo> pfs { get; set; }
+        public List<Tarjeta> tarjetas { get; set; }
+        public List<Pago> pagos { get; set; }
+        public List<Movimiento> movimientos { get; set; }
         public Usuario usuarioLogeado { get; set; } //Se crea una variable para guardar al usuario que inicie sesión
+
+        private DAL DB;
 
         public Banco() 
         { 
@@ -31,6 +34,27 @@ namespace TrabajoPractico1
             this.tarjetas = new List<Tarjeta>();
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
+            DB = new DAL();
+            inicializarAtributos();
+        }
+
+        //
+        //PERSISTENCIA.
+        //
+
+         public void inicializarAtributos()
+        {
+            usuarios = DB.inicializarUsuarios();
+            this.tarjetas = DB.inicializarTarjetas();
+
+            foreach (Tarjeta tarjeta in tarjetas.ToList())
+            {
+                Usuario user = usuarios.Find(usuario => usuario.id == tarjeta.id_usuario);
+                Tarjeta card = tarjetas.Find(c => c.id == tarjeta.id);
+                user.tarjetas.Add(card);
+                tarjetas.Add(card);
+                card.titular = user;
+            }
         }
 
         //MOVIMIENTOS

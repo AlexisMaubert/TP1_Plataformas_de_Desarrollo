@@ -14,6 +14,8 @@ namespace TrabajoPractico1
         public float monto { get; set; }
         public DateTime fecha { get; set; }
         public CajaDeAhorro caja { get; }
+        public int id_banco { get; set; }
+        public int id_Caja { get; set; }
 
         public Movimiento() { }
 

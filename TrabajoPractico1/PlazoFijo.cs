@@ -14,8 +14,9 @@ namespace TrabajoPractico1
         public DateTime fechaFin { get; set; }
         public float tasa { get; set; }
         public bool pagado { get; set; }
-        public Usuario titular { get; } 
-
+        public Usuario titular { get; }
+        public int id_banco { get; set; }
+        public int id_usuario { get; set; }
         public PlazoFijo()   
         {
             this.titular = new Usuario();

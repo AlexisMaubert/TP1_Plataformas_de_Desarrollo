@@ -14,7 +14,8 @@ namespace TrabajoPractico1
         public bool pagado { get; set; }
         public string metodo { get; set; }
         public Usuario user { get ; }
-
+        public int id_usuario { get; set; }
+        public int id_banco { get; set; }
         public Pago() 
         {
             
