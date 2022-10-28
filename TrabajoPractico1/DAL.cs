@@ -86,6 +86,60 @@ namespace TrabajoPractico1
             return misTarjetas;
         }
 
+        public List<Pago> inicializarPagos()
+        {
+            List<Pago> misPagos = new List<Pago>();
+            string queryString = "select * from Pago;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    Pago aux;
+                    while (reader.Read())
+                    {
+                        aux = new Pago(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), (float)reader.GetDouble(3), reader.GetBoolean(4), reader.GetString(5), reader.GetInt32(6));
+                        misPagos.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return misPagos;
+        }
+
+        public List<Movimiento> inicializarMovimientos() {
+            List<Movimiento> misMov = new List<Movimiento>();
+            string queryString = "select * from Movimiento;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    Movimiento aux;
+                    while (reader.Read())
+                    {
+                        aux = new Movimiento(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), (float)reader.GetDouble(3), reader.GetDateTime(4),reader.GetInt32(5));
+                        misMov.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return misMov;
+        }
         //public List<Usuario> traerDatos()
         //{
         //    List<Usuario> misdatos = new List<Usuario>();

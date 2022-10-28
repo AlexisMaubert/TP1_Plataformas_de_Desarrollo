@@ -16,7 +16,7 @@ namespace TrabajoPractico1
     public partial class FormMain : Form
     {
         private Banco banco;
-        private int cbuSeleccionado;
+        private int idCaja;
         private int numeroTarjetaSeleccionado;
         private int idPago;
         private DateTime fechaElegida;
@@ -31,9 +31,6 @@ namespace TrabajoPractico1
             this.refreshDataPF();
             this.refreshDataPagos();
             this.refreshDataTarjetas();
-            
-            
-            
         }
         public delegate void cerrarSesionDelegado();
         private void refreshListas()
@@ -61,7 +58,7 @@ namespace TrabajoPractico1
                 {
                     nombres =  nombres + titular.nombre + " " + titular.apellido +" / ";
                 }
-                dataGridViewCaja.Rows.Add("", caja.cbu, nombres, caja.saldo);
+                dataGridViewCaja.Rows.Add(caja.id, caja.cbu, nombres, caja.saldo);
             }
             this.refreshListas();
         }
@@ -71,13 +68,11 @@ namespace TrabajoPractico1
             foreach (PlazoFijo pf in banco.obtenerPlzFijo())
             {
                 string pagado = (pf.pagado) ? "Sí" : "No"; 
-                dataGridViewPF.Rows.Add("", pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa,pagado );
+                dataGridViewPF.Rows.Add(pf.id, pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa,pagado );
             }
-
         }
         private void refreshDataPagos()
         {
-            
             dataGridViewPagos.Rows.Clear();
             foreach (Pago pago in banco.obtenerPagos())
             {
@@ -97,7 +92,7 @@ namespace TrabajoPractico1
             dataGridViewTarjetas.Rows.Clear();
             foreach (Tarjeta tarjeta in banco.obtenerTarjetas()) 
             {
-                dataGridViewTarjetas.Rows.Add("", tarjeta.titular.apellido + " " + tarjeta.titular.nombre, tarjeta.numero, tarjeta.codigoV, tarjeta.limite, tarjeta.consumo);
+                dataGridViewTarjetas.Rows.Add(tarjeta.id, tarjeta.titular.apellido + " " + tarjeta.titular.nombre, tarjeta.numero, tarjeta.codigoV, tarjeta.limite, tarjeta.consumo);
             }
             this.refreshListas();
         }
@@ -149,7 +144,7 @@ namespace TrabajoPractico1
         {
             if(e.RowIndex >= 0)
             {
-                if (!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString(), out cbuSeleccionado))
+                if (!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[0].Value.ToString(), out idCaja))
                 {
                     MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -172,7 +167,7 @@ namespace TrabajoPractico1
 
         private void btnBajaCaja_Click(object sender, EventArgs e)
         {
-            if (banco.bajaCaja(cbuSeleccionado)) {
+            if (banco.bajaCaja(idCaja)) {
                 MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK,MessageBoxIcon.Information);
                 esconderBtns();
                 refreshDataCaja();
@@ -188,7 +183,7 @@ namespace TrabajoPractico1
             int nuevodni;
             if(Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni))
             {
-                if (banco.agregarUsuarioACaja(banco.BuscarCajaDeAhorro(cbuSeleccionado), nuevodni))
+                if (banco.agregarUsuarioACaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
                 {
                     MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataCaja();
@@ -205,7 +200,7 @@ namespace TrabajoPractico1
             int nuevodni;
             if(Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni))
             {
-                if (banco.eliminarUsuarioDeCaja(banco.BuscarCajaDeAhorro(cbuSeleccionado), nuevodni))
+                if (banco.eliminarUsuarioDeCaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
                 {
                     MessageBox.Show("Se removió titular con dni nro " + nuevodni, "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataCaja();
@@ -226,7 +221,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                banco.depositar(banco.BuscarCajaDeAhorro(cbuSeleccionado), deposito);
+                banco.depositar(banco.BuscarCajaDeAhorro(idCaja), deposito);
                 MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataCaja();
             }
@@ -240,7 +235,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                if (banco.retirar(banco.BuscarCajaDeAhorro(cbuSeleccionado), retiro))
+                if (banco.retirar(banco.BuscarCajaDeAhorro(idCaja), retiro))
                 {
                     MessageBox.Show("Se retiró el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataCaja();
@@ -262,7 +257,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                if (monto > banco.BuscarCajaDeAhorro(cbuSeleccionado).saldo)
+                if (monto > banco.BuscarCajaDeAhorro(idCaja).saldo)
                 {
                     MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -273,7 +268,7 @@ namespace TrabajoPractico1
                 else
                 {
 
-                    if (banco.transferir(banco.BuscarCajaDeAhorro(cbuSeleccionado), cbu, monto))
+                    if (banco.transferir(banco.BuscarCajaDeAhorro(idCaja), cbu, monto))
                     {
                         MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         refreshDataCaja();
@@ -285,7 +280,7 @@ namespace TrabajoPractico1
         private void btnDetalles_Click(object sender, EventArgs e)
         {
             string movimientos = "";
-            foreach(Movimiento movimiento in banco.obtenerMovimientos(cbuSeleccionado))
+            foreach(Movimiento movimiento in banco.obtenerMovimientos(idCaja))
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
@@ -300,7 +295,7 @@ namespace TrabajoPractico1
             {
                 dateTimePicker1.Visible = false;
                 string movimientos = "";
-                foreach (Movimiento movimiento in banco.obtenerMovimientos(cbuSeleccionado))
+                foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
                 {
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
@@ -317,7 +312,7 @@ namespace TrabajoPractico1
                 float monto;
                 float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
                 string movimientos = "";
-                foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), monto))
+                foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), monto))
 
                 {
                     movimientos = movimientos + movimiento.ToString() + "\n";
@@ -345,7 +340,7 @@ namespace TrabajoPractico1
         {
             fechaElegida = dateTimePicker1.Value;
             string movimientos = "";
-            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(cbuSeleccionado), fechaElegida))
+            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(IdCaja), fechaElegida))
 
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
@@ -354,7 +349,7 @@ namespace TrabajoPractico1
             dateTimePicker1.Visible = false;
 
         }
-        //TARJETAS ------------------------
+        //TARJETAS ------------------------CAMBIAR NUMERO DE TARJETASELECCIONADO POR IDTARJETA Y EL CELL[0]
 
         private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {

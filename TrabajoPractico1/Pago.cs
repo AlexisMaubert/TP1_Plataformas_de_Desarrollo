@@ -8,14 +8,27 @@ namespace TrabajoPractico1
 {
     public class Pago
     {
+        public Usuario user { get; set; }
         public int id { get; set; }
+        public int id_usuario { get; set; }
         public string nombre { get; set; }
         public float monto { get; set; }
         public bool pagado { get; set; }
         public string metodo { get; set; }
-        public Usuario user { get ; }
-        public int id_usuario { get; set; }
         public int id_banco { get; set; }
+
+        public Pago( int Id, int Id_usuario, string Nombre, float Monto, bool Pagado, string Metodo, int Id_banco)
+        {
+            
+            this.id = Id;
+            this.id_usuario = Id_usuario;
+            this.nombre = Nombre;
+            this.monto = Monto;
+            this.pagado = Pagado;
+            this.metodo = Metodo;
+            this.id_banco = Id_banco;
+        }
+
         public Pago() 
         {
             

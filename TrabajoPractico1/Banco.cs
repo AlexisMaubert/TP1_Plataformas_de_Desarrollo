@@ -45,7 +45,10 @@ namespace TrabajoPractico1
          public void inicializarAtributos()
         {
             usuarios = DB.inicializarUsuarios();
-            this.tarjetas = DB.inicializarTarjetas();
+            tarjetas = DB.inicializarTarjetas();
+            movimientos = DB.inicializarMovimientos(); 
+            pagos = DB.inicializarPagos();
+
 
             foreach (Tarjeta tarjeta in tarjetas.ToList())
             {
@@ -54,6 +57,23 @@ namespace TrabajoPractico1
                 user.tarjetas.Add(card);
                 tarjetas.Add(card);
                 card.titular = user;
+            }
+            foreach(Movimiento mov in movimientos.ToList())
+            {
+                CajaDeAhorro caja = BuscarCajaDeAhorro(mov.id_Caja);
+                Movimiento movimiento = buscarMovimiento(mov.id);
+                movimientos.Add(movimiento);
+                caja.movimientos.Add(movimiento);
+                movimiento.caja = caja;
+            }
+            foreach(Pago pago in pagos.ToList())
+            {
+                Pago p = buscarPago(pago.id);
+                Usuario user = usuarios.Find(usuario => usuario.id == pago.id_usuario);
+                pagos.Add(p);
+                user.pagos.Add(p);
+                p.user = user;
+
             }
         }
 
@@ -146,11 +166,11 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaCaja(int cbu)
+        public bool bajaCaja(int IdCaja)
         {
             try
             {
-                CajaDeAhorro cajaARemover = this.cajas.SingleOrDefault(caja => caja.cbu == cbu);
+                CajaDeAhorro cajaARemover = this.cajas.SingleOrDefault(caja => caja.id == IdCaja);
                 if (cajaARemover.saldo == 0)
                 {
                     this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
@@ -375,16 +395,16 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.cajas.ToList();
         }
-        public CajaDeAhorro BuscarCajaDeAhorro(int CBU)
+        public CajaDeAhorro BuscarCajaDeAhorro(int Id)
         {
-            return this.cajas.Find(caja => caja.cbu == CBU);
+            return this.cajas.Find(caja => caja.id == Id);
         }
 
-        public List<Movimiento> obtenerMovimientos(int Cbu)
+        public List<Movimiento> obtenerMovimientos(int idCaja)
         {
             foreach(CajaDeAhorro caja in usuarioLogeado.cajas)
             {
-                if (caja.cbu == Cbu) 
+                if (caja.id == idCaja) 
                 { 
                     return caja.movimientos.ToList();
                 }
@@ -512,6 +532,10 @@ namespace TrabajoPractico1
                 this.altaMovimiento(cajaDestino, "Transferencia recibida" , Monto);
                 return true;
             }
+        }
+        public Movimiento buscarMovimiento(int Id)
+        {
+            return movimientos.Find(movimiento => movimiento.id == Id);
         }
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha, float Monto)
         {

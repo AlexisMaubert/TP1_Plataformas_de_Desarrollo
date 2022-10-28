@@ -13,11 +13,21 @@ namespace TrabajoPractico1
         public string detalle { get; set; }
         public float monto { get; set; }
         public DateTime fecha { get; set; }
-        public CajaDeAhorro caja { get; }
+        public CajaDeAhorro caja { get; set; }
         public int id_banco { get; set; }
         public int id_Caja { get; set; }
 
         public Movimiento() { }
+
+        public Movimiento(int Id, int Id_Caja, string Detalle, float Monto, DateTime Fecha, int Id_Banco)
+        {
+            this.id = Id;
+            this.id_Caja = Id_Caja;
+            this.detalle = Detalle;
+            this.monto = Monto;
+            this.fecha = Fecha;
+            this.id_banco = Id_Banco;  
+        }
 
         public Movimiento(CajaDeAhorro Caja, string Detalle, float Monto)
         {
