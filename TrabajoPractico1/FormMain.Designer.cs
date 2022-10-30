@@ -48,6 +48,8 @@
             this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPlazoFijo = new System.Windows.Forms.TabPage();
+            this.comboBoxPFCBU = new System.Windows.Forms.ComboBox();
+            this.btnEliminarPF = new System.Windows.Forms.Button();
             this.btnNewPf = new System.Windows.Forms.Button();
             this.dataGridViewPF = new System.Windows.Forms.DataGridView();
             this.ColumnIdPlf = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -82,6 +84,7 @@
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
+            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -331,6 +334,8 @@
             // 
             // tabPlazoFijo
             // 
+            this.tabPlazoFijo.Controls.Add(this.comboBoxPFCBU);
+            this.tabPlazoFijo.Controls.Add(this.btnEliminarPF);
             this.tabPlazoFijo.Controls.Add(this.btnNewPf);
             this.tabPlazoFijo.Controls.Add(this.dataGridViewPF);
             this.tabPlazoFijo.Location = new System.Drawing.Point(4, 24);
@@ -341,6 +346,27 @@
             this.tabPlazoFijo.TabIndex = 1;
             this.tabPlazoFijo.Text = "PlazoFijo";
             this.tabPlazoFijo.UseVisualStyleBackColor = true;
+            // 
+            // comboBoxPFCBU
+            // 
+            this.comboBoxPFCBU.FormattingEnabled = true;
+            this.comboBoxPFCBU.Location = new System.Drawing.Point(145, 358);
+            this.comboBoxPFCBU.Name = "comboBoxPFCBU";
+            this.comboBoxPFCBU.Size = new System.Drawing.Size(121, 23);
+            this.comboBoxPFCBU.TabIndex = 3;
+            this.comboBoxPFCBU.Text = "Lista de CBUs";
+            this.comboBoxPFCBU.Visible = false;
+            this.comboBoxPFCBU.SelectedIndexChanged += new System.EventHandler(this.comboBoxPFCBU_SelectedIndexChanged);
+            // 
+            // btnEliminarPF
+            // 
+            this.btnEliminarPF.Location = new System.Drawing.Point(666, 79);
+            this.btnEliminarPF.Name = "btnEliminarPF";
+            this.btnEliminarPF.Size = new System.Drawing.Size(75, 23);
+            this.btnEliminarPF.TabIndex = 2;
+            this.btnEliminarPF.Text = "Eliminar";
+            this.btnEliminarPF.UseVisualStyleBackColor = true;
+            this.btnEliminarPF.Click += new System.EventHandler(this.btnEliminarPF_Click);
             // 
             // btnNewPf
             // 
@@ -807,5 +833,8 @@
         private DataGridViewTextBoxColumn ColumnCodigoTarjeta;
         private DataGridViewTextBoxColumn ColumnLimiteTarjeta;
         private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
+        private Button btnEliminarPF;
+        private OpenFileDialog openFileDialog1;
+        private ComboBox comboBoxPFCBU;
     }
 }

@@ -44,7 +44,7 @@ namespace TrabajoPractico1
                     //mientras haya registros/filas en mi DataReader, sigo leyendo
                     while (reader.Read())
                     {
-                        aux = new Usuario(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2).Trim(), reader.GetString(3).Trim(), reader.GetString(4).Trim(), reader.GetString(5).Trim(), reader.GetInt32(6), reader.GetBoolean(7), reader.GetInt32(8),reader.GetBoolean(9));
+                        aux = new Usuario(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2).Trim(), reader.GetString(3).Trim(), reader.GetString(4).Trim(), reader.GetString(5).Trim(), reader.GetInt32(6), reader.GetBoolean(7), reader.GetInt32(8), reader.GetBoolean(9));
                         misUsuarios.Add(aux);
                     }
                     //En este punto ya recorrí todas las filas del resultado de la query
@@ -58,6 +58,63 @@ namespace TrabajoPractico1
             }
             return misUsuarios;
         }
+
+        public List<CajaDeAhorro> inicializarCajas()
+        {
+            List<CajaDeAhorro> cajas = new List<CajaDeAhorro>();
+            string queryString = "SELECT * from CajaAhorro";
+            using (SqlConnection connection =
+            new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    CajaDeAhorro cda;
+                    while (reader.Read())
+                    {
+                        cda = new CajaDeAhorro(reader.GetInt32(0), reader.GetInt32(1), (float)reader.GetDouble(2), reader.GetInt32(3), reader.GetInt32(4));
+                        cajas.Add(cda);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return cajas;
+        }
+        //Este metodo se usa para poder completar la lista que representa la tabla intermedia entre el usuario
+        //y caja de ahorro si es que la relacion es "MANY TO MANY":
+        public List<UsuarioCaja> inicializarUsuarioCaja()
+        {
+            List<UsuarioCaja> usuarioCaja = new List<UsuarioCaja>();
+            using (SqlConnection connection =
+            new SqlConnection(connectionString))
+            {
+                //cargo las cajas-->
+                string queryString = "SELECT * from UsuarioCaja";
+                SqlCommand command = new SqlCommand(queryString, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        usuarioCaja.Add(new UsuarioCaja(reader.GetInt32(0), reader.GetInt32(1)));
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return usuarioCaja;
+        }
+
         public List<Tarjeta> inicializarTarjetas()
         {
             List<Tarjeta> misTarjetas = new List<Tarjeta>();
@@ -114,7 +171,8 @@ namespace TrabajoPractico1
             return misPagos;
         }
 
-        public List<Movimiento> inicializarMovimientos() {
+        public List<Movimiento> inicializarMovimientos()
+        {
             List<Movimiento> misMov = new List<Movimiento>();
             string queryString = "select * from Movimiento;";
             using (SqlConnection connection =
@@ -128,7 +186,7 @@ namespace TrabajoPractico1
                     Movimiento aux;
                     while (reader.Read())
                     {
-                        aux = new Movimiento(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), (float)reader.GetDouble(3), reader.GetDateTime(4),reader.GetInt32(5));
+                        aux = new Movimiento(reader.GetInt32(0), reader.GetInt32(1), reader.GetString(2), (float)reader.GetDouble(3), reader.GetDateTime(4), reader.GetInt32(5));
                         misMov.Add(aux);
                     }
                     reader.Close();
@@ -180,6 +238,5 @@ namespace TrabajoPractico1
         //    }
         //    return misUsuarios;
         //}
-
     }
 }

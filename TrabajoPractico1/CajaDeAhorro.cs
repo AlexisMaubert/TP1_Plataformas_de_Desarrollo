@@ -21,7 +21,17 @@ namespace TrabajoPractico1
             titulares = new List<Usuario>();    
             movimientos = new List<Movimiento>();
         }
-
+        public CajaDeAhorro(int id, int cbu, float saldo , int id_movimiento, int id_banco)
+        {
+            this.id = id;
+            this.cbu = cbu;
+            this.saldo = saldo;
+            this.titulares = titulares;
+            this.movimientos = movimientos;
+            this.id_movimiento = id_movimiento;
+            this.id_banco = id_banco;
+        }
+    
         public CajaDeAhorro(int Cbu, Usuario Titular)//Constructor alternativo
         {
             this.cbu = Cbu;
@@ -30,7 +40,9 @@ namespace TrabajoPractico1
             this.titulares.Add(Titular);
             movimientos = new List<Movimiento>();
         }
+        
         public override string ToString()
+
         {
             return string.Format("CBU: {0}, Saldo: {1}", this.cbu, this.saldo);
         }

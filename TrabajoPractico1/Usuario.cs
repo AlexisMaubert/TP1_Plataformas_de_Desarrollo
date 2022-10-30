@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TrabajoPractico1;
 
 namespace TrabajoPractico1
 {
@@ -71,3 +72,41 @@ namespace TrabajoPractico1
         }
     }
 }
+
+
+//class UsuarioManager
+//{user dom lista en banco de userdom.
+
+//    private List<Usuario> misUsuarios;
+//    private List<Domicilio> misDomicilios;
+//    private List<UserDom> misUserDom;
+//    private DAL DB;
+
+//    public UsuarioManager()
+//    {
+//        misUsuarios = new List<Usuario>();
+//        misDomicilios = new List<Domicilio>();
+//        //PARA MANY TO MANY
+//        //misUserDom = new List<UserDom>();
+//        DB = new DAL();
+//        inicializarAtributos();
+//    }
+
+//    private void inicializarAtributos()
+//    {
+     // SI FUESE MANY TO MANY
+//        misUserDom = DB.inicializarUserDom();
+//        foreach (UserDom ud in misUserDom)
+//        {
+//            foreach (Domicilio domicilio in misDomicilios)
+//            {
+//                foreach (Usuario u in misUsuarios)
+//                    if (ud.idUser == u.id && ud.idDom == domicilio.id)
+//                    {
+//                        u.misDirecciones.Add(domicilio);
+//                        domicilio.misUsuarios.Add(u);
+//                    }
+//            }
+//        }
+
+//    }

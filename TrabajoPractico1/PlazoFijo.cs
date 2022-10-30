@@ -17,7 +17,9 @@ namespace TrabajoPractico1
         public Usuario titular { get; }
         public int id_banco { get; set; }
         public int id_usuario { get; set; }
-        public PlazoFijo()   
+        public CajaDeAhorro LAcaja { get; set; }
+    public PlazoFijo()
+        
         {
             this.titular = new Usuario();
         }
@@ -31,6 +33,7 @@ namespace TrabajoPractico1
            this.fechaFin = FechaFin;
            this.tasa = Tasa;
            this.pagado = false;
+           this.LAcaja = new CajaDeAhorro();
         }
 
         public override string ToString()

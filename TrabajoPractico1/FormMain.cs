@@ -19,6 +19,7 @@ namespace TrabajoPractico1
         private int idCaja;
         private int numeroTarjetaSeleccionado;
         private int idPago;
+        private int idPF;
         private DateTime fechaElegida;
         public cerrarSesionDelegado cerrarSesionEvento;
         public FormMain(Banco b)
@@ -38,10 +39,12 @@ namespace TrabajoPractico1
             this.comboBoxTraerCajasATarjetas.Items.Clear();
             this.comboBoxCajaPago.Items.Clear();
             this.comboBoxTarjetaPago.Items.Clear();
+            this.comboBoxPFCBU.Items.Clear();
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 this.comboBoxTraerCajasATarjetas.Items.Add(caja.cbu);
                 this.comboBoxCajaPago.Items.Add(caja.cbu);
+                this.comboBoxPFCBU.Items.Add(caja.cbu);
             }
             foreach (Tarjeta tarjeta in banco.obtenerTarjetas())
             {
@@ -68,7 +71,7 @@ namespace TrabajoPractico1
             foreach (PlazoFijo pf in banco.obtenerPlzFijo())
             {
                 string pagado = (pf.pagado) ? "Sí" : "No"; 
-                dataGridViewPF.Rows.Add(pf.id, pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa,pagado );
+                dataGridViewPF.Rows.Add(pf.id, pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa, pagado );
             }
         }
         private void refreshDataPagos()
@@ -103,8 +106,7 @@ namespace TrabajoPractico1
         }
         private void btnNewPf_Click(object sender, EventArgs e)
         {
-            //Metodo para crear plazo fijo que todavia no está definido :)
-            this.refreshDataPF();
+            comboBoxPFCBU.Visible = true;
         }
 
         private void btnNewTarjeta_Click(object sender, EventArgs e)
@@ -124,7 +126,7 @@ namespace TrabajoPractico1
             //btnMovimientos.Visible = false;
             comboBox1.Visible = false;
             label2.Visible = false;
-
+            btnEliminarPF.Visible = false;
         }
         public void mostrarBtns()
         {
@@ -135,9 +137,9 @@ namespace TrabajoPractico1
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
-            //btnMovimientos.Show();
             comboBox1.Show();
             label2.Show();
+            btnEliminarPF.Show();
 
         }
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -340,7 +342,7 @@ namespace TrabajoPractico1
         {
             fechaElegida = dateTimePicker1.Value;
             string movimientos = "";
-            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(IdCaja), fechaElegida))
+            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), fechaElegida))
 
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
@@ -514,6 +516,53 @@ namespace TrabajoPractico1
             {
                 MessageBox.Show("El pago no se ha podido efectuar", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+        private void dataGridViewPF_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if (!Int32.TryParse(dataGridViewPF.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPF))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    esconderBtns();
+                    mostrarBtns();
+                }
+            }
+            else
+            {
+                esconderBtns();
+            }
+        }
+        private void btnEliminarPF_Click(object sender, EventArgs e)
+        {
+            banco.eliminarPlazoFijo(idPF);
+            refreshDataPF();
+        }
+
+        private void comboBoxPFCBU_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxPFCBU.SelectedIndex;
+            string seleccion = comboBoxPFCBU.Items[index].ToString();
+            
+            int cbu;
+            
+            Int32.TryParse(seleccion, out cbu);
+
+            CajaDeAhorro caja = banco.cajas.Find(caja => caja.cbu == cbu);
+            int monto;
+            if (!Int32.TryParse(Interaction.InputBox("ingrese el monto para crear el PF", "Monto Plazo fijo"), out monto) && monto >= 0)
+            {
+                MessageBox.Show("Ingrese un monto válido", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
+            {
+                banco.crearPlazoFijo(caja.id, monto);
+                refreshDataPF();
+            }
+            comboBoxPFCBU.Visible = false;
         }
     }
 }
