@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -32,6 +33,14 @@ namespace TrabajoPractico1
             this.refreshDataPF();
             this.refreshDataPagos();
             this.refreshDataTarjetas();
+            foreach (var caja in banco.cajas)
+            {
+                MessageBox.Show(caja.ToString(), "Banco");
+            }
+            foreach (var caja in banco.usuarioLogeado.cajas)
+            {
+                MessageBox.Show(caja.ToString(), banco.usuarioLogeado.nombre);
+            }
         }
         public delegate void cerrarSesionDelegado();
         private void refreshListas()
@@ -107,6 +116,8 @@ namespace TrabajoPractico1
         private void btnNewPf_Click(object sender, EventArgs e)
         {
             comboBoxPFCBU.Visible = true;
+            Debug.WriteLine(banco.buscarPlazoFijo(idPF));
+
         }
 
         private void btnNewTarjeta_Click(object sender, EventArgs e)

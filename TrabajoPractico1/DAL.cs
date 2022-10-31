@@ -52,6 +52,7 @@ namespace TrabajoPractico1
 
                 }
                 catch (Exception ex)
+
                 {
                     Console.WriteLine(ex.Message);
                 }
@@ -62,10 +63,11 @@ namespace TrabajoPractico1
         public List<CajaDeAhorro> inicializarCajas()
         {
             List<CajaDeAhorro> cajas = new List<CajaDeAhorro>();
-            string queryString = "SELECT * from CajaAhorro";
+            string queryString = "select * from CajaAhorro;";
             using (SqlConnection connection =
             new SqlConnection(connectionString))
             {
+                
                 SqlCommand command = new SqlCommand(queryString, connection);
                 try
                 {
@@ -74,7 +76,7 @@ namespace TrabajoPractico1
                     CajaDeAhorro cda;
                     while (reader.Read())
                     {
-                        cda = new CajaDeAhorro(reader.GetInt32(0), reader.GetInt32(1), (float)reader.GetDouble(2), reader.GetInt32(3), reader.GetInt32(4));
+                        cda = new CajaDeAhorro(reader.GetInt32(0), reader.GetInt32(1), (float)reader.GetDouble(2), reader.GetInt32(3));
                         cajas.Add(cda);
                     }
                     reader.Close();
@@ -82,6 +84,7 @@ namespace TrabajoPractico1
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    MessageBox.Show("La concha puta de tu madre programa del orto anda a hacerte culiar por un oso la re puta que te re mil pario forro", "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             return cajas;
@@ -95,15 +98,17 @@ namespace TrabajoPractico1
             new SqlConnection(connectionString))
             {
                 //cargo las cajas-->
-                string queryString = "SELECT * from UsuarioCaja";
+                string queryString = "SELECT * from CajaUsuario;";
                 SqlCommand command = new SqlCommand(queryString, connection);
                 try
                 {
                     connection.Open();
                     SqlDataReader reader = command.ExecuteReader();
+                    
                     while (reader.Read())
                     {
-                        usuarioCaja.Add(new UsuarioCaja(reader.GetInt32(0), reader.GetInt32(1)));
+                        usuarioCaja.Add(new UsuarioCaja(reader.GetInt32(0), reader.GetInt32(1), reader.GetInt32(2)));
+
                     }
                     reader.Close();
                 }

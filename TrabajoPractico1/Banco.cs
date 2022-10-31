@@ -37,12 +37,15 @@ namespace TrabajoPractico1
             miUsuarioCaja = new List<UsuarioCaja>(); //lista UsuarioCaja
             DB = new DAL();
             inicializarAtributos();
+            inicializarCajaAhorro();
             //revisarPlazosFijos();
-            foreach(Usuario usuario in usuarios)
+            foreach(CajaDeAhorro caja in cajas)
             {
-                Debug.WriteLine(usuario);
+                Debug.WriteLine(cajas);
             }
+
         }
+
         //
         //PERSISTENCIA.
         //
@@ -67,7 +70,6 @@ namespace TrabajoPractico1
             tarjetas = DB.inicializarTarjetas();
             movimientos = DB.inicializarMovimientos();
             pagos = DB.inicializarPagos();
-            cajas = DB.inicializarCajas();
 
 
             foreach (Tarjeta tarjeta in tarjetas.ToList())
@@ -107,15 +109,14 @@ namespace TrabajoPractico1
             miUsuarioCaja = DB.inicializarUsuarioCaja();
             foreach (UsuarioCaja uc in miUsuarioCaja)
             {
-                foreach (CajaDeAhorro cajaDeAhorro in cajas)
+                foreach (CajaDeAhorro caja in cajas)
                 {
                     foreach (Usuario us in usuarios)
                     {
-                        if (uc.idUsuario == us.id && uc.idUsuarioCaja == cajaDeAhorro.id)
+                        if (uc.idUsuario == us.id && uc.idCaja == caja.id)
                         {
-                            altaCaja(us, cajaDeAhorro);
-                            //us.cajas.add(cajaDeAhorro);
-                            //cajaDeAhorro.usuarios.add(us);
+                            us.cajas.Add(caja);
+                            caja.titulares.Add(us);
                         }
                     }
                 }
@@ -446,10 +447,6 @@ namespace TrabajoPractico1
             {
                 return false;
             }
-        }
-        public bool modificarPlazoFijo()
-        {
-            return true;
         }
 
         public bool crearPlazoFijo(int Id, float Monto)
