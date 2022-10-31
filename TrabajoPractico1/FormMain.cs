@@ -23,6 +23,7 @@ namespace TrabajoPractico1
         private int idPF;
         private DateTime fechaElegida;
         public cerrarSesionDelegado cerrarSesionEvento;
+
         public FormMain(Banco b)
         {
             InitializeComponent();
@@ -33,16 +34,60 @@ namespace TrabajoPractico1
             this.refreshDataPF();
             this.refreshDataPagos();
             this.refreshDataTarjetas();
-            foreach (var caja in banco.cajas)
-            {
-                MessageBox.Show(caja.ToString(), "Banco");
-            }
-            foreach (var caja in banco.usuarioLogeado.cajas)
-            {
-                MessageBox.Show(caja.ToString(), banco.usuarioLogeado.nombre);
-            }
         }
+
         public delegate void cerrarSesionDelegado();
+        //
+        //
+        //CERRAR SESION
+        //
+        //
+        public void btnCerrarSesion_Click(object sender, EventArgs e)
+        {
+            dataGridViewCaja.Rows.Clear();
+            dataGridViewPagos.Rows.Clear();
+            dataGridViewTarjetas.Rows.Clear();
+            dataGridViewPF.Rows.Clear();
+            this.cerrarSesionEvento();
+        }
+        //
+        //
+        //ESCONDER Y MOSTRAR BOTONES
+        //
+        //
+        public void esconderBtns()
+        {
+            btnBajaCaja.Visible = false;
+            btnAgregarTitular.Visible = false;
+            btnEliminarTitular.Visible = false;
+            btnDepositar.Visible = false;
+            btnRetirar.Visible = false;
+            btnTransferir.Visible = false;
+            btnDetalles.Visible = false;
+            comboBox1.Visible = false;
+            label2.Visible = false;
+            btnEliminarPF.Visible = false;
+        }
+        public void mostrarBtns()
+        {
+            btnBajaCaja.Show();
+            btnAgregarTitular.Show();
+            btnEliminarTitular.Show();
+            btnDepositar.Show();
+            btnRetirar.Show();
+            btnTransferir.Show();
+            btnDetalles.Show();
+            comboBox1.Show();
+            label2.Show();
+            btnEliminarPF.Show();
+        }
+        //
+        //
+        //MOSTRAR DATOS COMBO-BOX Y DATAGRIDVIEW
+        //
+        //
+
+        //LISTAS DATA
         private void refreshListas()
         {
             this.comboBoxTraerCajasATarjetas.Items.Clear();
@@ -60,102 +105,72 @@ namespace TrabajoPractico1
                 this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
         }
+        //CAJA DATA
         private void refreshDataCaja()
         {
             dataGridViewCaja.Rows.Clear();
             foreach (CajaDeAhorro caja in banco.obtenerCajaDeAhorro())
             {
                 string nombres = "";
-                foreach(Usuario titular in caja.titulares)
+                foreach (Usuario titular in caja.titulares)
                 {
-                    nombres =  nombres + titular.nombre + " " + titular.apellido +" / ";
+                    nombres = nombres + titular.nombre + " " + titular.apellido + " / ";
                 }
                 dataGridViewCaja.Rows.Add(caja.id, caja.cbu, nombres, caja.saldo);
             }
             this.refreshListas();
         }
+        //PLAZO FIJO DATA
         private void refreshDataPF()
         {
             dataGridViewPF.Rows.Clear();
             foreach (PlazoFijo pf in banco.obtenerPlzFijo())
             {
-                string pagado = (pf.pagado) ? "Sí" : "No"; 
-                dataGridViewPF.Rows.Add(pf.id, pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa, pagado );
+                string pagado = (pf.pagado) ? "Sí" : "No";
+                dataGridViewPF.Rows.Add(pf.id, pf.titular.apellido + " " + pf.titular.nombre, pf.monto, pf.fechaIni, pf.fechaFin, pf.tasa, pagado);
             }
         }
+        //PAGOS DATA
         private void refreshDataPagos()
         {
             dataGridViewPagos.Rows.Clear();
             foreach (Pago pago in banco.obtenerPagos())
             {
-                if(pago.pagado)
+                if (pago.pagado)
                 {
-                    dataGridViewPagos.Rows.Add( pago.id, pago.nombre, pago.monto, " - " );
+                    dataGridViewPagos.Rows.Add(pago.id, pago.nombre, pago.monto, " - ");
                 }
                 else
                 {
-                    dataGridViewPagos.Rows.Add( pago.id, pago.nombre, " - ", pago.monto);
+                    dataGridViewPagos.Rows.Add(pago.id, pago.nombre, " - ", pago.monto);
                 }
             }
             this.refreshListas();
         }
+        //DATA TARJETAS
         private void refreshDataTarjetas()
         {
             dataGridViewTarjetas.Rows.Clear();
-            foreach (Tarjeta tarjeta in banco.obtenerTarjetas()) 
+            foreach (Tarjeta tarjeta in banco.obtenerTarjetas())
             {
                 dataGridViewTarjetas.Rows.Add(tarjeta.id, tarjeta.titular.apellido + " " + tarjeta.titular.nombre, tarjeta.numero, tarjeta.codigoV, tarjeta.limite, tarjeta.consumo);
             }
             this.refreshListas();
         }
+        //
+        //
+        //PESTAÑA CAJA DE AHORRO
+        //
+        //
         private void btnNewCaja_Click(object sender, EventArgs e)
         {
-            banco.crearCajaDeAhorro(); // Las cajas de ahorro se crean con el saldo en 0
+            banco.crearCajaDeAhorro();
             this.refreshDataCaja();
         }
-        private void btnNewPf_Click(object sender, EventArgs e)
-        {
-            comboBoxPFCBU.Visible = true;
-            Debug.WriteLine(banco.buscarPlazoFijo(idPF));
-
-        }
-
-        private void btnNewTarjeta_Click(object sender, EventArgs e)
-        {
-            banco.altaTarjeta(); // Las tarjetas se crean con un monto de 20 mil 
-            this.refreshDataTarjetas();
-        }
-        public void esconderBtns()
-        {
-            btnBajaCaja.Visible = false;
-            btnAgregarTitular.Visible = false;
-            btnEliminarTitular.Visible = false;
-            btnDepositar.Visible = false;
-            btnRetirar.Visible = false;
-            btnTransferir.Visible = false;
-            btnDetalles.Visible = false;
-            //btnMovimientos.Visible = false;
-            comboBox1.Visible = false;
-            label2.Visible = false;
-            btnEliminarPF.Visible = false;
-        }
-        public void mostrarBtns()
-        {
-            btnBajaCaja.Show();
-            btnAgregarTitular.Show();
-            btnEliminarTitular.Show();
-            btnDepositar.Show();
-            btnRetirar.Show();
-            btnTransferir.Show();
-            btnDetalles.Show();
-            comboBox1.Show();
-            label2.Show();
-            btnEliminarPF.Show();
-
-        }
+        //DATA GRID VIEW
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex >= 0)
+            if (e.RowIndex >= 0)
             {
                 if (!Int32.TryParse(dataGridViewCaja.Rows[e.RowIndex].Cells[0].Value.ToString(), out idCaja))
                 {
@@ -163,7 +178,9 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-                    esconderBtns();
+                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[0].Value.ToString());
+                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString());
+                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[2].Value.ToString());
                     mostrarBtns();
                 }
             }
@@ -172,29 +189,25 @@ namespace TrabajoPractico1
                 esconderBtns();
             }
         }
-
-        private void btnMovimientos_Click(object sender, EventArgs e)
-        {
-            MessageBox.Show("detalles","detalles",MessageBoxButtons.OK);
-        }
-
+        //BAJA DE CAJA
         private void btnBajaCaja_Click(object sender, EventArgs e)
         {
-            if (banco.bajaCaja(idCaja)) {
-                MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK,MessageBoxIcon.Information);
+            if (banco.bajaCaja(idCaja))
+            {
+                MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 esconderBtns();
                 refreshDataCaja();
             }
             else
             {
-               MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        //AGREGAR TITULAR
         private void btnAgregarTitular_Click(object sender, EventArgs e)
         {
             int nuevodni;
-            if(Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni))
+            if (Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni))
             {
                 if (banco.agregarUsuarioACaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
                 {
@@ -207,11 +220,11 @@ namespace TrabajoPractico1
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        //ELIMINAR TITULAR
         private void btnEliminarTitular_Click(object sender, EventArgs e)
         {
             int nuevodni;
-            if(Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni))
+            if (Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni))
             {
                 if (banco.eliminarUsuarioDeCaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
                 {
@@ -224,11 +237,11 @@ namespace TrabajoPractico1
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        //DEPOSITAR
         private void btnDepositar_Click(object sender, EventArgs e)
         {
             int deposito;
-            if(!Int32.TryParse(Interaction.InputBox("Monto a depositar : ", "ingresar monto"), out deposito)|| deposito <= 0)
+            if (!Int32.TryParse(Interaction.InputBox("Monto a depositar : ", "ingresar monto"), out deposito) || deposito <= 0)
             {
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -239,6 +252,7 @@ namespace TrabajoPractico1
                 refreshDataCaja();
             }
         }
+        //RETIRAR
         private void btnRetirar_Click(object sender, EventArgs e)
         {
             int retiro;
@@ -259,7 +273,7 @@ namespace TrabajoPractico1
                 }
             }
         }
-
+        //TRANSFERIR
         private void btnTransferir_Click(object sender, EventArgs e)
         {
             int monto;
@@ -280,7 +294,6 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-
                     if (banco.transferir(banco.BuscarCajaDeAhorro(idCaja), cbu, monto))
                     {
                         MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -289,17 +302,17 @@ namespace TrabajoPractico1
                 }
             }
         }
-
+        //DETALLES
         private void btnDetalles_Click(object sender, EventArgs e)
         {
             string movimientos = "";
-            foreach(Movimiento movimiento in banco.obtenerMovimientos(idCaja))
+            foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
             MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
         }
-
+        //ELEGIR COMO FILTRAR LOS DETALLES
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBox1.SelectedIndex;
@@ -313,7 +326,6 @@ namespace TrabajoPractico1
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
                 MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
-
             }
             else if (index == 1)
             {
@@ -326,7 +338,6 @@ namespace TrabajoPractico1
                 float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
                 string movimientos = "";
                 foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), monto))
-
                 {
                     movimientos = movimientos + movimiento.ToString() + "\n";
                 }
@@ -338,79 +349,90 @@ namespace TrabajoPractico1
                 {
                     MessageBox.Show(movimientos, "Movimientos por monto", MessageBoxButtons.OK);
                 }
-
             }
             else
             {
                 dateTimePicker1.Visible = false;
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
-
         }
-
+        //ELEGIR FECHA
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             fechaElegida = dateTimePicker1.Value;
             string movimientos = "";
             foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), fechaElegida))
-
             {
                 movimientos = movimientos + movimiento.ToString() + "\n";
             }
             MessageBox.Show(movimientos, "Movimientos por fecha", MessageBoxButtons.OK);
             dateTimePicker1.Visible = false;
-
         }
-        //TARJETAS ------------------------CAMBIAR NUMERO DE TARJETASELECCIONADO POR IDTARJETA Y EL CELL[0]
-
-        private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        //
+        //
+        //PESTAÑA PLAZO FIJO
+        //
+        //
+        private void btnNewPf_Click(object sender, EventArgs e)
         {
-            if(e.RowIndex >= 0)
+            comboBoxPFCBU.Visible = true;
+        }
+        //DATA GRID VIEW
+        private void dataGridViewPF_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
             {
-                if (!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+                if (!Int32.TryParse(dataGridViewPF.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPF))
                 {
                     MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    btnDarDeBajaTarjeta.Show();
-                    btnPagarTarjeta.Show();
+                    esconderBtns();
+                    mostrarBtns();
                 }
             }
             else
             {
                 esconderBtns();
             }
-            
         }
-
-        private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
+        //ELIMINAR PLAZO FIJO
+        private void btnEliminarPF_Click(object sender, EventArgs e)
         {
-            if (banco.bajaTarjeta(numeroTarjetaSeleccionado))
+            banco.eliminarPlazoFijo(idPF);
+            refreshDataPF();
+        }
+        //LISTA CBU
+        private void comboBoxPFCBU_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            int index = comboBoxPFCBU.SelectedIndex;
+            string seleccion = comboBoxPFCBU.Items[index].ToString();
+            int cbu;
+            Int32.TryParse(seleccion, out cbu);
+            CajaDeAhorro caja = banco.cajas.Find(caja => caja.cbu == cbu);
+            int monto;
+            if (!Int32.TryParse(Interaction.InputBox("ingrese el monto para crear el PF", "Monto Plazo fijo"), out monto) && monto >= 0)
             {
-                MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                esconderBtns();
-                refreshDataTarjetas();
+                MessageBox.Show("Ingrese un monto válido", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                banco.crearPlazoFijo(caja.id, monto);
+                refreshDataPF();
             }
-        }
-
-        private void btnPagarTarjeta_Click(object sender, EventArgs e)
-        {
-            comboBoxTraerCajasATarjetas.Show();
+            comboBoxPFCBU.Visible = false;
         }
         //
-        //PAGOS
+        //
+        //PESTAÑA PAGOS
+        //
         //
         private void btnNewPago_Click(object sender, EventArgs e)
         {
             float monto;
             string nombre = Interaction.InputBox("Ingresar nombre del pago", "Ingresar nombre del pago");
-            if(nombre == "" || nombre == null)
+            if (nombre == "" || nombre == null)
             {
                 MessageBox.Show("Error en el ingreso de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -424,6 +446,7 @@ namespace TrabajoPractico1
                 this.refreshDataPagos();
             }
         }
+        //DATA GRID VIEW
         private void dataGridViewPagos_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -442,11 +465,11 @@ namespace TrabajoPractico1
             {
                 esconderBtns();
             }
-
         }
+        //ELIMINAR PAGO
         private void btnEliminarPago_Click(object sender, EventArgs e)
         {
-            if(banco.buscarPago(idPago).pagado)
+            if (banco.buscarPago(idPago).pagado)
             {
                 banco.quitarPago(idPago);
                 MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -457,37 +480,33 @@ namespace TrabajoPractico1
                 MessageBox.Show("El Pago necesita estar pagado😒", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
+        //PAGAR PAGO
         private void btnPagarPago_Click(object sender, EventArgs e)
         {
             this.comboBoxCajaPago.Show();
             this.comboBoxTarjetaPago.Show();
         }
-
+        // LISTA DE CBU
         private void comboBoxCajaPago_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBoxCajaPago.SelectedIndex;
             string seleccion = comboBoxCajaPago.Items[index].ToString();
-
             int cbu;
             Int32.TryParse(seleccion, out cbu);
-
-            if(banco.pagarPago(idPago, cbu))
+            if (banco.pagarPago(idPago, cbu))
             {
                 MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataPagos();
                 refreshDataCaja();
             }
         }
-
+        //LISTA DE TARJETAS
         private void comboBoxTarjetaPago_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBoxTarjetaPago.SelectedIndex;
             string seleccion = comboBoxTarjetaPago.Items[index].ToString();
-
             int numero;
             Int32.TryParse(seleccion, out numero);
-
             if (banco.pagarPago(idPago, numero))
             {
                 MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -496,16 +515,56 @@ namespace TrabajoPractico1
                 refreshDataTarjetas();
             }
         }
-        public void btnCerrarSesion_Click(object sender, EventArgs e)
+        //
+        //
+        //PESTAÑA TARJETAS
+        //
+        //
+        private void btnNewTarjeta_Click(object sender, EventArgs e)
         {
-            dataGridViewCaja.Rows.Clear();
-            dataGridViewPagos.Rows.Clear();
-            dataGridViewTarjetas.Rows.Clear();
-            dataGridViewPF.Rows.Clear();
-            this.cerrarSesionEvento();
-            
+            banco.altaTarjeta();
+            this.refreshDataTarjetas();
         }
-
+        //DATA GRID VIEW
+        private void dataGridViewTarjetas_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if (!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    btnDarDeBajaTarjeta.Show();
+                    btnPagarTarjeta.Show();
+                }
+            }
+            else
+            {
+                esconderBtns();
+            }
+        }
+        //BAJA TARJETA
+        private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
+        {
+            if (banco.bajaTarjeta(numeroTarjetaSeleccionado))
+            {
+                MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                esconderBtns();
+                refreshDataTarjetas();
+            }
+            else
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        //PAGAR TARJETA
+        private void btnPagarTarjeta_Click(object sender, EventArgs e)
+        {
+            comboBoxTraerCajasATarjetas.Show();
+        }
+        //LISTA DE CBU
         private void comboBoxTraerCajasATarjetas_SelectedIndexChanged(object sender, EventArgs e)
         {
             int index = comboBoxTraerCajasATarjetas.SelectedIndex;
@@ -527,53 +586,6 @@ namespace TrabajoPractico1
             {
                 MessageBox.Show("El pago no se ha podido efectuar", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-        }
-        private void dataGridViewPF_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.RowIndex >= 0)
-            {
-                if (!Int32.TryParse(dataGridViewPF.Rows[e.RowIndex].Cells[0].Value.ToString(), out idPF))
-                {
-                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    esconderBtns();
-                    mostrarBtns();
-                }
-            }
-            else
-            {
-                esconderBtns();
-            }
-        }
-        private void btnEliminarPF_Click(object sender, EventArgs e)
-        {
-            banco.eliminarPlazoFijo(idPF);
-            refreshDataPF();
-        }
-
-        private void comboBoxPFCBU_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = comboBoxPFCBU.SelectedIndex;
-            string seleccion = comboBoxPFCBU.Items[index].ToString();
-            
-            int cbu;
-            
-            Int32.TryParse(seleccion, out cbu);
-
-            CajaDeAhorro caja = banco.cajas.Find(caja => caja.cbu == cbu);
-            int monto;
-            if (!Int32.TryParse(Interaction.InputBox("ingrese el monto para crear el PF", "Monto Plazo fijo"), out monto) && monto >= 0)
-            {
-                MessageBox.Show("Ingrese un monto válido", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                banco.crearPlazoFijo(caja.id, monto);
-                refreshDataPF();
-            }
-            comboBoxPFCBU.Visible = false;
         }
     }
 }

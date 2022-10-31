@@ -271,7 +271,6 @@ namespace TrabajoPractico1
                 return false;
             }
         }
-
         public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni)
         {
             Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);

@@ -84,7 +84,6 @@
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
-            this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -397,6 +396,8 @@
             this.dataGridViewPF.RowTemplate.Height = 25;
             this.dataGridViewPF.Size = new System.Drawing.Size(664, 343);
             this.dataGridViewPF.TabIndex = 0;
+            this.dataGridViewPF.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
+            this.dataGridViewPF.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
             // 
             // ColumnIdPlf
             // 
@@ -834,7 +835,6 @@
         private DataGridViewTextBoxColumn ColumnLimiteTarjeta;
         private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
         private Button btnEliminarPF;
-        private OpenFileDialog openFileDialog1;
         private ComboBox comboBoxPFCBU;
     }
 }

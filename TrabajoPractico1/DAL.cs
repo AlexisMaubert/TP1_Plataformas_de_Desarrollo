@@ -84,7 +84,6 @@ namespace TrabajoPractico1
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
-                    MessageBox.Show("La concha puta de tu madre programa del orto anda a hacerte culiar por un oso la re puta que te re mil pario forro", "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             return cajas;
