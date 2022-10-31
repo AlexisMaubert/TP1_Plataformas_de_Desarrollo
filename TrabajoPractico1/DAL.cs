@@ -202,6 +202,39 @@ namespace TrabajoPractico1
             }
             return misMov;
         }
+
+
+        public List<PlazoFijo> inicializarPlazoFijo()
+        {
+            List<PlazoFijo> pfs = new List<PlazoFijo>();
+            string queryString = "select * from PlazoFijo;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    PlazoFijo aux;
+                    while (reader.Read())
+                    {
+                        aux = new PlazoFijo(reader.GetInt32(0), (float)reader.GetDouble(2), reader.GetDateTime(3), (float)reader.GetDouble(5));
+                        pfs.Add(aux);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
+            }
+            return pfs;
+        }
+
+
+
+
         //public List<Usuario> traerDatos()
         //{
         //    List<Usuario> misdatos = new List<Usuario>();

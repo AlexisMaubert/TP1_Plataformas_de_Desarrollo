@@ -23,27 +23,22 @@ namespace TrabajoPractico1
         public List<Pago> pagos { get; set; }
         public List<Movimiento> movimientos { get; set; }
         public Usuario usuarioLogeado { get; set; } //Se crea una variable para guardar al usuario que inicie sesión
-        private List<UsuarioCaja> miUsuarioCaja; //lista de many to many caja
+        private List<UsuarioCaja> usuarioCaja; //lista de many to many caja
         private DAL DB;
 
         public Banco()
         {
+            //this.id = 1;
             this.usuarios = new List<Usuario>();
             this.cajas = new List<CajaDeAhorro>();
             this.pfs = new List<PlazoFijo>();
             this.tarjetas = new List<Tarjeta>();
             this.pagos = new List<Pago>();
             this.movimientos = new List<Movimiento>();
-            miUsuarioCaja = new List<UsuarioCaja>(); //lista UsuarioCaja
+            this.usuarioCaja = new List<UsuarioCaja>(); //lista UsuarioCaja
             DB = new DAL();
             inicializarAtributos();
-            inicializarCajaAhorro();
             //revisarPlazosFijos();
-            foreach(CajaDeAhorro caja in cajas)
-            {
-                Debug.WriteLine(cajas);
-            }
-
         }
 
         //
@@ -70,6 +65,9 @@ namespace TrabajoPractico1
             tarjetas = DB.inicializarTarjetas();
             movimientos = DB.inicializarMovimientos();
             pagos = DB.inicializarPagos();
+            cajas = DB.inicializarCajas();
+            usuarioCaja = DB.inicializarUsuarioCaja();
+            pfs = DB.inicializarPlazoFijo();
 
 
             foreach (Tarjeta tarjeta in tarjetas.ToList())
@@ -97,40 +95,21 @@ namespace TrabajoPractico1
                 p.user = user;
 
             }
-        }
-        //
-        //InicializarCaja:
-        //
-        private void inicializarCajaAhorro()
-        {
-            usuarios = DB.inicializarUsuarios();
-            cajas = DB.inicializarCajas();
-            //pero como es Many to Many quedara asi->>>
-            miUsuarioCaja = DB.inicializarUsuarioCaja();
-            foreach (UsuarioCaja uc in miUsuarioCaja)
+            foreach (UsuarioCaja uc in usuarioCaja)
             {
-                foreach (CajaDeAhorro caja in cajas)
-                {
-                    foreach (Usuario us in usuarios)
-                    {
-                        if (uc.idUsuario == us.id && uc.idCaja == caja.id)
-                        {
-                            us.cajas.Add(caja);
-                            caja.titulares.Add(us);
-                        }
-                    }
-                }
+                Usuario usuarioAux = usuarios.Find(usuario => usuario.id == uc.idUsuario);
+                CajaDeAhorro cajaAux = cajas.Find(caja => caja.id == uc.idCaja);
+                usuarioAux.cajas.Add(cajaAux);
+                cajaAux.titulares.Add(usuarioAux);
             }
-            foreach (CajaDeAhorro cajaDeAhorro in cajas)
+            foreach (PlazoFijo pf in pfs.ToList())
             {
-                foreach (Usuario us in usuarios)
-                {
-                    if (us.id == cajaDeAhorro.id)
-                    {
-                        us.cajas.Add(cajaDeAhorro);
-                        cajaDeAhorro.titulares.Add(us);
-                    }
-                }
+                PlazoFijo plazoFijo = pfs.Find(pfaux => pfaux.id == pf.id);
+                Usuario user = usuarios.Find(u => u.id == pf.id_usuario);
+                CajaDeAhorro caja = cajas.Find(c => c.id == pf.id_banco);
+                user.pf.Add(plazoFijo);
+                plazoFijo.titular = user;
+                plazoFijo.LAcaja = caja;
             }
         }
         //

@@ -12,7 +12,7 @@
         public FormPadre()
         {
             InitializeComponent();
-            this.banco = new Banco();  //Única instancia de banco.
+            banco = new Banco();  //Única instancia de banco.
             this.logued = false;
             this.hijoLogin = new FormLogin(this.banco); //Creo un formulario hijo y le paso como parámetro al banco.
             this.hijoLogin.MdiParent = this; //Indico que el formulario creado va a ser un hijo MDI de este formulario.
