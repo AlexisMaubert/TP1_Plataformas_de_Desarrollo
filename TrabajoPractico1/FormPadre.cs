@@ -23,9 +23,6 @@
             this.hijoReg.regBotonEvento += regBotonDelegado;
             this.hijoLogin.Show();
 
-            banco.altaUsuario("Admin", "Admin", 1, "admin@admin.com", "1"); //SE CREAN 2 USUARIOS PARA LAS PRUEBAS 
-            banco.altaUsuario("Admin2", "Admin2", 2, "admin@admin2.com", "2");
-
         }
 
         private void FormPadre_Load(object sender, EventArgs e)

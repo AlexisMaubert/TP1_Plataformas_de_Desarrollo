@@ -115,38 +115,7 @@ namespace TrabajoPractico1
                 plazoFijo.LAcaja = caja;
             }
         }
-        public bool agregarUsuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
-        {
-            //comprobación para que no me agreguen usuarios con DNI duplicado
-            bool esValido = true;
-            foreach (Usuario u in usuarios)
-            {
-                if (u.dni == Dni)
-                {
-                    esValido = false;
-                }
-            }
-            if (esValido)
-            {
-                int idNuevoUsuario;
-                idNuevoUsuario = DB.agregarUsuario(Nombre, Apellido, Dni, Mail, Password);
-                if (idNuevoUsuario != -1)
-                {
-                    //Ahora sí lo agrego en la lista
-                    Usuario nuevo = new Usuario(idNuevoUsuario, Dni, Nombre, Apellido,Mail, Password);
-                    usuarios.Add(nuevo);
-                    return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-            else
-            {
-                return false;
-            }
-        }
+
         //
         //MOVIMIENTOS
         //
@@ -167,14 +136,25 @@ namespace TrabajoPractico1
         //
         //USUARIOS
         //
-        public bool altaUsuario(string Nombre, string Apellido, int Dni, string Mail, string Pass) //Funcionando
+        public bool altaUsuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
         {
-            try
+            bool esValido = true;
+            foreach (Usuario u in usuarios) //comprobación para que no me agreguen usuarios con DNI duplicado
             {
-                if (!this.usuarios.Any(usuario => usuario.dni == Dni)) //Agregue la condición de que no exista el usuario
+                if (u.dni == Dni)
                 {
-                    Usuario usuarioNuevo = new Usuario(Nombre, Apellido, Dni, Mail, Pass);
-                    this.usuarios.Add(usuarioNuevo);
+                    esValido = false;
+                }
+            }
+            if (esValido)
+            {
+                int idNuevoUsuario;
+                idNuevoUsuario = DB.agregarUsuario(Nombre, Apellido, Dni, Mail, Password);
+                if (idNuevoUsuario != -1)
+                {
+                    //Ahora sí lo agrego en la lista
+                    Usuario nuevo = new Usuario(idNuevoUsuario, Dni, Nombre, Apellido, Mail, Password);
+                    usuarios.Add(nuevo);
                     return true;
                 }
                 else
@@ -182,13 +162,13 @@ namespace TrabajoPractico1
                     return false;
                 }
             }
-            catch (Exception ex)
+            else
             {
                 return false;
             }
         }
 
-        public bool bajaUsuario(int dni)
+        public bool bajaUsuario(int dni) // agregar persistencia
         {
             try
             {
@@ -202,7 +182,7 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool modificarUsuario(int dni, string mail, string pass)
+        public bool modificarUsuario(int dni, string mail, string pass) // agregar persistencia
         {
             try
             {
@@ -226,21 +206,48 @@ namespace TrabajoPractico1
         //
         //CAJAS---------------------------------------------
         //
-        public bool altaCaja(Usuario Titular, CajaDeAhorro Caja)
+        public void cerrarSesion()
         {
-            try
-            {
-                this.cajas.Add(Caja);
-                Titular.cajas.Add(Caja);
-                return true;
+            this.usuarioLogeado = null;
+        }
+        public bool crearCajaDeAhorro()
+        {
+            Random random = new Random();
+            int nuevoCbu = random.Next(100000000, 999999999);
+            while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
+            {  // Mientras haya alguna caja con ese CBU se crea otro CBU
+                nuevoCbu = random.Next(100000000, 999999999);
+                Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
             }
-            catch (Exception ex)
+            int idNuevaCaja;
+            idNuevaCaja = DB.agregarCaja(nuevoCbu);
+            if (idNuevaCaja != -1)
             {
+                //Ahora sí lo agrego en la lista
+                CajaDeAhorro nuevo = new CajaDeAhorro(idNuevaCaja, nuevoCbu);
+                cajas.Add(nuevo);
+                usuarioLogeado.cajas.Add(nuevo);
+                nuevo.titulares.Add(usuarioLogeado);
+                int idNuevoUsuarioCaja;
+                idNuevoUsuarioCaja = DB.agregarUsuarioACaja(idNuevaCaja, usuarioLogeado.id);
+                if (idNuevoUsuarioCaja != -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
+            }
+            else
+            {
+                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
 
-        public bool bajaCaja(int IdCaja)
+        public bool bajaCaja(int IdCaja) // agregar persistencia
         {
             try
             {
@@ -274,18 +281,36 @@ namespace TrabajoPractico1
                 MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            if (!caja.titulares.Contains(userAdd))
+            if (!DB.UsuarioYaEstaEnCaja(caja.id, userAdd.id))
             {
-                caja.titulares.Add(userAdd);
-                return true;
+                int idNuevoUsuarioCaja;
+                idNuevoUsuarioCaja = DB.agregarUsuarioACaja(caja.id, userAdd.id);
+                if (idNuevoUsuarioCaja != -1)
+                {
+                    if (!caja.titulares.Contains(userAdd))
+                    {
+                        caja.titulares.Add(userAdd);
+                        return true;
+                    }
+                    else
+                    {
+                        MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: APP)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo agregar la relacion en la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
             else
             {
-                MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: DB)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
-        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni)
+        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) // agregar persistencia
         {
             Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
             if (titular == null)
@@ -602,46 +627,7 @@ namespace TrabajoPractico1
             this.usuarioLogeado = user;
             return true;
         }
-        public void cerrarSesion()
-        {
-            this.usuarioLogeado = null;
-        }
-        public bool crearCajaDeAhorro()
-        {
-            Random random = new Random();
-            int nuevoCbu = random.Next(100000000, 999999999);
-            while (this.cajas.Any(caja => caja.cbu == nuevoCbu))
-            {  // Mientras haya alguna caja con ese CBU se crea otro CBU
-                nuevoCbu = random.Next(100000000, 999999999);
-                Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
-            }
-            int idNuevaCaja;
-            idNuevaCaja = DB.agregarCaja(nuevoCbu);
-            if (idNuevaCaja != -1)
-            {
-                //Ahora sí lo agrego en la lista
-                CajaDeAhorro nuevo = new CajaDeAhorro(idNuevaCaja, nuevoCbu);
-                cajas.Add(nuevo);
-                usuarioLogeado.cajas.Add(nuevo);
-                nuevo.titulares.Add(usuarioLogeado);
-                int idNuevoUsuarioCaja;
-                idNuevoUsuarioCaja = DB.agregarUsuarioACaja(idNuevaCaja, usuarioLogeado.id);
-                if (idNuevoUsuarioCaja != -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-            else
-            {
-                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-        }
+
         public void depositar(CajaDeAhorro CajaDestino, float Monto)
         {
             CajaDestino.saldo += Monto;

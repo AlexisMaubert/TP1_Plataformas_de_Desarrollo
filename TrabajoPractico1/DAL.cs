@@ -389,7 +389,7 @@ namespace TrabajoPractico1
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
-                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
                 command.Parameters["@id_caja"].Value = IdCaja;
                 command.Parameters["@id_usuario"].Value = IdUsuario;
                 try
@@ -412,6 +412,34 @@ namespace TrabajoPractico1
                     return -1;
                 }
                 return idNuevoUsuarioCaja;
+            }
+        }
+        public bool UsuarioYaEstaEnCaja(int IdCaja, int IdUsuario)
+        {
+            string queryString = "SELECT id FROM CajaUsuario WHERE id_caja = @id_caja and id_usuario = @id_usuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = IdCaja;
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                Debug.WriteLine("IdCaja: " + IdCaja);
+                Debug.WriteLine("IdUsuario: " + IdUsuario);
+                Debug.WriteLine("command: " + command);
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    return reader.Read();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return false;
+                }
             }
         }
         public int agregarPlazoFijo(int IdUsuario, float Monto, DateTime FechaFin, float Tasa, int IdCajaAhorro, bool Pagado = false, int IdBanco = 1)
