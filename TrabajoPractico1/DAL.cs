@@ -267,12 +267,10 @@ namespace TrabajoPractico1
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idNuevoUsuario = reader.GetInt32(0);
-                    Debug.WriteLine("idNuevoUsuario: " + idNuevoUsuario);
                     reader.Close();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("ex.Message: "+ ex.Message);
                     return -1;
                 }
                 return idNuevoUsuario;
@@ -414,7 +412,7 @@ namespace TrabajoPractico1
                 return idNuevoUsuarioCaja;
             }
         }
-        public bool UsuarioYaEstaEnCaja(int IdCaja, int IdUsuario)
+        public bool usuarioYaEstaEnCaja(int IdCaja, int IdUsuario)
         {
             string queryString = "SELECT id FROM CajaUsuario WHERE id_caja = @id_caja and id_usuario = @id_usuario;";
             using (SqlConnection connection =
@@ -425,9 +423,6 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
                 command.Parameters["@id_caja"].Value = IdCaja;
                 command.Parameters["@id_usuario"].Value = IdUsuario;
-                Debug.WriteLine("IdCaja: " + IdCaja);
-                Debug.WriteLine("IdUsuario: " + IdUsuario);
-                Debug.WriteLine("command: " + command);
                 try
                 {
                     connection.Open();
@@ -439,6 +434,79 @@ namespace TrabajoPractico1
                     MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     Debug.WriteLine("ex.Message: " + ex.Message);
                     return false;
+                }
+            }
+        }       
+        public int eliminarUsuarioDeCaja(int IdCaja, int IdUsuario)
+        {
+            string queryString = "DELETE FROM CajaUsuario WHERE id_caja = @id_caja and id_usuario = @id_usuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = IdCaja;
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        }
+        public int eliminarCaja(int IdCaja)
+        {
+            string connectionString = Properties.Resources.ConnectionStr;
+            /////////////////////////////////////Elimino usuarios de la caja
+            string queryString = "SELECT id_usuario from CajaUsuario where id_caja=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = IdCaja;
+                try
+                {
+                    connection.Open();
+                    SqlDataReader reader = command.ExecuteReader();
+                    while (reader.Read())
+                    {
+                        int IdUsuario = reader.GetInt32(0);
+                        eliminarUsuarioDeCaja(IdCaja, IdUsuario);
+                    }
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return 0;
+                }
+            }
+            /////////////////////////////////////Elimino caja
+            queryString = "DELETE FROM [dbo].[CajaAhorro] WHERE ID=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = IdCaja;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                    return 0;
                 }
             }
         }
@@ -525,12 +593,10 @@ namespace TrabajoPractico1
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idTarjetaNueva = reader.GetInt32(0);
-                    Debug.WriteLine("idTarjetaNueva: " + idTarjetaNueva);
                     reader.Close();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("ex.Message: " + ex.Message);
                     return -1;
                 }
                 return idTarjetaNueva;
@@ -575,12 +641,10 @@ namespace TrabajoPractico1
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     Pago = reader.GetInt32(0);
-                    Debug.WriteLine("idPago: " + Pago);
                     reader.Close();
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("ex.Message: " + ex.Message);
                     return -1;
                 }
                 return Pago;

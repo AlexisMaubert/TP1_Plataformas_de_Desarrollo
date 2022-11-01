@@ -195,10 +195,6 @@ namespace TrabajoPractico1
                 esconderBtns();
                 refreshDataCaja();
             }
-            else
-            {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
         }
         //AGREGAR TITULAR
         private void btnAgregarTitular_Click(object sender, EventArgs e)

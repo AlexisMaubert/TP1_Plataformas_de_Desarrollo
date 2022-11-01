@@ -29,7 +29,7 @@ namespace TrabajoPractico1
             this.password = inputPass.Text;
             if(password != "" && email != "" && Regex.IsMatch(email, @"^[\w-.]+@([\w-]+.)+[\w-]{2,4}$") && tryDni && this.dni>999999 && apellido !="" && nombre != "")
             {
-                if (banco.altaUsuario(nombre, apellido, dni, email, password) )
+                if (banco.altaUsuario(nombre, apellido, dni, email, password))
                 {
                     this.regBotonEvento();
                 }

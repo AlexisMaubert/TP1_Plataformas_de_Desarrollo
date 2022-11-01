@@ -251,20 +251,28 @@ namespace TrabajoPractico1
         {
             try
             {
-                CajaDeAhorro cajaARemover = this.cajas.SingleOrDefault(caja => caja.id == IdCaja);
+                CajaDeAhorro cajaARemover = this.cajas.Find(caja => caja.id == IdCaja);
                 if (cajaARemover.saldo == 0)
                 {
-                    this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
-                    foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
+                    if (DB.eliminarCaja(IdCaja) > 0)
                     {
-                        titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
+                        this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
+                        foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
+                        {
+                            titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
+                        }
+                        return true;
                     }
-                    return true;
+                    else
+                    {
+                        MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return false;
+                    }
                 }
                 else
                 {
+                    MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return false;
-                    Debug.WriteLine("El saldo de la caja de ahorro no estaba en 0");
                 }
             }
             catch (Exception ex)
@@ -281,7 +289,7 @@ namespace TrabajoPractico1
                 MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
-            if (!DB.UsuarioYaEstaEnCaja(caja.id, userAdd.id))
+            if (!DB.usuarioYaEstaEnCaja(caja.id, userAdd.id))
             {
                 int idNuevoUsuarioCaja;
                 idNuevoUsuarioCaja = DB.agregarUsuarioACaja(caja.id, userAdd.id);
@@ -313,19 +321,29 @@ namespace TrabajoPractico1
         public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) // agregar persistencia
         {
             Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
-            if (titular == null)
+            CajaDeAhorro cajaBanco = this.cajas.Find(cajaaux => caja.id == cajaaux.id);
+            if (titular == null || cajaBanco == null)
             {
                 MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
             if (caja.titulares.Contains(titular) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
             {
-                caja.titulares.Remove(titular);//También elimina al Usuario de la lista de usuarios del banco... No se xq
-                return true;
+                if(DB.eliminarUsuarioDeCaja(caja.id, titular.id)>0)
+                {
+                    caja.titulares.Remove(titular);
+                    cajaBanco.titulares.Remove(titular);
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: DB)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
             else
             {
-                MessageBox.Show("Ha ocurrido un error", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: APP)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }
