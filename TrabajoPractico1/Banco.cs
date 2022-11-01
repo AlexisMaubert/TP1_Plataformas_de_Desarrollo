@@ -69,7 +69,6 @@ namespace TrabajoPractico1
             usuarioCaja = DB.inicializarUsuarioCaja();
             pfs = DB.inicializarPlazoFijo();
 
-
             foreach (Tarjeta tarjeta in tarjetas.ToList())
             {
                 Usuario user = usuarios.Find(usuario => usuario.id == tarjeta.id_usuario);
@@ -98,9 +97,13 @@ namespace TrabajoPractico1
             foreach (UsuarioCaja uc in usuarioCaja)
             {
                 Usuario usuarioAux = usuarios.Find(usuario => usuario.id == uc.idUsuario);
-                CajaDeAhorro cajaAux = cajas.Find(caja => caja.id == uc.idCaja);
-                usuarioAux.cajas.Add(cajaAux);
-                cajaAux.titulares.Add(usuarioAux);
+                List<CajaDeAhorro> cajasAux = cajas.FindAll(caja => caja.id == uc.idCaja);
+                foreach (CajaDeAhorro cajaAux in cajasAux)
+                {
+                    usuarioAux.cajas.Add(cajaAux);
+                    cajaAux.titulares.Add(usuarioAux);
+                    cajas.Add(cajaAux);
+                }
             }
             foreach (PlazoFijo pf in pfs.ToList())
             {
@@ -110,6 +113,38 @@ namespace TrabajoPractico1
                 user.pf.Add(plazoFijo);
                 plazoFijo.titular = user;
                 plazoFijo.LAcaja = caja;
+            }
+        }
+        public bool agregarUsuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
+        {
+            //comprobación para que no me agreguen usuarios con DNI duplicado
+            bool esValido = true;
+            foreach (Usuario u in usuarios)
+            {
+                if (u.dni == Dni)
+                {
+                    esValido = false;
+                }
+            }
+            if (esValido)
+            {
+                int idNuevoUsuario;
+                idNuevoUsuario = DB.agregarUsuario(Nombre, Apellido, Dni, Mail, Password);
+                if (idNuevoUsuario != -1)
+                {
+                    //Ahora sí lo agrego en la lista
+                    Usuario nuevo = new Usuario(idNuevoUsuario, Dni, Nombre, Apellido,Mail, Password);
+                    usuarios.Add(nuevo);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            else
+            {
+                return false;
             }
         }
         //

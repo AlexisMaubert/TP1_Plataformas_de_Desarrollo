@@ -17,6 +17,7 @@ namespace TrabajoPractico1
         public Usuario titular { get; set; }
         public int id_banco { get; set; }
         public int id_usuario { get; set; }
+        public int id_caja { get; set; }
         public CajaDeAhorro LAcaja { get; set; }
     public PlazoFijo()
         
@@ -36,14 +37,18 @@ namespace TrabajoPractico1
            this.LAcaja = new CajaDeAhorro();
         }
 
-        public PlazoFijo(int id, float Monto, DateTime FechaFin, float Tasa)
+        public PlazoFijo(int Id, int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa, bool Pagado, int Id_banco, int Id_caja)
         {
             this.titular = new Usuario();
+            this.id = Id;
+            this.id_usuario = Id_usuario;
             this.monto = Monto;
-            this.fechaIni = DateTime.Now;
+            this.fechaIni = FechaIni;
             this.fechaFin = FechaFin;
             this.tasa = Tasa;
-            this.pagado = false;
+            this.pagado = Pagado;
+            this.id_banco = Id_banco;
+            this.id_caja = Id_caja;
             this.LAcaja = new CajaDeAhorro();
         }
 

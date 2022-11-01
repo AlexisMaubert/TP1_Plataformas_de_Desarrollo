@@ -30,7 +30,6 @@
         {
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -43,10 +42,6 @@
             this.btnBajaCaja = new System.Windows.Forms.Button();
             this.btnNewCaja = new System.Windows.Forms.Button();
             this.dataGridViewCaja = new System.Windows.Forms.DataGridView();
-            this.ColumnId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabPlazoFijo = new System.Windows.Forms.TabPage();
             this.comboBoxPFCBU = new System.Windows.Forms.ComboBox();
             this.btnEliminarPF = new System.Windows.Forms.Button();
@@ -82,8 +77,13 @@
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
+            this.ColumnId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
@@ -110,7 +110,6 @@
             // 
             // tabCajaDeAhorro
             // 
-            this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
             this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
@@ -131,16 +130,6 @@
             this.tabCajaDeAhorro.TabIndex = 0;
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
-            // 
-            // btnCerrarSesion
-            // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
-            this.btnCerrarSesion.TabIndex = 13;
-            this.btnCerrarSesion.Text = "Cerrar Sesión";
-            this.btnCerrarSesion.UseVisualStyleBackColor = true;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // label2
             // 
@@ -293,43 +282,6 @@
             this.dataGridViewCaja.TabIndex = 0;
             this.dataGridViewCaja.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
             this.dataGridViewCaja.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
-            // 
-            // ColumnId
-            // 
-            this.ColumnId.Frozen = true;
-            this.ColumnId.HeaderText = "ID";
-            this.ColumnId.MinimumWidth = 6;
-            this.ColumnId.Name = "ColumnId";
-            this.ColumnId.ReadOnly = true;
-            this.ColumnId.Visible = false;
-            this.ColumnId.Width = 125;
-            // 
-            // ColumnCbu
-            // 
-            this.ColumnCbu.Frozen = true;
-            this.ColumnCbu.HeaderText = "CBU";
-            this.ColumnCbu.MinimumWidth = 6;
-            this.ColumnCbu.Name = "ColumnCbu";
-            this.ColumnCbu.ReadOnly = true;
-            this.ColumnCbu.Width = 125;
-            // 
-            // ColumnTitulares
-            // 
-            this.ColumnTitulares.Frozen = true;
-            this.ColumnTitulares.HeaderText = "Titular/res";
-            this.ColumnTitulares.MinimumWidth = 6;
-            this.ColumnTitulares.Name = "ColumnTitulares";
-            this.ColumnTitulares.ReadOnly = true;
-            this.ColumnTitulares.Width = 125;
-            // 
-            // ColumnSaldo
-            // 
-            this.ColumnSaldo.Frozen = true;
-            this.ColumnSaldo.HeaderText = "Saldo";
-            this.ColumnSaldo.MinimumWidth = 6;
-            this.ColumnSaldo.Name = "ColumnSaldo";
-            this.ColumnSaldo.ReadOnly = true;
-            this.ColumnSaldo.Width = 125;
             // 
             // tabPlazoFijo
             // 
@@ -726,6 +678,16 @@
             this.ColumnConsumosTarjeta.ReadOnly = true;
             this.ColumnConsumosTarjeta.Width = 125;
             // 
+            // btnCerrarSesion
+            // 
+            this.btnCerrarSesion.Location = new System.Drawing.Point(649, 490);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
+            this.btnCerrarSesion.TabIndex = 13;
+            this.btnCerrarSesion.Text = "Cerrar Sesión";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
+            // 
             // label1
             // 
             this.label1.AutoSize = true;
@@ -745,6 +707,42 @@
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
             // 
+            // ColumnId
+            // 
+            this.ColumnId.Frozen = true;
+            this.ColumnId.HeaderText = "ID";
+            this.ColumnId.MinimumWidth = 6;
+            this.ColumnId.Name = "ColumnId";
+            this.ColumnId.ReadOnly = true;
+            this.ColumnId.Width = 125;
+            // 
+            // ColumnCbu
+            // 
+            this.ColumnCbu.Frozen = true;
+            this.ColumnCbu.HeaderText = "CBU";
+            this.ColumnCbu.MinimumWidth = 6;
+            this.ColumnCbu.Name = "ColumnCbu";
+            this.ColumnCbu.ReadOnly = true;
+            this.ColumnCbu.Width = 125;
+            // 
+            // ColumnTitulares
+            // 
+            this.ColumnTitulares.Frozen = true;
+            this.ColumnTitulares.HeaderText = "Titular/res";
+            this.ColumnTitulares.MinimumWidth = 6;
+            this.ColumnTitulares.Name = "ColumnTitulares";
+            this.ColumnTitulares.ReadOnly = true;
+            this.ColumnTitulares.Width = 125;
+            // 
+            // ColumnSaldo
+            // 
+            this.ColumnSaldo.Frozen = true;
+            this.ColumnSaldo.HeaderText = "Saldo";
+            this.ColumnSaldo.MinimumWidth = 6;
+            this.ColumnSaldo.Name = "ColumnSaldo";
+            this.ColumnSaldo.ReadOnly = true;
+            this.ColumnSaldo.Width = 125;
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
@@ -752,6 +750,7 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.ControlBox = false;
+            this.Controls.Add(this.btnCerrarSesion);
             this.Controls.Add(this.nombreUsuario);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
@@ -788,12 +787,8 @@
         private TabPage tabPagos;
         private TabPage tabTarjetas;
         private DataGridView dataGridViewCaja;
-        private DataGridViewTextBoxColumn ColumnId;
-        private DataGridViewTextBoxColumn ColumnCbu;
-        private DataGridViewTextBoxColumn ColumnTitulares;
         private ComboBox comboBox1;
         private DateTimePicker dateTimePicker1;
-        private DataGridViewTextBoxColumn ColumnSaldo;
         private Button btnNewCaja;
         private Button btnNewPf;
         private DataGridView dataGridViewPF;
@@ -836,5 +831,9 @@
         private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
         private Button btnEliminarPF;
         private ComboBox comboBoxPFCBU;
+        private DataGridViewTextBoxColumn ColumnId;
+        private DataGridViewTextBoxColumn ColumnCbu;
+        private DataGridViewTextBoxColumn ColumnTitulares;
+        private DataGridViewTextBoxColumn ColumnSaldo;
     }
 }

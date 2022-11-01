@@ -157,7 +157,7 @@ namespace TrabajoPractico1
             }
             this.refreshListas();
         }
-        //
+        // 
         //
         //PESTAÑA CAJA DE AHORRO
         //
@@ -178,9 +178,6 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[0].Value.ToString());
-                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[1].Value.ToString());
-                    Debug.WriteLine(dataGridViewCaja.Rows[e.RowIndex].Cells[2].Value.ToString());
                     mostrarBtns();
                 }
             }
@@ -215,7 +212,7 @@ namespace TrabajoPractico1
                     refreshDataCaja();
                 }
             }
-            else
+            else   
             {
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -247,6 +244,7 @@ namespace TrabajoPractico1
             }
             else
             {
+                Debug.WriteLine("idCaja: "+ idCaja);
                 banco.depositar(banco.BuscarCajaDeAhorro(idCaja), deposito);
                 MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataCaja();
