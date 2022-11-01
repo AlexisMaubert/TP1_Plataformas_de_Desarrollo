@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data;
+﻿using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
 
@@ -232,12 +227,12 @@ namespace TrabajoPractico1
             return pfs;
         }
         //devuelve el ID del usuario agregado a la base, si algo falla devuelve -1
-        public int agregarUsuario(string Nombre, string Apellido, int Dni, string Mail, string Password)
+        public int agregarUsuario(string Nombre, string Apellido, int Dni, string Mail, string Password, int IntentosFallidos = 0, bool Bloqueado = false, int IdBanco = 1, bool IsAdmin = false)
         {
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
             int idNuevoUsuario = -1;
-            string queryString = "INSERT INTO [dbo].[Usuario] ([DNI],[Nombre],[Apellido],[Mail],[Password]) VALUES (@dni,@nombre,@apellido,@mail,@password);";
+            string queryString = "INSERT INTO [dbo].[Usuario] ([dni],[nombre],[apellido],[mail],[password],[intentos_fallidos],[bloqueado],[id_banco],[is_admin]) VALUES (@dni,@nombre,@apellido,@mail,@password,@intentos_fallidos,@bloqueado,@id_banco,@is_admin);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -247,11 +242,19 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@apellido", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@mail", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@password", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@intentos_fallidos", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@bloqueado", SqlDbType.Bit));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@is_admin", SqlDbType.Bit));
                 command.Parameters["@dni"].Value = Dni;
                 command.Parameters["@nombre"].Value = Nombre;
                 command.Parameters["@apellido"].Value = Apellido;
                 command.Parameters["@mail"].Value = Mail;
                 command.Parameters["@password"].Value = Password;
+                command.Parameters["@intentos_fallidos"].Value = IntentosFallidos;
+                command.Parameters["@bloqueado"].Value = Bloqueado;
+                command.Parameters["@id_banco"].Value = IdBanco;
+                command.Parameters["@is_admin"].Value = IsAdmin;
                 try
                 {
                     connection.Open();
@@ -264,11 +267,12 @@ namespace TrabajoPractico1
                     SqlDataReader reader = command.ExecuteReader();
                     reader.Read();
                     idNuevoUsuario = reader.GetInt32(0);
+                    Debug.WriteLine("idNuevoUsuario: " + idNuevoUsuario);
                     reader.Close();
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    Debug.WriteLine("ex.Message: "+ ex.Message);
                     return -1;
                 }
                 return idNuevoUsuario;
@@ -335,5 +339,226 @@ namespace TrabajoPractico1
                 }
             }
         }
+        public int agregarCaja(int Cbu, float Saldo = 0, int IdBanco = 1)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int idNuevaCaja = -1;
+            string queryString = "INSERT INTO [dbo].[CajaAhorro] ([cbu],[saldo],[id_banco]) VALUES (@cbu, @saldo, @id_banco);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@saldo", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.NVarChar));
+                command.Parameters["@cbu"].Value = Cbu;
+                command.Parameters["@saldo"].Value = Saldo;
+                command.Parameters["@id_banco"].Value = IdBanco;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CajaAhorro]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevaCaja = reader.GetInt32(0);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return idNuevaCaja;
+            }
+        }
+
+        public int agregarUsuarioACaja(int IdCaja, int IdUsuario)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int idNuevoUsuarioCaja = -1;
+            string queryString = "INSERT INTO [dbo].[CajaUsuario] ([id_caja],[id_usuario]) VALUES (@id_caja, @id_usuario);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.NVarChar));
+                command.Parameters["@id_caja"].Value = IdCaja;
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CajaAhorro]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevoUsuarioCaja = reader.GetInt32(0);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return idNuevoUsuarioCaja;
+            }
+        }
+        public int agregarPlazoFijo(int IdUsuario, float Monto, DateTime FechaFin, float Tasa, int IdCajaAhorro, bool Pagado = false, int IdBanco = 1)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int idNuevaCaja = -1;
+            string queryString = "INSERT INTO [dbo].[PlazoFijo] ([id_usuario],[monto],[fecha_ini],[fecha_fin],[tasa],[pagado],[id_banco],[id_caja_ahorro]) VALUES (@id_usuario, @monto, @fecha_ini, @fecha_fin, @tasa, @pagado, @id_banco, @id_caja_ahorro);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@fecha_ini", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@fecha_fin", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@tasa", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_caja_ahorro", SqlDbType.NVarChar));
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                command.Parameters["@monto"].Value = Monto;
+                command.Parameters["@fecha_ini"].Value = DateTime.Now;
+                command.Parameters["@fecha_fin"].Value = FechaFin;
+                command.Parameters["@tasa"].Value = Tasa;
+                command.Parameters["@pagado"].Value = Pagado;
+                command.Parameters["@id_banco"].Value = IdBanco;
+                command.Parameters["@id_caja_ahorro"].Value = IdCajaAhorro;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[CajaAhorro]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevaCaja = reader.GetInt32(0);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return idNuevaCaja;
+            }
+        }
+        public int agregarTarjeta(int Id_usuario, int Numero, int CodigoV, float Limite, float Consumo,int Id_Banco = 1)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int idTarjetaNueva = -1;
+            string queryString = "INSERT INTO [dbo].[Tarjeta] ([id_usuario],[numero],[codigo_v],[limite],[consumo],[id_banco]) VALUES (@id_usuario,@numero,@codigo_v,@limite,@consumo,@id_banco);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@codigo_v", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@limite", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@consumo", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = Id_usuario;
+                command.Parameters["@numero"].Value = Numero;
+                command.Parameters["@codigo_v"].Value = CodigoV;
+                command.Parameters["@limite"].Value = Limite;
+                command.Parameters["@consumo"].Value = Consumo;
+                command.Parameters["@id_banco"].Value = Id_Banco;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[Tarjeta]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idTarjetaNueva = reader.GetInt32(0);
+                    Debug.WriteLine("idTarjetaNueva: " + idTarjetaNueva);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return idTarjetaNueva;
+            }
+
+         }    
+         public int agregarPago(int Id_usuario, string Nombre, float Monto, bool Pagado = false, string Metodo="", int Id_Banco = 1)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int Pago = -1;
+            string queryString = "INSERT INTO [dbo].[Pago] ([id_usuario],[nombre],[monto],[pagado],[metodo],[id_banco]) VALUES (@id_usuario,@nombre,@monto,@pagado,@metodo,@id_banco);";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@nombre", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Bit));
+                command.Parameters.Add(new SqlParameter("@metodo", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
+               
+               
+                command.Parameters["@Id_usuario"].Value = Id_usuario;
+                command.Parameters["@Nombre"].Value = Nombre;
+                command.Parameters["@Monto"].Value = Monto;
+                command.Parameters["@Pagado"].Value = Pagado;
+                command.Parameters["@Metodo"].Value = Metodo;
+                command.Parameters["@Id_banco"].Value = Id_Banco;
+                
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[Pago]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    Pago = reader.GetInt32(0);
+                    Debug.WriteLine("idPago: " + Pago);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return Pago;
+            }
+        }
+
     }
 }
+

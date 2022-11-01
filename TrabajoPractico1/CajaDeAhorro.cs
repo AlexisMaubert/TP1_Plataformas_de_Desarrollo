@@ -21,7 +21,7 @@ namespace TrabajoPractico1
             titulares = new List<Usuario>();    
             movimientos = new List<Movimiento>();
         }
-        public CajaDeAhorro(int id, int cbu, float saldo , int id_banco)
+        public CajaDeAhorro(int id, int cbu, float saldo = 0, int id_banco = 1)
         {
             this.id = id;
             this.cbu = cbu;

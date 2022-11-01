@@ -319,11 +319,16 @@ namespace TrabajoPractico1
                     Debug.WriteLine("El número de tarjeta generado ya existe, creado uno nuevo...");
                 }
                 int nuevoCodigo = random.Next(100, 999); //Creo un codigo de tarjeta aleatorio
-                Tarjeta tarjetaNueva = new Tarjeta(nuevoNumero, nuevoCodigo, this.usuarioLogeado, 20000);
-                this.tarjetas.Add(tarjetaNueva); //Agrego la tarjeta a la lista de tarjetas del banco
-                this.usuarioLogeado.tarjetas.Add(tarjetaNueva); //Agrego la tarjeta a la lista de tarjetas del usuario
-
-                return true;
+                int idNuevaTarjeta = DB.agregarTarjeta(usuarioLogeado.id, nuevoNumero, nuevoCodigo,20000, 0);
+                if (idNuevaTarjeta != -1)
+                {
+                    Tarjeta nuevo = new Tarjeta(idNuevaTarjeta, usuarioLogeado.id, nuevoNumero, nuevoCodigo, 20000, 0);
+                    nuevo.titular = usuarioLogeado;
+                    tarjetas.Add(nuevo);
+                    usuarioLogeado.tarjetas.Add(nuevo);
+                    return true;
+                }
+                return false;
             }
             catch
             {
@@ -378,15 +383,18 @@ namespace TrabajoPractico1
             {
                 Random random = new Random();
                 int nuevoId = random.Next(10000, 99999);
-                while (this.pagos.Any(pago => pago.id == nuevoId))
-                {  // Mientras haya alguna tarjeta con ese numero se crea otro numero
-                    nuevoId = random.Next(10000, 99999);
-                    Debug.WriteLine("El número de pago generado ya existe, creado uno nuevo...");
+                int idNuevoPago = DB.agregarPago(usuarioLogeado.id, Nombre, Monto);
+                if (idNuevoPago != -1)
+                {
+                    Pago nuevoPago = new Pago(idNuevoPago, Usuario, Nombre, Monto);
+                    this.pagos.Add(nuevoPago);
+                    Usuario.pagos.Add(nuevoPago);
+                    return true;
                 }
-                Pago nuevoPago = new Pago(nuevoId, Usuario, Nombre, Monto);
-                this.pagos.Add(nuevoPago);
-                Usuario.pagos.Add(nuevoPago);
-                return true;
+                else
+                {
+                    return false;
+                }
             }
             catch
             {
@@ -435,8 +443,9 @@ namespace TrabajoPractico1
                 usuarioLogeado.pf.Add(NuevoPlazoFijo);
                 return true;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine("ex: "+ex.Message);
                 return false;
             }
         }
@@ -462,20 +471,29 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool crearPlazoFijo(int Id, float Monto)
+        public bool crearPlazoFijo(int IdCaja, float Monto)
         {
             try
             {
                 if (Monto >= 1000)
                 {
-                    CajaDeAhorro caja = this.BuscarCajaDeAhorro(Id);
+                    CajaDeAhorro caja = this.BuscarCajaDeAhorro(IdCaja);
                     if (caja.saldo > Monto)
                     {
-                        MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        return true;
-                        PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
-                        nuevoPlazoFijo.LAcaja = caja;
-                        this.agregarPlazoFijo(nuevoPlazoFijo);
+                        int idNuevoPlazoFijo;
+                        idNuevoPlazoFijo = DB.agregarPlazoFijo(usuarioLogeado.id, Monto, DateTime.Now.AddMonths(1), 90, caja.id);
+                        if (idNuevoPlazoFijo != -1)
+                        {
+                            MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
+                            nuevoPlazoFijo.LAcaja = caja;
+                            this.agregarPlazoFijo(nuevoPlazoFijo);
+                            return true;
+                        }
+                        else
+                        {
+                            return false;
+                        }
                     }
                     else
                     {
@@ -521,7 +539,6 @@ namespace TrabajoPractico1
             }
             return null;
         }
-
         public List<Pago> obtenerPagos()
         {
             return usuarioLogeado.pagos.ToList();
@@ -552,7 +569,6 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.nombre + " " + usuarioLogeado.apellido;
         }
-
         //
         //METODOS ACCIONES DEL USUARIO
         //
@@ -599,15 +615,30 @@ namespace TrabajoPractico1
                 nuevoCbu = random.Next(100000000, 999999999);
                 Debug.WriteLine("El CBU generado ya existe, creado uno nuevo...");
             }
-            CajaDeAhorro cajaNueva = new CajaDeAhorro(nuevoCbu, this.usuarioLogeado);
-            cajaNueva.saldo = 0;
-            try
+            int idNuevaCaja;
+            idNuevaCaja = DB.agregarCaja(nuevoCbu);
+            if (idNuevaCaja != -1)
             {
-                this.altaCaja(this.usuarioLogeado, cajaNueva);
-                return true;
+                //Ahora sí lo agrego en la lista
+                CajaDeAhorro nuevo = new CajaDeAhorro(idNuevaCaja, nuevoCbu);
+                cajas.Add(nuevo);
+                usuarioLogeado.cajas.Add(nuevo);
+                nuevo.titulares.Add(usuarioLogeado);
+                int idNuevoUsuarioCaja;
+                idNuevoUsuarioCaja = DB.agregarUsuarioACaja(idNuevaCaja, usuarioLogeado.id);
+                if (idNuevoUsuarioCaja != -1)
+                {
+                    return true;
+                }
+                else
+                {
+                    MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                }
             }
-            catch
+            else
             {
+                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
             }
         }

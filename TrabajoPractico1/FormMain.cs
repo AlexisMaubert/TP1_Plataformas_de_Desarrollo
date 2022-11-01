@@ -420,6 +420,7 @@ namespace TrabajoPractico1
                 refreshDataPF();
             }
             comboBoxPFCBU.Visible = false;
+            refreshDataPF();
         }
         //
         //

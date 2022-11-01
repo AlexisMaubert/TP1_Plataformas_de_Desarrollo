@@ -31,7 +31,7 @@ namespace TrabajoPractico1
             this.limite = Limite;
             this.consumo = 0;
         }
-        public Tarjeta(int Id, int Id_Usuario, int Numero, int CodigoV, float Limite, float Consumo, int Id_banco)
+        public Tarjeta(int Id, int Id_Usuario, int Numero, int CodigoV, float Limite, float Consumo, int Id_banco = 1)
         {
             this.id = Id;
             this.id_usuario = Id_Usuario;
