@@ -142,7 +142,7 @@ namespace TrabajoPractico1
                 Caja.movimientos.Add(movimientoNuevo);
                 return true;
             }
-            catch ()
+            catch
             {
                 return false;
             }
