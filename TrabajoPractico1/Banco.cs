@@ -133,6 +133,12 @@ namespace TrabajoPractico1
         {
             try
             {
+                int idNuevoMovimiento = DB.agregarMovimiento(Detalle, Monto, Caja.id);
+                if (idNuevoMovimiento == -1)
+                {
+                    MessageBox.Show(String.Format("No se pudo crear el movimiento: '{0}' de valor: {1} en la caja de id: {2} (Nivel DB)", Detalle, Monto, Caja.id), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return false;
+                };
                 Movimiento movimientoNuevo = new Movimiento(Caja, Detalle, Monto);
                 this.movimientos.Add(movimientoNuevo);
                 Caja.movimientos.Add(movimientoNuevo);
@@ -657,11 +663,17 @@ namespace TrabajoPractico1
             return 0;
         }
 
-        public void depositar(int IdCaja, float Monto)
+        public bool depositar(int IdCaja, float Monto)
         {
             CajaDeAhorro cajaDestino = BuscarCajaDeAhorro(IdCaja);
+            if (DB.DepositarEnCaja(IdCaja, Monto) <= 0)
+            {
+                MessageBox.Show(String.Format("No se pudo depositar el monto: {0} en la caja de id: {1} (Nivel DB)", Monto, IdCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
             cajaDestino.saldo += Monto;
             this.altaMovimiento(cajaDestino, "Deposito", Monto);
+            return true;
         }
         public bool retirar(int IdCaja, float Monto)
         {

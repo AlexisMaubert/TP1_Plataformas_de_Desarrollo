@@ -312,9 +312,11 @@ namespace TrabajoPractico1
             }
             else
             {
-                banco.depositar(idCaja, deposito);
-                MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataCaja();
+                if (banco.depositar(idCaja, deposito))
+                {
+                    MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataCaja();
+                }
             }
         }
         //RETIRAR

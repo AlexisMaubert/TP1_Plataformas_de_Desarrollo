@@ -1,6 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TrabajoPractico1
 {
@@ -349,7 +350,7 @@ namespace TrabajoPractico1
                 SqlCommand command = new SqlCommand(queryString, connection);
                 command.Parameters.Add(new SqlParameter("@cbu", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@saldo", SqlDbType.NVarChar));
-                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
                 command.Parameters["@cbu"].Value = Cbu;
                 command.Parameters["@saldo"].Value = Saldo;
                 command.Parameters["@id_banco"].Value = IdBanco;
@@ -461,6 +462,30 @@ namespace TrabajoPractico1
                 }
             }
         }
+        public int DepositarEnCaja(int IdCaja, float Monto)
+        {
+            string queryString = "UPDATE CajaAhorro SET saldo = saldo + @monto WHERE id = @id_caja;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = IdCaja;
+                command.Parameters["@monto"].Value = Monto;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        }
         public int eliminarCaja(int IdCaja)
         {
             string connectionString = Properties.Resources.ConnectionStr;
@@ -510,6 +535,51 @@ namespace TrabajoPractico1
                 }
             }
         }
+
+        public int agregarMovimiento(string Detalle, float Monto, int CajaId, int BancoId = 1)
+        {
+            //primero me aseguro que lo pueda agregar a la base
+            int resultadoQuery;
+            int idNuevoMovimiento = -1;
+            Debug.WriteLine("Detalle: " + Detalle);
+            Debug.WriteLine("Monto: " + Monto);
+            Debug.WriteLine("CajaId: " + CajaId);
+            Debug.WriteLine("BancoId: " + BancoId);
+            string queryString = "INSERT INTO [dbo].[Movimiento] ([id_caja],[detalle],[monto],[id_banco],[fecha]) VALUES (@id_caja, @detalle, @monto, @id_banco, GETDATE());";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@detalle", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Float));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = CajaId;
+                command.Parameters["@detalle"].Value = Detalle;
+                command.Parameters["@monto"].Value = Monto;
+                command.Parameters["@id_banco"].Value = BancoId;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    resultadoQuery = command.ExecuteNonQuery();
+                    //***************
+                    //Ahora hago esta query para obtener el ID
+                    string ConsultaID = "SELECT MAX([ID]) FROM [dbo].[Movimiento]";
+                    command = new SqlCommand(ConsultaID, connection);
+                    SqlDataReader reader = command.ExecuteReader();
+                    reader.Read();
+                    idNuevoMovimiento = reader.GetInt32(0);
+                    reader.Close();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("ex.Message: " + ex.Message);
+                    return -1;
+                }
+                return idNuevoMovimiento;
+            }
+        }
         public int agregarPlazoFijo(int IdUsuario, float Monto, DateTime FechaFin, float Tasa, int IdCajaAhorro, bool Pagado = false, int IdBanco = 1)
         {
             //primero me aseguro que lo pueda agregar a la base
@@ -526,7 +596,7 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@fecha_fin", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@tasa", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.NVarChar));
-                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@id_caja_ahorro", SqlDbType.NVarChar));
                 command.Parameters["@id_usuario"].Value = IdUsuario;
                 command.Parameters["@monto"].Value = Monto;
