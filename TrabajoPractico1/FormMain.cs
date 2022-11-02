@@ -6,6 +6,7 @@ using System.Data;
 using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,7 +19,7 @@ namespace TrabajoPractico1
     {
         private Banco banco;
         private int idCaja;
-        private int numeroTarjetaSeleccionado;
+        private int idTarjeta;
         private int idPago;
         private int idPF;
         private DateTime fechaElegida;
@@ -164,7 +165,15 @@ namespace TrabajoPractico1
         //
         private void btnNewCaja_Click(object sender, EventArgs e)
         {
-            banco.crearCajaDeAhorro();
+            int result = banco.crearCajaDeAhorro();
+            if(result == 1)
+            {
+                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             this.refreshDataCaja();
         }
         //DATA GRID VIEW
@@ -189,11 +198,28 @@ namespace TrabajoPractico1
         //BAJA DE CAJA
         private void btnBajaCaja_Click(object sender, EventArgs e)
         {
-            if (banco.bajaCaja(idCaja))
+            int result = banco.bajaCaja(idCaja);
+            if (result == 0)
             {
                 MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 esconderBtns();
                 refreshDataCaja();
+            }
+            if (result == 1)
+            {
+                MessageBox.Show("No se encontró la caja de ahorro que se desea eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 4)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar eliminar la caja", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //AGREGAR TITULAR
@@ -202,16 +228,41 @@ namespace TrabajoPractico1
             int nuevodni;
             if (Int32.TryParse(Interaction.InputBox("ingrese Dni del nuevo titular: ", "Agregando Titular"), out nuevodni))
             {
-                if (banco.agregarUsuarioACaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
+                int result = banco.agregarUsuarioACaja(idCaja, nuevodni);
+                if (result == 0)
                 {
                     MessageBox.Show("Se agrego el nuevo Titular", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    refreshDataCaja();
+                }
+                else if(result == 1)
+                {
+                    MessageBox.Show("No se encontró un usuario con dni nro " + nuevodni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 2)
+                {
+                    MessageBox.Show("No se encontró la caja de ahorro deseada", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 3)
+                {
+                    MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: DB)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 4)
+                {
+                    MessageBox.Show("No se pudo agregar la relacion en la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 5)
+                {
+                    MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: APP)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 6)
+                {
+                    MessageBox.Show("Ha ocurrido un error al intentar agregar un titular a la caja de ahorro", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else   
             {
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            refreshDataCaja();
         }
         //ELIMINAR TITULAR
         private void btnEliminarTitular_Click(object sender, EventArgs e)
@@ -219,16 +270,37 @@ namespace TrabajoPractico1
             int nuevodni;
             if (Int32.TryParse(Interaction.InputBox("ingrese Dni del titular a eliminar: ", "Eliminar Titular"), out nuevodni))
             {
-                if (banco.eliminarUsuarioDeCaja(banco.BuscarCajaDeAhorro(idCaja), nuevodni))
+                int result = banco.eliminarUsuarioDeCaja(idCaja, nuevodni);
+                if (result == 0)
                 {
                     MessageBox.Show("Se removió titular con dni nro " + nuevodni, "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                    refreshDataCaja();
+                }
+                else if(result == 1)
+                {
+                    MessageBox.Show("No se encontró un usuario con dni nro " + nuevodni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 2)
+                {
+                    MessageBox.Show("No se encontró la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 3)
+                {
+                    MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: APP)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result ==4 )
+                {
+                    MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: DB)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else if (result == 5)
+                {
+                    MessageBox.Show("Ha ocurrido un error al intentar eliminar un titular a la caja de ahorro", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else
             {
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            refreshDataCaja();
         }
         //DEPOSITAR
         private void btnDepositar_Click(object sender, EventArgs e)
@@ -240,8 +312,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                Debug.WriteLine("idCaja: "+ idCaja);
-                banco.depositar(banco.BuscarCajaDeAhorro(idCaja), deposito);
+                banco.depositar(idCaja, deposito);
                 MessageBox.Show("Se depositó el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataCaja();
             }
@@ -256,7 +327,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                if (banco.retirar(banco.BuscarCajaDeAhorro(idCaja), retiro))
+                if (banco.retirar(idCaja, retiro))
                 {
                     MessageBox.Show("Se retiró el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataCaja();
@@ -272,26 +343,32 @@ namespace TrabajoPractico1
         {
             int monto;
             int cbu;
+            int result;
             if (!Int32.TryParse(Interaction.InputBox("Monto a transferir : ", "ingresar monto"), out monto) || monto <= 0)
             {
                 MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                if (monto > banco.BuscarCajaDeAhorro(idCaja).saldo)
-                {
-                    MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else if (!Int32.TryParse(Interaction.InputBox("Ingrese el CBU de la cuenta destino : ", "ingresar CBU"), out cbu))
+                if (!Int32.TryParse(Interaction.InputBox("Ingrese el CBU de la cuenta destino : ", "ingresar CBU"), out cbu))
                 {
                     MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    if (banco.transferir(banco.BuscarCajaDeAhorro(idCaja), cbu, monto))
+                    result = banco.transferir(idCaja, cbu, monto);
+                    if (result == 0)
                     {
                         MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         refreshDataCaja();
+                    }
+                    else if(result == 1)
+                    {
+                        MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + cbu, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else if(result == 2)
+                    {
+                        MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -404,7 +481,7 @@ namespace TrabajoPractico1
             string seleccion = comboBoxPFCBU.Items[index].ToString();
             int cbu;
             Int32.TryParse(seleccion, out cbu);
-            CajaDeAhorro caja = banco.cajas.Find(caja => caja.cbu == cbu);
+            CajaDeAhorro caja = banco.BuscarCajaDeAhorroPorCbu(23);
             int monto;
             if (!Int32.TryParse(Interaction.InputBox("ingrese el monto para crear el PF", "Monto Plazo fijo"), out monto) && monto >= 0)
             {
@@ -517,7 +594,14 @@ namespace TrabajoPractico1
         //
         private void btnNewTarjeta_Click(object sender, EventArgs e)
         {
-            banco.altaTarjeta();
+            if (banco.altaTarjeta())
+            {
+                MessageBox.Show("Se ha creado exitosamente la tarjeta de crédito", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             this.refreshDataTarjetas();
         }
         //DATA GRID VIEW
@@ -525,7 +609,7 @@ namespace TrabajoPractico1
         {
             if (e.RowIndex >= 0)
             {
-                if (!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[2].Value.ToString(), out numeroTarjetaSeleccionado))
+                if (!Int32.TryParse(dataGridViewTarjetas.Rows[e.RowIndex].Cells[0].Value.ToString(), out idTarjeta))
                 {
                     MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -543,16 +627,25 @@ namespace TrabajoPractico1
         //BAJA TARJETA
         private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
         {
-            if (banco.bajaTarjeta(numeroTarjetaSeleccionado))
+            int result = banco.bajaTarjeta(idTarjeta);
+            if (result == 0)
             {
                 MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 esconderBtns();
-                refreshDataTarjetas();
             }
-            else
+            if (result == 1)
             {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se encontró la tarjeta deseada", "Tarjeta no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            if (result == 2)
+            {
+                MessageBox.Show("La tarjeta seleccionada todavía posee consumos sin pagar ", "No se pudo eliminar la tarjeta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar eliminar la tarjeta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            refreshDataTarjetas();
         }
         //PAGAR TARJETA
         private void btnPagarTarjeta_Click(object sender, EventArgs e)
@@ -565,21 +658,27 @@ namespace TrabajoPractico1
             int index = comboBoxTraerCajasATarjetas.SelectedIndex;
             string seleccion = comboBoxTraerCajasATarjetas.Items[index].ToString();
 
-            int cbu;
-            Int32.TryParse(seleccion, out cbu);
+            Int32.TryParse(seleccion, out int  cbu);
 
-            CajaDeAhorro caja = banco.BuscarCajaDeAhorro(cbu);
-            Tarjeta tarjeta = banco.buscarTarjeta(numeroTarjetaSeleccionado);
-            if (banco.pagarTarjeta(tarjeta, caja))
+            int result = banco.pagarTarjeta(idTarjeta, cbu);
+            if (result == 0)
             {
                 MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataPagos();
                 refreshDataCaja();
                 refreshDataTarjetas();
             }
-            else
+            if(result == 1)
             {
-                MessageBox.Show("El pago no se ha podido efectuar", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se ha encontrado la tarjeta de crédito seleccionada", "Tarjeta de crédito no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("No se ha encontrado la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("El saldo de la caja de ahorro es insuficiente para realizar este pago", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

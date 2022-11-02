@@ -31,7 +31,6 @@ namespace TrabajoPractico1
 
         public Movimiento(CajaDeAhorro Caja, string Detalle, float Monto)
         {
-            this.caja = new CajaDeAhorro();
             this.caja = Caja;
             this.detalle = Detalle;
             this.monto = Monto;

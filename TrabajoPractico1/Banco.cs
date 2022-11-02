@@ -15,14 +15,14 @@ namespace TrabajoPractico1
 
     public class Banco
     {
-        public int id { get; set; }
-        public List<Usuario> usuarios { get; set; }
-        public List<CajaDeAhorro> cajas { get; set; }
-        public List<PlazoFijo> pfs { get; set; }
-        public List<Tarjeta> tarjetas { get; set; }
-        public List<Pago> pagos { get; set; }
-        public List<Movimiento> movimientos { get; set; }
-        public Usuario usuarioLogeado { get; set; } //Se crea una variable para guardar al usuario que inicie sesión
+        private int id { get; set; }
+        private List<Usuario> usuarios;
+        private List<CajaDeAhorro> cajas;
+        private List<PlazoFijo> pfs;
+        private List<Tarjeta> tarjetas;
+        private List<Pago> pagos;
+        private List<Movimiento> movimientos;
+        private Usuario usuarioLogeado;
         private List<UsuarioCaja> usuarioCaja; //lista de many to many caja
         private DAL DB;
 
@@ -71,48 +71,62 @@ namespace TrabajoPractico1
 
             foreach (Tarjeta tarjeta in tarjetas.ToList())
             {
-                Usuario user = usuarios.Find(usuario => usuario.id == tarjeta.id_usuario);
-                Tarjeta card = tarjetas.Find(c => c.id == tarjeta.id);
-                user.tarjetas.Add(card);
-                tarjetas.Add(card);
-                card.titular = user;
+                Usuario? user = usuarios.Find(usuario => usuario.id == tarjeta.id_usuario);
+                Tarjeta? card = tarjetas.Find(c => c.id == tarjeta.id);
+                if (user != null && card != null)
+                {
+                    user.tarjetas.Add(card);
+                    tarjetas.Add(card);
+                    card.titular = user;
+                }
             }
             foreach (Movimiento mov in movimientos.ToList())
             {
-                CajaDeAhorro caja = BuscarCajaDeAhorro(mov.id_Caja);
-                Movimiento movimiento = buscarMovimiento(mov.id);
-                movimientos.Add(movimiento);
-                caja.movimientos.Add(movimiento);
-                movimiento.caja = caja;
+                CajaDeAhorro? caja = BuscarCajaDeAhorro(mov.id_Caja);
+                Movimiento? movimiento = buscarMovimiento(mov.id);
+                if (caja != null && movimiento != null)
+                {
+                    movimientos.Add(movimiento);
+                    caja.movimientos.Add(movimiento);
+                    movimiento.caja = caja;
+                }
             }
             foreach (Pago pago in pagos.ToList())
             {
-                Pago p = buscarPago(pago.id);
-                Usuario user = usuarios.Find(usuario => usuario.id == pago.id_usuario);
-                pagos.Add(p);
-                user.pagos.Add(p);
-                p.user = user;
-
+                Pago? p = buscarPago(pago.id);
+                Usuario? user = usuarios.Find(usuario => usuario.id == pago.id_usuario);
+                if (p != null && user != null)
+                {
+                    pagos.Add(p);
+                    user.pagos.Add(p);
+                    p.user = user;
+                }
             }
             foreach (UsuarioCaja uc in usuarioCaja)
             {
-                Usuario usuarioAux = usuarios.Find(usuario => usuario.id == uc.idUsuario);
+                Usuario? usuarioAux = usuarios.Find(usuario => usuario.id == uc.idUsuario);
                 List<CajaDeAhorro> cajasAux = cajas.FindAll(caja => caja.id == uc.idCaja);
-                foreach (CajaDeAhorro cajaAux in cajasAux)
+                if (usuarioAux != null)
                 {
-                    usuarioAux.cajas.Add(cajaAux);
-                    cajaAux.titulares.Add(usuarioAux);
-                    cajas.Add(cajaAux);
+                    foreach (CajaDeAhorro cajaAux in cajasAux)
+                    {
+                        usuarioAux.cajas.Add(cajaAux);
+                        cajaAux.titulares.Add(usuarioAux);
+                        cajas.Add(cajaAux);
+                    }
                 }
             }
             foreach (PlazoFijo pf in pfs.ToList())
             {
-                PlazoFijo plazoFijo = pfs.Find(pfaux => pfaux.id == pf.id);
-                Usuario user = usuarios.Find(u => u.id == pf.id_usuario);
-                CajaDeAhorro caja = cajas.Find(c => c.id == pf.id_banco);
-                user.pf.Add(plazoFijo);
-                plazoFijo.titular = user;
-                plazoFijo.LAcaja = caja;
+                PlazoFijo? plazoFijo = pfs.Find(pfaux => pfaux.id == pf.id);
+                Usuario? user = usuarios.Find(u => u.id == pf.id_usuario);
+                CajaDeAhorro? caja = cajas.Find(c => c.id == pf.id_banco);
+                if (plazoFijo != null && user != null && caja != null)
+                {
+                    user.pf.Add(plazoFijo);
+                    plazoFijo.titular = user;
+                    plazoFijo.LAcaja = caja;
+                }
             }
         }
 
@@ -128,7 +142,7 @@ namespace TrabajoPractico1
                 Caja.movimientos.Add(movimientoNuevo);
                 return true;
             }
-            catch (Exception ex)
+            catch ()
             {
                 return false;
             }
@@ -168,13 +182,20 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaUsuario(int dni) // agregar persistencia
+        public bool bajaUsuario(int Id)
         {
             try
             {
-                Usuario usuarioARemover = usuarios.SingleOrDefault(usuario => usuario.dni == dni);
-                this.usuarios.Remove(usuarioARemover);
-                return true;
+                Usuario? usuarioARemover = buscarUsuario(Id);
+                if (usuarioARemover != null)
+                {
+                    this.usuarios.Remove(usuarioARemover);
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
             }
             catch (Exception ex)
             {
@@ -182,21 +203,18 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool modificarUsuario(int dni, string mail, string pass) // agregar persistencia
+        public bool modificarUsuario(int id, int dni, string mail, string pass) // agregar persistencia
         {
             try
             {
-                if (this.usuarios.Any(usuario => usuario.dni == dni))//Condicional para saber si existe el usuario 
+                Usuario? usuarioAModificar = buscarUsuario(id);
+                if (usuarioAModificar != null)
                 {
-                    Usuario usuarioAModificar = this.usuarios.Find(usuario => usuario.dni == dni);
                     usuarioAModificar.mail = mail;
                     usuarioAModificar.password = pass;
                     return true;
                 }
-                else
-                {
-                    return false;
-                }
+                return false;
             }
             catch (Exception ex)
             {
@@ -210,7 +228,7 @@ namespace TrabajoPractico1
         {
             this.usuarioLogeado = null;
         }
-        public bool crearCajaDeAhorro()
+        public int crearCajaDeAhorro()
         {
             Random random = new Random();
             int nuevoCbu = random.Next(100000000, 999999999);
@@ -221,130 +239,118 @@ namespace TrabajoPractico1
             }
             int idNuevaCaja;
             idNuevaCaja = DB.agregarCaja(nuevoCbu);
-            if (idNuevaCaja != -1)
+            if (idNuevaCaja == -1)
             {
-                //Ahora sí lo agrego en la lista
-                CajaDeAhorro nuevo = new CajaDeAhorro(idNuevaCaja, nuevoCbu);
-                cajas.Add(nuevo);
-                usuarioLogeado.cajas.Add(nuevo);
-                nuevo.titulares.Add(usuarioLogeado);
-                int idNuevoUsuarioCaja;
-                idNuevoUsuarioCaja = DB.agregarUsuarioACaja(idNuevaCaja, usuarioLogeado.id);
-                if (idNuevoUsuarioCaja != -1)
-                {
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
+                return 1;
             }
-            else
+            //Ahora sí lo agrego en la lista
+            CajaDeAhorro nuevo = new CajaDeAhorro(idNuevaCaja, nuevoCbu);
+            cajas.Add(nuevo);
+            usuarioLogeado.cajas.Add(nuevo);
+            nuevo.titulares.Add(usuarioLogeado);
+            int idNuevoUsuarioCaja;
+            idNuevoUsuarioCaja = DB.agregarUsuarioACaja(idNuevaCaja, usuarioLogeado.id);
+            if (idNuevoUsuarioCaja == -1)
             {
-                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 2;
             }
+            return 0;
         }
-
-        public bool bajaCaja(int IdCaja) // agregar persistencia
+        public int bajaCaja(int IdCaja) // agregar persistencia
         {
             try
             {
-                CajaDeAhorro cajaARemover = this.cajas.Find(caja => caja.id == IdCaja);
-                if (cajaARemover.saldo == 0)
+                CajaDeAhorro? cajaARemover = BuscarCajaDeAhorro(IdCaja);
+                if (cajaARemover == null)
                 {
-                    if (DB.eliminarCaja(IdCaja) > 0)
-                    {
-                        this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
-                        foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
-                        {
-                            titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
-                        }
-                        return true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
+                    return 1;
                 }
-                else
+                if (cajaARemover.saldo != 0)
                 {
-                    MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    return 2;
                 }
+                if (DB.eliminarCaja(IdCaja) == 0)
+                {
+                    return 3;
+                }
+                this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
+                foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
+                {
+                    titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
+                }
+                return 0;
             }
-            catch (Exception ex)
+            catch
             {
-                return false;
+                return 4;
             }
         }
 
-        public bool agregarUsuarioACaja(CajaDeAhorro caja, int Dni)
+        public int agregarUsuarioACaja(int Id, int Dni)
         {
-            Usuario userAdd = this.usuarios.Find(usuario => usuario.dni == Dni);
-            if (userAdd == null)
+            try
             {
-                MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            if (!DB.usuarioYaEstaEnCaja(caja.id, userAdd.id))
-            {
+                CajaDeAhorro? caja = BuscarCajaDeAhorro(Id);
+                Usuario? userAdd = this.usuarios.Find(usuario => usuario.dni == Dni);
+                if (userAdd == null)
+                {
+                    return 1;                //No se encontró usuario con este DNI en la lista de Usuarios del Banco
+                }
+                if (caja == null)
+                {
+                    return 2;                    //No se encontró la caja de ahorro con ese ID
+                }
+                if (DB.usuarioYaEstaEnCaja(caja.id, userAdd.id))
+                {
+                    return 3;                //El usuario ya posee esta caja de ahorro en la base de datos.
+                }
                 int idNuevoUsuarioCaja;
                 idNuevoUsuarioCaja = DB.agregarUsuarioACaja(caja.id, userAdd.id);
-                if (idNuevoUsuarioCaja != -1)
+                if (idNuevoUsuarioCaja == -1)
                 {
-                    if (!caja.titulares.Contains(userAdd))
-                    {
-                        caja.titulares.Add(userAdd);
-                        return true;
-                    }
-                    else
-                    {
-                        MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: APP)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
+                    return 4;                    //No se pudo agregar la relacion
                 }
-                else
+                if (caja.titulares.Contains(userAdd))
                 {
-                    MessageBox.Show("No se pudo agregar la relacion en la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    return 5;                        //El usuario ya posee esta caja de ahorro en el sistema.
                 }
+                caja.titulares.Add(userAdd);
+                userAdd.cajas.Add(caja);
+                return 0;
             }
-            else
+            catch
             {
-                MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: DB)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 6;
             }
         }
-        public bool eliminarUsuarioDeCaja(CajaDeAhorro caja, int Dni) // agregar persistencia
+        public int eliminarUsuarioDeCaja(int IdCaja, int Dni) // agregar persistencia
         {
-            Usuario titular = this.usuarios.Find(usuario => usuario.dni == Dni);
-            CajaDeAhorro cajaBanco = this.cajas.Find(cajaaux => caja.id == cajaaux.id);
-            if (titular == null || cajaBanco == null)
+            try
             {
-                MessageBox.Show("No se encontró un usuario con dni nro " + Dni, "Usuario no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
-            if (caja.titulares.Contains(titular) && caja.titulares.Count > 1)//El usuario debe estar en la lista de titulares y la caja debe tener mas de un titular
-            {
-                if(DB.eliminarUsuarioDeCaja(caja.id, titular.id)>0)
+                Usuario? titular = this.usuarios.Find(usuario => usuario.dni == Dni);
+                CajaDeAhorro? caja = BuscarCajaDeAhorro(IdCaja);
+                if (titular == null)
                 {
-                    caja.titulares.Remove(titular);
-                    cajaBanco.titulares.Remove(titular);
-                    return true;
+                    return 1;                //No se encontró usuario con este DNI en la lista de Usuarios del Banco
                 }
-                else
+                if (caja == null)
                 {
-                    MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: DB)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    return 2;                //No se encontró la caja de ahorro en la lista de cajas de ahorro
                 }
+                if (!caja.titulares.Contains(titular) || caja.titulares.Count < 2)
+                {
+                    return 3;                // El usuario no se pudo eliminar de la lista en el sistema
+                }
+                if (DB.eliminarUsuarioDeCaja(caja.id, titular.id) == 0)
+                {
+                    return 4;                // El usuario no se pudo eliminar de la base de datos
+                }
+                caja.titulares.Remove(titular);
+                return 0;
             }
-            else
+            catch
             {
-                MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: APP)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 5;
             }
         }
         //
@@ -362,7 +368,7 @@ namespace TrabajoPractico1
                     Debug.WriteLine("El número de tarjeta generado ya existe, creado uno nuevo...");
                 }
                 int nuevoCodigo = random.Next(100, 999); //Creo un codigo de tarjeta aleatorio
-                int idNuevaTarjeta = DB.agregarTarjeta(usuarioLogeado.id, nuevoNumero, nuevoCodigo,20000, 0);
+                int idNuevaTarjeta = DB.agregarTarjeta(usuarioLogeado.id, nuevoNumero, nuevoCodigo, 20000, 0);
                 if (idNuevaTarjeta != -1)
                 {
                     Tarjeta nuevo = new Tarjeta(idNuevaTarjeta, usuarioLogeado.id, nuevoNumero, nuevoCodigo, 20000, 0);
@@ -379,40 +385,44 @@ namespace TrabajoPractico1
             }
         }
 
-        public bool bajaTarjeta(int numeroTarjeta)//Todavía sin aplicación en el programa
+        public int bajaTarjeta(int IdTarjeta)
         {
             try
             {
-                Tarjeta tarjetaARemover = this.tarjetas.SingleOrDefault(tarjeta => tarjeta.numero == numeroTarjeta);
-                if (tarjetaARemover.consumo == 0) // La condición para eliminar es que no tenga consumos sin pagar.
+                Tarjeta? tarjetaARemover = buscarTarjeta(IdTarjeta);
+                if (tarjetaARemover == null)
                 {
-                    this.tarjetas.Remove(tarjetaARemover); //Borro la tarjeta de la lista de tarjetas del Banco
-                    tarjetaARemover.titular.tarjetas.Remove(tarjetaARemover);//Borro la tarjeta de la lista de tarjetas del usuario.
-                    return true;
+                    return 1;
                 }
-                else
+                if (tarjetaARemover.consumo != 0) // La condición para eliminar es que no tenga consumos sin pagar.
                 {
-                    Debug.WriteLine("La tarjeta posee consumo sin pagar."); //Mando un mensaje al debugger
-                    return false;
+                    return 2;
                 }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public bool modificarTarjetaDeCredito(int numeroTarjetaAModificar, float limite) //Todavía sin aplicación en el programa
-        {
-            try
-            {
-                Tarjeta TarjetaLimiteModificar = this.tarjetas.Find(tarjeta => tarjeta.numero == numeroTarjetaAModificar);//Modificando numero por id funciona perfecto.
-                TarjetaLimiteModificar.limite = limite;
-                return true;
+                this.tarjetas.Remove(tarjetaARemover); //Borro la tarjeta de la lista de tarjetas del Banco
+                tarjetaARemover.titular.tarjetas.Remove(tarjetaARemover);//Borro la tarjeta de la lista de tarjetas del usuario.
+                return 0;
             }
             catch
             {
-                return false;
+                return 3;
+            }
+        }
+
+        public int modificarTarjetaDeCredito(int Id, float limite) //Todavía sin aplicación en el programa
+        {
+            try
+            {
+                Tarjeta? TarjetaAModificar = buscarTarjeta(Id);
+                if (TarjetaAModificar == null)
+                {
+                    return 1;
+                }
+                TarjetaAModificar.limite = limite;
+                return 0;
+            }
+            catch
+            {
+                return 2;
             }
         }
 
@@ -478,7 +488,7 @@ namespace TrabajoPractico1
         //PLAZO FIJO
         //
 
-        public bool agregarPlazoFijo(PlazoFijo NuevoPlazoFijo)  
+        public bool agregarPlazoFijo(PlazoFijo NuevoPlazoFijo)
         {
             try
             {
@@ -488,7 +498,7 @@ namespace TrabajoPractico1
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("ex: "+ex.Message);
+                Debug.WriteLine("ex: " + ex.Message);
                 return false;
             }
         }
@@ -562,6 +572,15 @@ namespace TrabajoPractico1
         {
             return this.usuarioLogeado;
         }
+        public Usuario buscarUsuario(int Id)
+        {
+            return usuarios.Find(usuario => usuario.id == Id);
+        }
+        public int mostrarIntentosRestantes(int Dni)
+        {
+            int intentosFallidos = usuarios.Find(u => u.dni == Dni).intentosFallidos;
+            return intentosFallidos;
+        }
         public List<CajaDeAhorro> obtenerCajaDeAhorro()
         {
             return usuarioLogeado.cajas.ToList();
@@ -569,6 +588,10 @@ namespace TrabajoPractico1
         public CajaDeAhorro BuscarCajaDeAhorro(int Id)
         {
             return this.cajas.Find(caja => caja.id == Id);
+        }
+        public CajaDeAhorro BuscarCajaDeAhorroPorCbu(int Cbu)
+        {
+            return this.cajas.Find(caja => caja.cbu == Cbu);
         }
 
         public List<Movimiento> obtenerMovimientos(int idCaja)
@@ -604,83 +627,82 @@ namespace TrabajoPractico1
         {
             return usuarioLogeado.tarjetas.ToList();
         }
-        public Tarjeta buscarTarjeta(int numero)
+        public Tarjeta buscarTarjeta(int Id)
         {
-            return this.tarjetas.Find(tarjeta => tarjeta.numero == numero);
+            return this.tarjetas.Find(tarjeta => tarjeta.id == Id);
         }
         public string mostrarUsuario()
         {
             return usuarioLogeado.nombre + " " + usuarioLogeado.apellido;
         }
         //
+        //
         //METODOS ACCIONES DEL USUARIO
         //
-        public bool iniciarSesion(int Dni, string Pass)
+        //
+        public int iniciarSesion(int Dni, string Pass)
         {
             Usuario user = this.usuarios.Find(usuario => usuario.dni == Dni);
             if (user == null)
             {
-                MessageBox.Show("Usuario no encontrado", "Log in incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 1;                // No se encontró el usuario
             }
             if (user.bloqueado)
             {
-                MessageBox.Show("Este usuario está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 2;                // Usuario bloqueado
             }
             if (user.password != Pass)
             {
                 user.intentosFallidos++;
                 if (user.intentosFallidos >= 3) //Si alcanza los 3 intentos se bloquea la cuenta
                 {
-                    MessageBox.Show("Se ha excedido el número de intentos\nEste usuario ahora está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     user.bloqueado = true;
+                    return 3;                    //Numero de intentos excedidos
                 }
-                else //Si todavia no se muestran los intentos restantes
+                else
                 {
-                    MessageBox.Show("La contraseña ingresada fue incorrecta \nTe quedan " + (3 - user.intentosFallidos) + " intentos.", "Contraseña incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 4;
+                    // intentos restantes
                 }
-                return false;
             }
             this.usuarioLogeado = user;
-            return true;
+            return 0;
         }
 
-        public void depositar(CajaDeAhorro CajaDestino, float Monto)
+        public void depositar(int IdCaja, float Monto)
         {
-            CajaDestino.saldo += Monto;
-            this.altaMovimiento(CajaDestino, "Deposito", Monto);
+            CajaDeAhorro cajaDestino = BuscarCajaDeAhorro(IdCaja);
+            cajaDestino.saldo += Monto;
+            this.altaMovimiento(cajaDestino, "Deposito", Monto);
         }
-        public bool retirar(CajaDeAhorro CajaSeleccionada, float Monto)
+        public bool retirar(int IdCaja, float Monto)
         {
-            if (CajaSeleccionada.saldo < Monto)
+            CajaDeAhorro cajaSeleccionada = BuscarCajaDeAhorro(IdCaja);
+            if (cajaSeleccionada.saldo < Monto)
             {
                 return false;
             }
-            CajaSeleccionada.saldo -= Monto;
-            this.altaMovimiento(CajaSeleccionada, "Retiro", Monto);
+            cajaSeleccionada.saldo -= Monto;
+            this.altaMovimiento(cajaSeleccionada, "Retiro", Monto);
             return true;
         }
-        public bool transferir(CajaDeAhorro CajaOrigen, int CBU, float Monto)
+        public int transferir(int IdOrigen, int CbuDestino, float Monto)
         {
-            CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CBU);
+            CajaDeAhorro cajaOrigen = BuscarCajaDeAhorro(IdOrigen);
+            CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CbuDestino);
             if (cajaDestino == null)
             {
-                MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + CBU, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 1;
             }
-            if (CajaOrigen.saldo < Monto)
+            if (cajaOrigen.saldo < Monto)
             {
-                return false;
+                return 2;
             }
-            else
-            {
-                CajaOrigen.saldo -= Monto;
-                this.altaMovimiento(CajaOrigen, "Transferencia realizada", Monto);
-                cajaDestino.saldo += Monto;
-                this.altaMovimiento(cajaDestino, "Transferencia recibida", Monto);
-                return true;
-            }
+            cajaOrigen.saldo -= Monto;
+            this.altaMovimiento(cajaOrigen, "Transferencia realizada", Monto);
+            cajaDestino.saldo += Monto;
+            this.altaMovimiento(cajaDestino, "Transferencia recibida", Monto);
+            return 0;
         }
         public Movimiento buscarMovimiento(int Id)
         {
@@ -700,19 +722,28 @@ namespace TrabajoPractico1
 
 
         }
-        public bool pagarTarjeta(Tarjeta Tarjeta, CajaDeAhorro Caja)
+        public int pagarTarjeta(int Id, int Cbu)
         {
-            if (Caja.saldo >= Tarjeta.consumo)
+            CajaDeAhorro? caja = BuscarCajaDeAhorroPorCbu(Cbu);
+            Tarjeta? tarjeta = buscarTarjeta(Id);
+
+            if (tarjeta == null)
             {
-                Caja.saldo = Caja.saldo - Tarjeta.consumo;
-                this.altaMovimiento(Caja, "Pago de Tarjeta " + Tarjeta.numero, Tarjeta.consumo);
-                Tarjeta.consumo = 0;
-                return true;
+                return 1;
             }
-            else
+            if (caja == null)
             {
-                return false;
+                return 2;
             }
+
+            if (caja.saldo < tarjeta.consumo)
+            {
+                return 3;
+            }
+            caja.saldo = caja.saldo - tarjeta.consumo;
+            this.altaMovimiento(caja, "Pago de Tarjeta " + tarjeta.numero, tarjeta.consumo);
+            tarjeta.consumo = 0;
+            return 0;
         }
         public bool pagarPago(int idPago, int numero)
         {

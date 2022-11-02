@@ -1,4 +1,6 @@
-﻿namespace TrabajoPractico1
+﻿using Microsoft.VisualBasic.ApplicationServices;
+
+namespace TrabajoPractico1
 {
     public partial class FormPadre : Form //Formulario "vacio" que va a contener todas las distintas vistas.
     {
@@ -31,7 +33,8 @@
         }
         private void loginDelegado(int Dni, string Pass)
         {
-            if(banco.iniciarSesion(Dni, Pass))
+            int result = banco.iniciarSesion(Dni, Pass);
+            if (result == 0)
             {
                 MessageBox.Show("Log in correcto, Usuario: " + this.banco.mostrarUsuario(), "Inicio de sesión exitoso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 hijoLogin.Close();
@@ -43,6 +46,22 @@
             }
             else
             {
+                if(result == 1)
+                {
+                    MessageBox.Show("Usuario no encontrado", "Log in incorrecto", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 2)
+                {
+                    MessageBox.Show("Este usuario está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 3)
+                {
+                    MessageBox.Show("Se ha excedido el número de intentos\nEste usuario ahora está bloqueado", "Bloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 4)
+                {
+                    MessageBox.Show("La contraseña ingresada fue incorrecta \nTe quedan " + (3 - banco.mostrarIntentosRestantes(Dni)) + " intentos.", "Contraseña incorrecta", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 hijoLogin.Show();
             }
         }
