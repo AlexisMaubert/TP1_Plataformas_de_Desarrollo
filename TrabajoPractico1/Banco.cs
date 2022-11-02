@@ -40,11 +40,9 @@ namespace TrabajoPractico1
             inicializarAtributos();
             //revisarPlazosFijos();
         }
-
         //
         //PERSISTENCIA.
         //
-
         public void revisarPlazosFijos()
         {
             foreach (PlazoFijo pf in obtenerPlzFijo())
@@ -57,8 +55,6 @@ namespace TrabajoPractico1
                 }
             }
         }
-
-
         public void inicializarAtributos()
         {
             usuarios = DB.inicializarUsuarios();
@@ -197,7 +193,7 @@ namespace TrabajoPractico1
                     return false;
                 }
             }
-            catch (Exception ex)
+            catch
             {
                 return false;
             }
@@ -407,7 +403,6 @@ namespace TrabajoPractico1
                 return 3;
             }
         }
-
         public int modificarTarjetaDeCredito(int Id, float limite) //Todavía sin aplicación en el programa
         {
             try
@@ -430,60 +425,66 @@ namespace TrabajoPractico1
         //PAGOS
         //
 
-        public bool nuevoPago(Usuario Usuario, string Nombre, float Monto)
+        public int nuevoPago(string Nombre, float Monto)
         {
             try
             {
-                Random random = new Random();
-                int nuevoId = random.Next(10000, 99999);
                 int idNuevoPago = DB.agregarPago(usuarioLogeado.id, Nombre, Monto);
-                if (idNuevoPago != -1)
+                if (idNuevoPago == -1)
                 {
-                    Pago nuevoPago = new Pago(idNuevoPago, Usuario, Nombre, Monto);
-                    this.pagos.Add(nuevoPago);
-                    Usuario.pagos.Add(nuevoPago);
-                    return true;
+                    return 1;
                 }
-                else
-                {
-                    return false;
-                }
+                Pago nuevoPago = new Pago(idNuevoPago, usuarioLogeado, Nombre, Monto);
+                this.pagos.Add(nuevoPago);
+                usuarioLogeado.pagos.Add(nuevoPago);
+                return 0;
             }
             catch
             {
-                return false;
+                return 2;
             }
         }
 
-        public bool quitarPago(int IdpagoABorrar)
+        public int quitarPago(int IdpagoABorrar)
         {
             try
             {
-                Pago pagoABorrar = this.pagos.Find(pago => pago.id == IdpagoABorrar);
-                this.pagos.Remove(pagoABorrar);
-                pagoABorrar.user.pagos.Remove(pagoABorrar);
-                return true;
+                Pago pagoABorrar = buscarPago(IdpagoABorrar);
+                if (pagoABorrar == null)
+                {
+                    return 1;
+                }
+                if (pagoABorrar.pagado)
+                {
+                    this.pagos.Remove(pagoABorrar);
+                    pagoABorrar.user.pagos.Remove(pagoABorrar);
+                    return 0;
+                }
+                return 2;
             }
             catch
             {
-                return false;
+                return 3;
             }
         }
 
-        public bool modificarPago(int IdPagoAModificar)
+        public int modificarPago(int IdPagoAModificar)
         {
             try
             {
-                Pago pagoAModificar = this.pagos.Find(pago => pago.id == IdPagoAModificar);
+                Pago pagoAModificar = buscarPago(IdPagoAModificar);
+                if (pagoAModificar == null)
+                {
+                    return 1;
+                }
                 pagoAModificar.pagado = true;
-                return true;
+                return 0;
             }
             catch
             {
-                return false;
+                return 2;
             }
         }
-
         //
         //PLAZO FIJO
         //
@@ -496,82 +497,69 @@ namespace TrabajoPractico1
                 usuarioLogeado.pf.Add(NuevoPlazoFijo);
                 return true;
             }
-            catch (Exception ex)
-            {
-                Debug.WriteLine("ex: " + ex.Message);
-                return false;
-            }
-        }
-        public bool eliminarPlazoFijo(int idPlazoAEliminar)//Todavía sin aplicación en el programa
-        {
-            try
-            {
-                if (this.buscarPlazoFijo(idPlazoAEliminar).pagado == true && DateTime.Now >= this.buscarPlazoFijo(idPlazoAEliminar).fechaFin.AddMonths(1))
-                {
-                    this.buscarPlazoFijo(idPlazoAEliminar).titular.pf.Remove(this.buscarPlazoFijo(idPlazoAEliminar));
-                    this.pfs.Remove(this.buscarPlazoFijo(idPlazoAEliminar));
-                    return true;
-                }
-                else
-                {
-                    return false;
-                    Debug.WriteLine("No se a realizado el pago o la fecha no es la correctas");
-                }
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-        }
-
-        public bool crearPlazoFijo(int IdCaja, float Monto)
-        {
-            try
-            {
-                if (Monto >= 1000)
-                {
-                    CajaDeAhorro caja = this.BuscarCajaDeAhorro(IdCaja);
-                    if (caja.saldo > Monto)
-                    {
-                        int idNuevoPlazoFijo;
-                        idNuevoPlazoFijo = DB.agregarPlazoFijo(usuarioLogeado.id, Monto, DateTime.Now.AddMonths(1), 90, caja.id);
-                        if (idNuevoPlazoFijo != -1)
-                        {
-                            MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                            PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
-                            nuevoPlazoFijo.LAcaja = caja;
-                            this.agregarPlazoFijo(nuevoPlazoFijo);
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-                    }
-                    else
-                    {
-                        MessageBox.Show("La cuenta no posee los fondos suficientes.", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        return false;
-                    }
-                }
-                Debug.WriteLine("El monto del plazo fijo debe ser mayor o igual a 1000");
-                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
-            }
             catch
             {
                 return false;
             }
         }
-
-
+        public int eliminarPlazoFijo(int idPlazoAEliminar)
+        {
+            try
+            {
+                PlazoFijo pFijo = buscarPlazoFijo(idPlazoAEliminar);
+                if (pFijo == null)
+                {
+                    return 1;
+                }
+                if (!pFijo.pagado || DateTime.Now < pFijo.fechaFin.AddMonths(1))
+                {
+                    return 2;
+                }
+                pFijo.titular.pf.Remove(pFijo);
+                this.pfs.Remove(pFijo);
+                return 0;
+            }
+            catch
+            {
+                return 3;
+            }
+        }
+        public int crearPlazoFijo(int IdCaja, float Monto)
+        {
+            try
+            {
+                if (Monto < 1000)
+                {
+                    return 1;
+                }
+                CajaDeAhorro? caja = BuscarCajaDeAhorro(IdCaja);
+                if (caja == null)
+                {
+                    return 2;
+                }
+                if (caja.saldo < Monto)
+                {
+                    return 3;
+                }
+                int idNuevoPlazoFijo;
+                idNuevoPlazoFijo = DB.agregarPlazoFijo(usuarioLogeado.id, Monto, DateTime.Now.AddMonths(1), 90, caja.id);
+                if (idNuevoPlazoFijo == -1)
+                {
+                    return 4;
+                }
+                PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
+                nuevoPlazoFijo.LAcaja = caja;
+                this.agregarPlazoFijo(nuevoPlazoFijo);
+                return 0;
+            }
+            catch
+            {
+                return 5;
+            }
+        }
         //
         //METODOS PARA MOSTRAR DATOS
         //
-        public Usuario buscarUsuarioLogeado()
-        {
-            return this.usuarioLogeado;
-        }
         public Usuario buscarUsuario(int Id)
         {
             return usuarios.Find(usuario => usuario.id == Id);
@@ -719,8 +707,10 @@ namespace TrabajoPractico1
         public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
         {
             return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto).ToList();
-
-
+        }
+        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, string Detalle)
+        {
+            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.detalle == Detalle).ToList();
         }
         public int pagarTarjeta(int Id, int Cbu)
         {
@@ -740,49 +730,49 @@ namespace TrabajoPractico1
             {
                 return 3;
             }
-            caja.saldo = caja.saldo - tarjeta.consumo;
+            caja.saldo -= tarjeta.consumo;
             this.altaMovimiento(caja, "Pago de Tarjeta " + tarjeta.numero, tarjeta.consumo);
             tarjeta.consumo = 0;
             return 0;
         }
-        public bool pagarPago(int idPago, int numero)
+        public int pagarPago(int idPago, int numero)
         {
-            Pago pago = this.pagos.Find(pago => pago.id == idPago);
-            CajaDeAhorro caja = this.cajas.Find(caja => caja.cbu == numero);
+            Pago pago = buscarPago(idPago);
+            CajaDeAhorro caja = BuscarCajaDeAhorroPorCbu(numero);
+            if (pago == null)
+            {
+                return 1;
+            }
             if (pago.pagado)
             {
-                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return false;
+                return 2;
             }
-            if (caja == null)
-            {
-                Tarjeta tarjeta = this.tarjetas.Find(tarjeta => tarjeta.numero == numero);
-                if (tarjeta.limite - tarjeta.consumo > pago.monto)
-                {
-                    tarjeta.consumo += pago.monto;
-                    this.modificarPago(idPago);
-                    pago.metodo = "Tarjeta";
-                    return true;
-                }
-                else
-                {
-                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
-                }
-            }
-            else
+            if (caja != null)
             {
                 if (caja.saldo < pago.monto)
                 {
-                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    return false;
+                    return 3;
                 }
-                caja.saldo = caja.saldo - pago.monto;
+                caja.saldo -= pago.monto;
                 this.modificarPago(idPago);
                 this.altaMovimiento(caja, "Pago de " + pago.nombre, pago.monto);
                 pago.metodo = "Caja de ahorro";
-                return true;
+                return 0;
             }
+            Tarjeta? tarjeta = this.tarjetas.Find(tarjeta => tarjeta.numero == numero);
+            if (tarjeta == null)
+            {
+                return 4;
+            }
+            if ((tarjeta.limite - tarjeta.consumo) < pago.monto)
+            {
+                return 3;
+            }
+            tarjeta.consumo += pago.monto;
+            this.modificarPago(idPago);
+            pago.metodo = "Tarjeta";
+            return 0;
         }
     }
 }
+

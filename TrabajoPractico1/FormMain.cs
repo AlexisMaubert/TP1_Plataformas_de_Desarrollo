@@ -471,7 +471,23 @@ namespace TrabajoPractico1
         //ELIMINAR PLAZO FIJO
         private void btnEliminarPF_Click(object sender, EventArgs e)
         {
-            banco.eliminarPlazoFijo(idPF);
+            int result = banco.eliminarPlazoFijo(idPF);
+            if(result == 0)
+            {
+                MessageBox.Show("Se eliminó el plazo fijo con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            if (result == 1)
+            {
+                MessageBox.Show("No se encontró el plazo fijo que se desea eliminar", "Plazo fijo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("El plazo fijo todavía no esta pago", "Plazo fijo no se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             refreshDataPF();
         }
         //LISTA CBU
@@ -489,7 +505,31 @@ namespace TrabajoPractico1
             }
             else
             {
-                banco.crearPlazoFijo(caja.id, monto);
+                int result = banco.crearPlazoFijo(caja.id, monto);
+                if (result == 0)
+                {
+                    MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                if (result == 1)
+                {
+                    MessageBox.Show("El monto del plazo fijo debe ser mayor o igual a 1000", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 2)
+                {
+                    MessageBox.Show("No se encontró la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 3)
+                {
+                    MessageBox.Show("La cuenta no posee los fondos suficientes.", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 4)
+                {
+                    MessageBox.Show("No se pudo aregar el plazo fijo a la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 5)
+                {
+                    MessageBox.Show("Ha ocurrido un error al intentar crear el plazo fijo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 refreshDataPF();
             }
             comboBoxPFCBU.Visible = false;
@@ -502,19 +542,30 @@ namespace TrabajoPractico1
         //
         private void btnNewPago_Click(object sender, EventArgs e)
         {
-            float monto;
             string nombre = Interaction.InputBox("Ingresar nombre del pago", "Ingresar nombre del pago");
             if (nombre == "" || nombre == null)
             {
                 MessageBox.Show("Error en el ingreso de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            else if (!float.TryParse(Interaction.InputBox("Ingresar el monto del pago", "Ingresar monto"), out monto))
+            else if (!float.TryParse(Interaction.InputBox("Ingresar el monto del pago", "Ingresar monto"), out float monto))
             {
                 MessageBox.Show("El monto ingresado no es válido", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else
             {
-                banco.nuevoPago(banco.buscarUsuarioLogeado(), nombre, monto); // hay que modificar esto para que al tocar el boton aparezcan opciones el algun lado del formulario para completar dinamicamente estos datos
+                int result = banco.nuevoPago(nombre, monto);
+                if (result == 0)
+                {
+                    MessageBox.Show("Pago creado con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                if (result == 1)
+                {
+                    MessageBox.Show("Error en el ingreso a la base de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                if (result == 2)
+                {
+                    MessageBox.Show("Error al intentar crear el pago", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
                 this.refreshDataPagos();
             }
         }
@@ -541,15 +592,24 @@ namespace TrabajoPractico1
         //ELIMINAR PAGO
         private void btnEliminarPago_Click(object sender, EventArgs e)
         {
-            if (banco.buscarPago(idPago).pagado)
+            int result = banco.quitarPago(idPago);
+            if (result == 0)
             {
                 banco.quitarPago(idPago);
                 MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataPagos();
             }
-            else
+            if(result == 1)
             {
-                MessageBox.Show("El Pago necesita estar pagado😒", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("No se encontró el pago que desea eliminar", "Error al buscar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if(result == 2)
+            {
+                MessageBox.Show("El Pago necesita estar pagado😒", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("Ha ocurrido un error al intentar eliminar el pago", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //PAGAR PAGO
@@ -565,11 +625,28 @@ namespace TrabajoPractico1
             string seleccion = comboBoxCajaPago.Items[index].ToString();
             int cbu;
             Int32.TryParse(seleccion, out cbu);
-            if (banco.pagarPago(idPago, cbu))
+            int result = banco.pagarPago(idPago, cbu);
+            if (result == 0)
             {
                 MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataPagos();
                 refreshDataCaja();
+            }
+            if(result == 1)
+            {
+                MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 4)
+            {
+                MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //LISTA DE TARJETAS
@@ -579,12 +656,29 @@ namespace TrabajoPractico1
             string seleccion = comboBoxTarjetaPago.Items[index].ToString();
             int numero;
             Int32.TryParse(seleccion, out numero);
-            if (banco.pagarPago(idPago, numero))
+            int result = banco.pagarPago(idPago, numero);
+            if (result == 0)
             {
                 MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 refreshDataPagos();
                 refreshDataCaja();
                 refreshDataTarjetas();
+            }
+            if (result == 1)
+            {
+                MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 2)
+            {
+                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 3)
+            {
+                MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            if (result == 4)
+            {
+                MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         //
