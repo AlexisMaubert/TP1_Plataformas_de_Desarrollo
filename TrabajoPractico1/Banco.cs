@@ -43,18 +43,6 @@ namespace TrabajoPractico1
         //
         //PERSISTENCIA.
         //
-        public void revisarPlazosFijos()
-        {
-            foreach (PlazoFijo pf in obtenerPlzFijo())
-            {
-                if (DateTime.Now == pf.fechaFin)
-                {
-                    int cantDias = DateTime.Now.CompareTo(pf.fechaIni);
-                    float montoFinal = pf.monto * (90 / 365) * cantDias;
-                    pf.LAcaja.saldo = pf.LAcaja.saldo + montoFinal;
-                }
-            }
-        }
         public void inicializarAtributos()
         {
             usuarios = DB.inicializarUsuarios();
@@ -271,15 +259,15 @@ namespace TrabajoPractico1
                 {
                     return 2;
                 }
+                foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
+                {
+                    titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
+                }
                 if (DB.eliminarCaja(IdCaja) == 0)
                 {
                     return 3;
                 }
                 this.cajas.Remove(cajaARemover); //Saco la caja de ahorro del banco
-                foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
-                {
-                    titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
-                }
                 return 0;
             }
             catch
@@ -553,9 +541,16 @@ namespace TrabajoPractico1
                 {
                     return 4;
                 }
+                if (DB.retirarDeCaja(IdCaja, Monto) <= 0)
+                {
+                    return 5;
+                };
+                caja.saldo -= Monto;
+                this.altaMovimiento(caja, "Alta plazo fijo", Monto);
                 PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
                 nuevoPlazoFijo.LAcaja = caja;
                 this.agregarPlazoFijo(nuevoPlazoFijo);
+                
                 return 0;
             }
             catch

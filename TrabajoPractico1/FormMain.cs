@@ -208,6 +208,7 @@ namespace TrabajoPractico1
                     MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     esconderBtns();
                     refreshDataCaja();
+                    refreshDataPF();
                     break;
                 case 1:
                     MessageBox.Show("No se encontró la caja de ahorro que se desea eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -220,6 +221,9 @@ namespace TrabajoPractico1
                     break;
                 case 4:
                     MessageBox.Show("Ha ocurrido un error al intentar eliminar la caja", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 5:
+                    MessageBox.Show("No puedes eliminar la caja porque tienes plazos fijos activos", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
@@ -516,7 +520,7 @@ namespace TrabajoPractico1
                 switch (result)
                 {
                     case 0:
-                    MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         break;
                     case 1:
                         MessageBox.Show("El monto del plazo fijo debe ser mayor o igual a 1000", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -531,12 +535,17 @@ namespace TrabajoPractico1
                         MessageBox.Show("No se pudo aregar el plazo fijo a la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 5:
+                        MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", monto, caja.id), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 6:
                         MessageBox.Show("Ha ocurrido un error al intentar crear el plazo fijo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
             }
             comboBoxPFCBU.Visible = false;
             refreshDataPF();
+            refreshDataCaja();
+
         }
         //
         //

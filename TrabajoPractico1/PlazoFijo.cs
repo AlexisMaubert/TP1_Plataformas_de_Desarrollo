@@ -19,6 +19,7 @@ namespace TrabajoPractico1
         public int id_usuario { get; set; }
         public int id_caja { get; set; }
         public CajaDeAhorro LAcaja { get; set; }
+
     public PlazoFijo()
         
         {
