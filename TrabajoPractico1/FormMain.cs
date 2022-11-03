@@ -358,19 +358,10 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-                    result = banco.transferir(idCaja, cbu, monto);
-                    if (result == 0)
+                    if (banco.transferir(idCaja, cbu, monto))
                     {
                         MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
                         refreshDataCaja();
-                    }
-                    else if(result == 1)
-                    {
-                        MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + cbu, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else if(result == 2)
-                    {
-                        MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     }
                 }
             }
@@ -499,7 +490,7 @@ namespace TrabajoPractico1
             string seleccion = comboBoxPFCBU.Items[index].ToString();
             int cbu;
             Int32.TryParse(seleccion, out cbu);
-            CajaDeAhorro caja = banco.BuscarCajaDeAhorroPorCbu(23);
+            CajaDeAhorro caja = banco.BuscarCajaDeAhorroPorCbu(cbu);
             int monto;
             if (!Int32.TryParse(Interaction.InputBox("ingrese el monto para crear el PF", "Monto Plazo fijo"), out monto) && monto >= 0)
             {

@@ -666,7 +666,7 @@ namespace TrabajoPractico1
         public bool depositar(int IdCaja, float Monto)
         {
             CajaDeAhorro cajaDestino = BuscarCajaDeAhorro(IdCaja);
-            if (DB.DepositarEnCaja(IdCaja, Monto) <= 0)
+            if (DB.depositarEnCaja(IdCaja, Monto) <= 0)
             {
                 MessageBox.Show(String.Format("No se pudo depositar el monto: {0} en la caja de id: {1} (Nivel DB)", Monto, IdCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return false;
@@ -682,27 +682,44 @@ namespace TrabajoPractico1
             {
                 return false;
             }
+            if (DB.retirarDeCaja(IdCaja, Monto) <= 0)
+            {
+                MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", Monto, IdCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
             cajaSeleccionada.saldo -= Monto;
             this.altaMovimiento(cajaSeleccionada, "Retiro", Monto);
             return true;
         }
-        public int transferir(int IdOrigen, int CbuDestino, float Monto)
+        public bool transferir(int IdOrigen, int CbuDestino, float Monto)
         {
             CajaDeAhorro cajaOrigen = BuscarCajaDeAhorro(IdOrigen);
             CajaDeAhorro cajaDestino = this.cajas.Find(caja => caja.cbu == CbuDestino);
             if (cajaDestino == null)
             {
-                return 1;
+                MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + CbuDestino, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
             if (cajaOrigen.saldo < Monto)
             {
-                return 2;
+                MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
             }
+            if (DB.retirarDeCaja(IdOrigen, Monto) <= 0)
+            {
+                MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", Monto, IdOrigen), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
+            if (DB.depositarEnCaja(CbuDestino, Monto) <= 0)
+            {
+                MessageBox.Show(String.Format("No se pudo depositar el monto: {0} en la caja de id: {1} (Nivel DB)", Monto, CbuDestino), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return false;
+            };
             cajaOrigen.saldo -= Monto;
             this.altaMovimiento(cajaOrigen, "Transferencia realizada", Monto);
             cajaDestino.saldo += Monto;
             this.altaMovimiento(cajaDestino, "Transferencia recibida", Monto);
-            return 0;
+            return true;
         }
         public Movimiento buscarMovimiento(int Id)
         {

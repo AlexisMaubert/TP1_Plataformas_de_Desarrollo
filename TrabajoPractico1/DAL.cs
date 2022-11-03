@@ -462,9 +462,33 @@ namespace TrabajoPractico1
                 }
             }
         }
-        public int DepositarEnCaja(int IdCaja, float Monto)
+        public int depositarEnCaja(int IdCaja, float Monto)
         {
             string queryString = "UPDATE CajaAhorro SET saldo = saldo + @monto WHERE id = @id_caja;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Int));
+                command.Parameters["@id_caja"].Value = IdCaja;
+                command.Parameters["@monto"].Value = Monto;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        }
+        public int retirarDeCaja(int IdCaja, float Monto)
+        {
+            string queryString = "UPDATE CajaAhorro SET saldo = saldo - @monto WHERE id = @id_caja;";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -490,7 +514,7 @@ namespace TrabajoPractico1
         {
             string connectionString = Properties.Resources.ConnectionStr;
             /////////////////////////////////////Elimino usuarios de la caja
-            string queryString = "SELECT id_usuario from CajaUsuario where id_caja=@id";
+            string queryString = "DELETE FROM [dbo].[CajaUsuario] where id_caja=@id";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -500,18 +524,50 @@ namespace TrabajoPractico1
                 try
                 {
                     connection.Open();
-                    SqlDataReader reader = command.ExecuteReader();
-                    while (reader.Read())
-                    {
-                        int IdUsuario = reader.GetInt32(0);
-                        eliminarUsuarioDeCaja(IdCaja, IdUsuario);
-                    }
-                    reader.Close();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    command.ExecuteNonQuery();
                 }
                 catch (Exception ex)
                 {
                     Debug.WriteLine(ex.Message);
-                    return 0;
+                }
+            }
+            /////////////////////////////////////Elimino movimientos de la caja
+            queryString = "DELETE FROM [dbo].[Movimiento] where id_caja=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = IdCaja;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
+                }
+            }
+            /////////////////////////////////////Elimino plazos fijos de la caja
+            queryString = "DELETE FROM [dbo].[PlazoFijo] where id_caja=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = IdCaja;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.Message);
                 }
             }
             /////////////////////////////////////Elimino caja
@@ -541,10 +597,6 @@ namespace TrabajoPractico1
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
             int idNuevoMovimiento = -1;
-            Debug.WriteLine("Detalle: " + Detalle);
-            Debug.WriteLine("Monto: " + Monto);
-            Debug.WriteLine("CajaId: " + CajaId);
-            Debug.WriteLine("BancoId: " + BancoId);
             string queryString = "INSERT INTO [dbo].[Movimiento] ([id_caja],[detalle],[monto],[id_banco],[fecha]) VALUES (@id_caja, @detalle, @monto, @id_banco, GETDATE());";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
@@ -585,7 +637,7 @@ namespace TrabajoPractico1
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
             int idNuevaCaja = -1;
-            string queryString = "INSERT INTO [dbo].[PlazoFijo] ([id_usuario],[monto],[fecha_ini],[fecha_fin],[tasa],[pagado],[id_banco],[id_caja_ahorro]) VALUES (@id_usuario, @monto, @fecha_ini, @fecha_fin, @tasa, @pagado, @id_banco, @id_caja_ahorro);";
+            string queryString = "INSERT INTO [dbo].[PlazoFijo] ([id_usuario],[monto],[fecha_ini],[fecha_fin],[tasa],[pagado],[id_banco],[id_caja]) VALUES (@id_usuario, @monto, @fecha_ini, @fecha_fin, @tasa, @pagado, @id_banco, @id_caja);";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -597,7 +649,7 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@tasa", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
-                command.Parameters.Add(new SqlParameter("@id_caja_ahorro", SqlDbType.NVarChar));
+                command.Parameters.Add(new SqlParameter("@id_caja", SqlDbType.NVarChar));
                 command.Parameters["@id_usuario"].Value = IdUsuario;
                 command.Parameters["@monto"].Value = Monto;
                 command.Parameters["@fecha_ini"].Value = DateTime.Now;
@@ -605,7 +657,7 @@ namespace TrabajoPractico1
                 command.Parameters["@tasa"].Value = Tasa;
                 command.Parameters["@pagado"].Value = Pagado;
                 command.Parameters["@id_banco"].Value = IdBanco;
-                command.Parameters["@id_caja_ahorro"].Value = IdCajaAhorro;
+                command.Parameters["@id_caja"].Value = IdCajaAhorro;
                 try
                 {
                     connection.Open();
