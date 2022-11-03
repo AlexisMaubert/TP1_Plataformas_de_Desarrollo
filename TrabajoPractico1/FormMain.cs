@@ -166,15 +166,18 @@ namespace TrabajoPractico1
         private void btnNewCaja_Click(object sender, EventArgs e)
         {
             int result = banco.crearCajaDeAhorro();
-            if(result == 1)
+            switch(result)
             {
-                MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    this.refreshDataCaja();
+                    break;
+                case 1:
+                    MessageBox.Show("No se pudo crear la caja", "Error de creacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
-            if (result == 2)
-            {
-                MessageBox.Show("No se pudo asignar la caja al usuario", "Error de asignacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            this.refreshDataCaja();
         }
         //DATA GRID VIEW
         private void dataGridViewCaja_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -199,27 +202,25 @@ namespace TrabajoPractico1
         private void btnBajaCaja_Click(object sender, EventArgs e)
         {
             int result = banco.bajaCaja(idCaja);
-            if (result == 0)
+            switch (result)
             {
-                MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                esconderBtns();
-                refreshDataCaja();
-            }
-            if (result == 1)
-            {
-                MessageBox.Show("No se encontró la caja de ahorro que se desea eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 4)
-            {
-                MessageBox.Show("Ha ocurrido un error al intentar eliminar la caja", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    MessageBox.Show("Borraste Exitosamente la caja", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    esconderBtns();
+                    refreshDataCaja();
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró la caja de ahorro que se desea eliminar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 4:
+                    MessageBox.Show("Ha ocurrido un error al intentar eliminar la caja", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
         //AGREGAR TITULAR
@@ -358,11 +359,26 @@ namespace TrabajoPractico1
                 }
                 else
                 {
-                    if (banco.transferir(idCaja, cbu, monto))
+                    int index = banco.transferir(idCaja, cbu, monto);
+                    switch (index)
                     {
-                        MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                        refreshDataCaja();
+                        case 0:
+                            MessageBox.Show("Se tranfirió el monto con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            break;
+                        case 1:
+                            MessageBox.Show("No se encontro la cuenta destino con el Nro de CBU " + cbu, "Cuenta inexistente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case 2:
+                            MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case 3:
+                            MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", monto, idCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
+                        case 4:
+                            MessageBox.Show(String.Format("No se pudo depositar el monto: {0} al cbu: {1} (Nivel DB)", monto, cbu), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            break;
                     }
+                    refreshDataCaja();
                 }
             }
         }
@@ -381,43 +397,42 @@ namespace TrabajoPractico1
         {
             int index = comboBox1.SelectedIndex;
             string seleccion = comboBox1.Items[index].ToString();
-            if (index == 0)
+            string movimientos = "";
+            switch (index)
             {
-                dateTimePicker1.Visible = false;
-                string movimientos = "";
-                foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
-                {
-                    movimientos = movimientos + movimiento.ToString() + "\n";
-                }
-                MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
-            }
-            else if (index == 1)
-            {
-                dateTimePicker1.Visible = true;
-            }
-            else if (index == 2)
-            {
-                dateTimePicker1.Visible = false;
-                float monto;
-                float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
-                string movimientos = "";
-                foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), monto))
-                {
-                    movimientos = movimientos + movimiento.ToString() + "\n";
-                }
-                if (monto <= 0)
-                {
+                case 0:
+                    dateTimePicker1.Visible = false;
+                    foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
+                    {
+                        movimientos = movimientos + movimiento.ToString() + "\n";
+                    }
+                    MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
+                    break;
+                case 1:
+                    dateTimePicker1.Visible = true;
+                    break;
+                case 2:
+                    dateTimePicker1.Visible = false;
+                    float monto;
+                    float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
+                    
+                    foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), monto))
+                    {
+                        movimientos = movimientos + movimiento.ToString() + "\n";
+                    }
+                    if (monto <= 0)
+                    {
+                        MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                    else
+                    {
+                        MessageBox.Show(movimientos, "Movimientos por monto", MessageBoxButtons.OK);
+                    }
+                    break;
+                default:
+                    dateTimePicker1.Visible = false;
                     MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    MessageBox.Show(movimientos, "Movimientos por monto", MessageBoxButtons.OK);
-                }
-            }
-            else
-            {
-                dateTimePicker1.Visible = false;
-                MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
         //ELEGIR FECHA
@@ -465,21 +480,20 @@ namespace TrabajoPractico1
         private void btnEliminarPF_Click(object sender, EventArgs e)
         {
             int result = banco.eliminarPlazoFijo(idPF);
-            if(result == 0)
+            switch (result)
             {
-                MessageBox.Show("Se eliminó el plazo fijo con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            if (result == 1)
-            {
-                MessageBox.Show("No se encontró el plazo fijo que se desea eliminar", "Plazo fijo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("El plazo fijo todavía no esta pago", "Plazo fijo no se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    MessageBox.Show("Se eliminó el plazo fijo con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró el plazo fijo que se desea eliminar", "Plazo fijo no encontrado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("El plazo fijo todavía no esta pago", "Plazo fijo no se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
             refreshDataPF();
         }
@@ -499,31 +513,27 @@ namespace TrabajoPractico1
             else
             {
                 int result = banco.crearPlazoFijo(caja.id, monto);
-                if (result == 0)
+                switch (result)
                 {
+                    case 0:
                     MessageBox.Show("Plazo Fijo creado con exito.", "Operacion exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        break;
+                    case 1:
+                        MessageBox.Show("El monto del plazo fijo debe ser mayor o igual a 1000", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 2:
+                        MessageBox.Show("No se encontró la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 3:
+                        MessageBox.Show("La cuenta no posee los fondos suficientes.", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 4:
+                        MessageBox.Show("No se pudo aregar el plazo fijo a la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 5:
+                        MessageBox.Show("Ha ocurrido un error al intentar crear el plazo fijo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
                 }
-                if (result == 1)
-                {
-                    MessageBox.Show("El monto del plazo fijo debe ser mayor o igual a 1000", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                if (result == 2)
-                {
-                    MessageBox.Show("No se encontró la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                if (result == 3)
-                {
-                    MessageBox.Show("La cuenta no posee los fondos suficientes.", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                if (result == 4)
-                {
-                    MessageBox.Show("No se pudo aregar el plazo fijo a la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                if (result == 5)
-                {
-                    MessageBox.Show("Ha ocurrido un error al intentar crear el plazo fijo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                refreshDataPF();
             }
             comboBoxPFCBU.Visible = false;
             refreshDataPF();
@@ -547,19 +557,19 @@ namespace TrabajoPractico1
             else
             {
                 int result = banco.nuevoPago(nombre, monto);
-                if (result == 0)
+                switch (result)
                 {
-                    MessageBox.Show("Pago creado con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    case 0:
+                        MessageBox.Show("Pago creado con éxito", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        this.refreshDataPagos();
+                        break;
+                    case 1:
+                        MessageBox.Show("Error en el ingreso a la base de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
+                    case 2:
+                        MessageBox.Show("Error al intentar crear el pago", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        break;
                 }
-                if (result == 1)
-                {
-                    MessageBox.Show("Error en el ingreso a la base de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                if (result == 2)
-                {
-                    MessageBox.Show("Error al intentar crear el pago", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                this.refreshDataPagos();
             }
         }
         //DATA GRID VIEW
@@ -586,23 +596,22 @@ namespace TrabajoPractico1
         private void btnEliminarPago_Click(object sender, EventArgs e)
         {
             int result = banco.quitarPago(idPago);
-            if (result == 0)
+            switch (result)
             {
-                banco.quitarPago(idPago);
-                MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataPagos();
-            }
-            if(result == 1)
-            {
-                MessageBox.Show("No se encontró el pago que desea eliminar", "Error al buscar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if(result == 2)
-            {
-                MessageBox.Show("El Pago necesita estar pagado😒", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("Ha ocurrido un error al intentar eliminar el pago", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    banco.quitarPago(idPago);
+                    MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataPagos();
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró el pago que desea eliminar", "Error al buscar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("El Pago necesita estar pagado😒", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("Ha ocurrido un error al intentar eliminar el pago", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
         //PAGAR PAGO
@@ -619,27 +628,25 @@ namespace TrabajoPractico1
             int cbu;
             Int32.TryParse(seleccion, out cbu);
             int result = banco.pagarPago(idPago, cbu);
-            if (result == 0)
+            switch (result)
             {
-                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataPagos();
-                refreshDataCaja();
-            }
-            if(result == 1)
-            {
-                MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 4)
-            {
-                MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataPagos();
+                    refreshDataCaja();
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 4:
+                    MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
         //LISTA DE TARJETAS
@@ -650,28 +657,26 @@ namespace TrabajoPractico1
             int numero;
             Int32.TryParse(seleccion, out numero);
             int result = banco.pagarPago(idPago, numero);
-            if (result == 0)
+            switch (result)
             {
-                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataPagos();
-                refreshDataCaja();
-                refreshDataTarjetas();
-            }
-            if (result == 1)
-            {
-                MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 4)
-            {
-                MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataPagos();
+                    refreshDataCaja();
+                    refreshDataTarjetas();
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró el pago que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("El pago selecionado ya ha sido realizado", "Pago ya realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("El saldo disponible no es suficiente para realizar el pago", "Pago no realizado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 4:
+                    MessageBox.Show("No se encontró el método de pago con el que desea pagar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
         //
@@ -715,24 +720,24 @@ namespace TrabajoPractico1
         private void btnDarDeBajaTarjeta_Click(object sender, EventArgs e)
         {
             int result = banco.bajaTarjeta(idTarjeta);
-            if (result == 0)
+            switch (result)
             {
-                MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                esconderBtns();
+                case 0:
+                    MessageBox.Show("Se ha dado de baja la tarjeta", "Operación exitosa 😏", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    esconderBtns();
+                    refreshDataTarjetas();
+                    break;
+                case 1:
+                    MessageBox.Show("No se encontró la tarjeta deseada", "Tarjeta no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("La tarjeta seleccionada todavía posee consumos sin pagar ", "No se pudo eliminar la tarjeta", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case 3:
+                    MessageBox.Show("Ha ocurrido un error al intentar eliminar la tarjeta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
             }
-            if (result == 1)
-            {
-                MessageBox.Show("No se encontró la tarjeta deseada", "Tarjeta no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("La tarjeta seleccionada todavía posee consumos sin pagar ", "No se pudo eliminar la tarjeta", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("Ha ocurrido un error al intentar eliminar la tarjeta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
-            }
-            refreshDataTarjetas();
+
         }
         //PAGAR TARJETA
         private void btnPagarTarjeta_Click(object sender, EventArgs e)
@@ -748,24 +753,23 @@ namespace TrabajoPractico1
             Int32.TryParse(seleccion, out int  cbu);
 
             int result = banco.pagarTarjeta(idTarjeta, cbu);
-            if (result == 0)
+            switch (result)
             {
-                MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                refreshDataPagos();
-                refreshDataCaja();
-                refreshDataTarjetas();
-            }
-            if(result == 1)
-            {
-                MessageBox.Show("No se ha encontrado la tarjeta de crédito seleccionada", "Tarjeta de crédito no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 2)
-            {
-                MessageBox.Show("No se ha encontrado la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            if (result == 3)
-            {
-                MessageBox.Show("El saldo de la caja de ahorro es insuficiente para realizar este pago", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                case 0:
+                    MessageBox.Show("Se ha realizado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    refreshDataPagos();
+                    refreshDataCaja();
+                    refreshDataTarjetas();
+                break;
+                case 1:
+                    MessageBox.Show("No se ha encontrado la tarjeta de crédito seleccionada", "Tarjeta de crédito no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("No se ha encontrado la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("El saldo de la caja de ahorro es insuficiente para realizar este pago", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
             }
         }
     }
