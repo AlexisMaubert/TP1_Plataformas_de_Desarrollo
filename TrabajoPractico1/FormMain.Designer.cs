@@ -348,8 +348,8 @@
             this.dataGridViewPF.RowTemplate.Height = 25;
             this.dataGridViewPF.Size = new System.Drawing.Size(664, 343);
             this.dataGridViewPF.TabIndex = 0;
-            this.dataGridViewPF.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
-            this.dataGridViewPF.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
+            this.dataGridViewPF.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPF_CellContentClick);
+            this.dataGridViewPF.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPF_CellContentClick);
             // 
             // ColumnIdPlf
             // 
@@ -714,6 +714,7 @@
             this.ColumnId.MinimumWidth = 6;
             this.ColumnId.Name = "ColumnId";
             this.ColumnId.ReadOnly = true;
+            this.ColumnId.Visible = false;
             this.ColumnId.Width = 125;
             // 
             // ColumnCbu

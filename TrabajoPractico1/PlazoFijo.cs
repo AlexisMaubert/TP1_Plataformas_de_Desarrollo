@@ -18,7 +18,6 @@ namespace TrabajoPractico1
         public int id_banco { get; set; }
         public int id_usuario { get; set; }
         public int id_caja { get; set; }
-        public CajaDeAhorro LAcaja { get; set; }
 
     public PlazoFijo()
         
@@ -26,7 +25,7 @@ namespace TrabajoPractico1
             this.titular = new Usuario();
         }
 
-        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
+        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa, int Id_caja)
         {
            this.titular= new Usuario();
            this.titular = Titular;
@@ -35,7 +34,7 @@ namespace TrabajoPractico1
            this.fechaFin = FechaFin;
            this.tasa = Tasa;
            this.pagado = false;
-           this.LAcaja = new CajaDeAhorro();
+           this.id_caja = Id_caja;
         }
 
         public PlazoFijo(int Id, int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa, bool Pagado, int Id_banco, int Id_caja)
@@ -50,7 +49,6 @@ namespace TrabajoPractico1
             this.pagado = Pagado;
             this.id_banco = Id_banco;
             this.id_caja = Id_caja;
-            this.LAcaja = new CajaDeAhorro();
         }
 
         public override string ToString()

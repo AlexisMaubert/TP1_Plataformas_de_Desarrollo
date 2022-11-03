@@ -496,10 +496,14 @@ namespace TrabajoPractico1
                     MessageBox.Show("El plazo fijo todavía no esta pago", "Plazo fijo no se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case 3:
+                    MessageBox.Show("No se pudo eliminar el plazo fijo (Nivel DB)", "Ocurrió un problema de DB", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 4:
                     MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
             refreshDataPF();
+            esconderBtns();
         }
         //LISTA CBU
         private void comboBoxPFCBU_SelectedIndexChanged(object sender, EventArgs e)

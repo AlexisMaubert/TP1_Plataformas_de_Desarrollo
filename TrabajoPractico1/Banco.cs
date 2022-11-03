@@ -3,12 +3,16 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Runtime.InteropServices;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TrabajoPractico1
 {
@@ -104,16 +108,15 @@ namespace TrabajoPractico1
             {
                 PlazoFijo? plazoFijo = pfs.Find(pfaux => pfaux.id == pf.id);
                 Usuario? user = usuarios.Find(u => u.id == pf.id_usuario);
-                CajaDeAhorro? caja = cajas.Find(c => c.id == pf.id_banco);
+                CajaDeAhorro? caja = cajas.Find(c => c.id == pf.id_caja);
                 if (plazoFijo != null && user != null && caja != null)
                 {
+                    pagarPlazosFijos(plazoFijo);
                     user.pf.Add(plazoFijo);
                     plazoFijo.titular = user;
-                    plazoFijo.LAcaja = caja;
                 }
             }
         }
-
         //
         //MOVIMIENTOS
         //
@@ -246,7 +249,7 @@ namespace TrabajoPractico1
             }
             return 0;
         }
-        public int bajaCaja(int IdCaja) // agregar persistencia
+        public int bajaCaja(int IdCaja)
         {
             try
             {
@@ -259,8 +262,16 @@ namespace TrabajoPractico1
                 {
                     return 2;
                 }
+                foreach (PlazoFijo pf in usuarioLogeado.pf.FindAll(pfaux => pfaux.id_caja == IdCaja)) //Itero entre los plazos fijos del usuario logeado
+                {
+                    usuarioLogeado.pf.Remove(pf);
+                }
                 foreach (Usuario titular in cajaARemover.titulares) //Itero entre los titulares de la caja de ahorro
                 {
+                    foreach (PlazoFijo pf in titular.pf.FindAll(pfaux => pfaux.id_caja == IdCaja)) //Itero entre los plazos fijos del titular
+                    {
+                        titular.pf.Remove(pf);
+                    }
                     titular.cajas.Remove(cajaARemover);  //Saco la caja de ahorro de los titulares.
                 }
                 if (DB.eliminarCaja(IdCaja) == 0)
@@ -482,20 +493,6 @@ namespace TrabajoPractico1
         //
         //PLAZO FIJO
         //
-
-        public bool agregarPlazoFijo(PlazoFijo NuevoPlazoFijo)
-        {
-            try
-            {
-                this.pfs.Add(NuevoPlazoFijo);
-                usuarioLogeado.pf.Add(NuevoPlazoFijo);
-                return true;
-            }
-            catch
-            {
-                return false;
-            }
-        }
         public int eliminarPlazoFijo(int idPlazoAEliminar)
         {
             try
@@ -509,13 +506,17 @@ namespace TrabajoPractico1
                 {
                     return 2;
                 }
+                if (DB.eliminarPlazoFijo(idPlazoAEliminar) == 0)
+                {
+                    return 3;
+                }
                 pFijo.titular.pf.Remove(pFijo);
                 this.pfs.Remove(pFijo);
                 return 0;
             }
             catch
             {
-                return 3;
+                return 4;
             }
         }
         public int crearPlazoFijo(int IdCaja, float Monto)
@@ -547,15 +548,30 @@ namespace TrabajoPractico1
                 };
                 caja.saldo -= Monto;
                 this.altaMovimiento(caja, "Alta plazo fijo", Monto);
-                PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
-                nuevoPlazoFijo.LAcaja = caja;
-                this.agregarPlazoFijo(nuevoPlazoFijo);
-                
+                PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90, IdCaja);
+                this.pfs.Add(nuevoPlazoFijo);
+                usuarioLogeado.pf.Add(nuevoPlazoFijo);
                 return 0;
             }
             catch
             {
                 return 5;
+            }
+        }
+        public void pagarPlazosFijos(PlazoFijo pFijo)
+        {
+            DateTime fechaIni = pFijo.fechaIni;
+            DateTime fechaFin = pFijo.fechaFin;
+            if (DateTime.Now >= fechaFin && !pFijo.pagado)
+            {
+                double cantDias = (fechaFin-fechaIni).TotalDays;
+                float montoFinal = pFijo.monto + pFijo.monto * (90 / 365) * (float)cantDias;
+                CajaDeAhorro caja = BuscarCajaDeAhorro(pFijo.id_caja);
+                caja.saldo += montoFinal;
+                pFijo.pagado = true;
+                DB.pagarPlazoFijo(pFijo.id, montoFinal);
+                DB.depositarEnCaja(pFijo.id_caja, montoFinal);
+                altaMovimiento(caja, "Pago plazo fijo", montoFinal);
             }
         }
         //
@@ -582,7 +598,6 @@ namespace TrabajoPractico1
         {
             return this.cajas.Find(caja => caja.cbu == Cbu);
         }
-
         public List<Movimiento> obtenerMovimientos(int idCaja)
         {
             foreach (CajaDeAhorro caja in usuarioLogeado.cajas)

@@ -462,6 +462,28 @@ namespace TrabajoPractico1
                 }
             }
         }
+        public int pagarPlazoFijo(int IdPlazoFijo, float montoFinal)
+        {
+            string queryString = "UPDATE PlazoFijo SET pagado = 1 WHERE id = @id_plazo_fijo;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_plazo_fijo", SqlDbType.Int));
+                command.Parameters["@id_plazo_fijo"].Value = IdPlazoFijo;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        }
         public int depositarEnCaja(int IdCaja, float Monto)
         {
             string queryString = "UPDATE CajaAhorro SET saldo = saldo + @monto WHERE id = @id_caja;";
@@ -513,8 +535,8 @@ namespace TrabajoPractico1
         public int eliminarCaja(int IdCaja)
         {
             string connectionString = Properties.Resources.ConnectionStr;
-            /////////////////////////////////////Elimino usuarios de la caja
-            string queryString = "DELETE FROM [dbo].[CajaUsuario] where id_caja=@id";
+            /////////////////////////////////////Elimino plazos fijos de la caja
+            string queryString = "DELETE FROM [dbo].[PlazoFijo] where id_caja=@id";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -551,8 +573,8 @@ namespace TrabajoPractico1
                     Debug.WriteLine(ex.Message);
                 }
             }
-            /////////////////////////////////////Elimino plazos fijos de la caja
-            queryString = "DELETE FROM [dbo].[PlazoFijo] where id_caja=@id";
+            /////////////////////////////////////Elimino usuarios de la caja
+            queryString = "DELETE FROM [dbo].[CajaUsuario] where id_caja=@id";
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
@@ -678,6 +700,29 @@ namespace TrabajoPractico1
                     return -1;
                 }
                 return idNuevaCaja;
+            }
+        }
+        public int eliminarPlazoFijo(int Id)
+        {
+            string connectionString = Properties.Resources.ConnectionStr;
+            string queryString = "DELETE FROM [dbo].[PlazoFijo] WHERE ID=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection );
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int ));
+                command.Parameters["@id"].Value = Id;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return 0;
+                }
             }
         }
         public int agregarTarjeta(int Id_usuario, int Numero, int CodigoV, float Limite, float Consumo,int Id_Banco = 1)
