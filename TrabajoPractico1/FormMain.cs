@@ -747,6 +747,9 @@ namespace TrabajoPractico1
                     MessageBox.Show("La tarjeta seleccionada todavía posee consumos sin pagar ", "No se pudo eliminar la tarjeta", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
                 case 3:
+                    MessageBox.Show("Ha ocurrido un error al intentar eliminar la tarjeta (Nivel DB)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case 4:
                     MessageBox.Show("Ha ocurrido un error al intentar eliminar la tarjeta", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     break;
             }

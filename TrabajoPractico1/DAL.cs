@@ -769,8 +769,77 @@ namespace TrabajoPractico1
                 return idTarjetaNueva;
             }
 
-         }    
-         public int agregarPago(int Id_usuario, string Nombre, float Monto, bool Pagado = false, string Metodo="", int Id_Banco = 1)
+         }
+        public int eliminarTarjeta(int Id)
+        {
+            string connectionString = Properties.Resources.ConnectionStr;
+            string queryString = "DELETE FROM [dbo].[Tarjeta] WHERE ID=@id";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
+                command.Parameters["@id"].Value = Id;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                    return 0;
+                }
+            }
+        }
+        public int agregarConsumoATarjeta(int tarjetaId, float monto)
+        {
+            string queryString = "UPDATE Tarjeta SET consumo = consumo + @monto WHERE id = @id_tarjeta;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_tarjeta", SqlDbType.Int));
+                command.Parameters.Add(new SqlParameter("@monto", SqlDbType.Int));
+                command.Parameters["@id_tarjeta"].Value = tarjetaId;
+                command.Parameters["@monto"].Value = monto;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        } 
+        public int pagarTarjeta(int tarjetaId)
+        {
+            string queryString = "UPDATE Tarjeta SET consumo = 0 WHERE id = @id_tarjeta;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_tarjeta", SqlDbType.Int));
+                command.Parameters["@id_tarjeta"].Value = tarjetaId;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
+            }
+        }
+        public int agregarPago(int Id_usuario, string Nombre, float Monto, bool Pagado = false, string Metodo="", int Id_Banco = 1)
         {
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
@@ -815,6 +884,29 @@ namespace TrabajoPractico1
                     return -1;
                 }
                 return Pago;
+            }
+        }
+
+        public int pagarPago(int IdPago)
+        {
+            string queryString = "UPDATE Pago SET pagado = 1 WHERE id = @id_pago;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_pago", SqlDbType.Int));
+                command.Parameters["@id_pago"].Value = IdPago;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return 0;
+                }
             }
         }
 

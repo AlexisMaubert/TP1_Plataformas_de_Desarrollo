@@ -12,6 +12,7 @@ using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
 namespace TrabajoPractico1
@@ -399,13 +400,17 @@ namespace TrabajoPractico1
                 {
                     return 2;
                 }
+                if (DB.eliminarTarjeta(IdTarjeta) == 0)
+                {
+                    return 3;
+                }
                 this.tarjetas.Remove(tarjetaARemover); //Borro la tarjeta de la lista de tarjetas del Banco
                 tarjetaARemover.titular.tarjetas.Remove(tarjetaARemover);//Borro la tarjeta de la lista de tarjetas del usuario.
                 return 0;
             }
             catch
             {
-                return 3;
+                return 4;
             }
         }
         public int modificarTarjetaDeCredito(int Id, float limite) //Todavía sin aplicación en el programa
@@ -565,7 +570,9 @@ namespace TrabajoPractico1
             if (DateTime.Now >= fechaFin && !pFijo.pagado)
             {
                 double cantDias = (fechaFin-fechaIni).TotalDays;
-                float montoFinal = pFijo.monto + pFijo.monto * (90 / 365) * (float)cantDias;
+                float montoFinal = (pFijo.monto + pFijo.monto * (float)(90.0 / 365.0) * (float)cantDias);
+                decimal bar = Convert.ToDecimal(montoFinal);
+                montoFinal = (float)Math.Round(bar, 2);//redondeo a 2 decimales
                 CajaDeAhorro caja = BuscarCajaDeAhorro(pFijo.id_caja);
                 caja.saldo += montoFinal;
                 pFijo.pagado = true;
@@ -765,6 +772,8 @@ namespace TrabajoPractico1
             {
                 return 3;
             }
+            DB.pagarTarjeta(tarjeta.id);
+            DB.retirarDeCaja(caja.id, tarjeta.consumo);
             caja.saldo -= tarjeta.consumo;
             this.altaMovimiento(caja, "Pago de Tarjeta " + tarjeta.numero, tarjeta.consumo);
             tarjeta.consumo = 0;
@@ -788,6 +797,8 @@ namespace TrabajoPractico1
                 {
                     return 3;
                 }
+                DB.pagarPago(idPago);
+                DB.retirarDeCaja(caja.id, pago.monto);
                 caja.saldo -= pago.monto;
                 this.modificarPago(idPago);
                 this.altaMovimiento(caja, "Pago de " + pago.nombre, pago.monto);
@@ -803,6 +814,8 @@ namespace TrabajoPractico1
             {
                 return 3;
             }
+            DB.pagarPago(idPago);
+            DB.agregarConsumoATarjeta(tarjeta.id, pago.monto);
             tarjeta.consumo += pago.monto;
             this.modificarPago(idPago);
             pago.metodo = "Tarjeta";
