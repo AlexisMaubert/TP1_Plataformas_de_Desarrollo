@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
@@ -42,6 +41,11 @@
             this.btnBajaCaja = new System.Windows.Forms.Button();
             this.btnNewCaja = new System.Windows.Forms.Button();
             this.dataGridViewCaja = new System.Windows.Forms.DataGridView();
+            this.ColumnId = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPlazoFijo = new System.Windows.Forms.TabPage();
             this.comboBoxPFCBU = new System.Windows.Forms.ComboBox();
             this.btnEliminarPF = new System.Windows.Forms.Button();
@@ -77,36 +81,29 @@
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tabUsuario = new System.Windows.Forms.TabPage();
+            this.dataGridViewUsuarios = new System.Windows.Forms.DataGridView();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colDni = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colAdmin = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
-            this.ColumnId = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
+            this.tabControl1.SuspendLayout();
             this.tabPlazoFijo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).BeginInit();
             this.tabPagos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).BeginInit();
             this.tabTarjetas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).BeginInit();
+            this.tabUsuario.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).BeginInit();
             this.SuspendLayout();
-            // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabCajaDeAhorro);
-            this.tabControl1.Controls.Add(this.tabPlazoFijo);
-            this.tabControl1.Controls.Add(this.tabPagos);
-            this.tabControl1.Controls.Add(this.tabTarjetas);
-            this.tabControl1.Location = new System.Drawing.Point(12, 61);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(760, 424);
-            this.tabControl1.TabIndex = 0;
             // 
             // tabCajaDeAhorro
             // 
@@ -282,6 +279,57 @@
             this.dataGridViewCaja.TabIndex = 0;
             this.dataGridViewCaja.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
             this.dataGridViewCaja.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewCaja_CellContentClick);
+            // 
+            // ColumnId
+            // 
+            this.ColumnId.Frozen = true;
+            this.ColumnId.HeaderText = "ID";
+            this.ColumnId.MinimumWidth = 6;
+            this.ColumnId.Name = "ColumnId";
+            this.ColumnId.ReadOnly = true;
+            this.ColumnId.Visible = false;
+            this.ColumnId.Width = 125;
+            // 
+            // ColumnCbu
+            // 
+            this.ColumnCbu.Frozen = true;
+            this.ColumnCbu.HeaderText = "CBU";
+            this.ColumnCbu.MinimumWidth = 6;
+            this.ColumnCbu.Name = "ColumnCbu";
+            this.ColumnCbu.ReadOnly = true;
+            this.ColumnCbu.Width = 125;
+            // 
+            // ColumnTitulares
+            // 
+            this.ColumnTitulares.Frozen = true;
+            this.ColumnTitulares.HeaderText = "Titular/res";
+            this.ColumnTitulares.MinimumWidth = 6;
+            this.ColumnTitulares.Name = "ColumnTitulares";
+            this.ColumnTitulares.ReadOnly = true;
+            this.ColumnTitulares.Width = 125;
+            // 
+            // ColumnSaldo
+            // 
+            this.ColumnSaldo.Frozen = true;
+            this.ColumnSaldo.HeaderText = "Saldo";
+            this.ColumnSaldo.MinimumWidth = 6;
+            this.ColumnSaldo.Name = "ColumnSaldo";
+            this.ColumnSaldo.ReadOnly = true;
+            this.ColumnSaldo.Width = 125;
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabCajaDeAhorro);
+            this.tabControl1.Controls.Add(this.tabPlazoFijo);
+            this.tabControl1.Controls.Add(this.tabPagos);
+            this.tabControl1.Controls.Add(this.tabTarjetas);
+            this.tabControl1.Controls.Add(this.tabUsuario);
+            this.tabControl1.Location = new System.Drawing.Point(12, 61);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(760, 424);
+            this.tabControl1.TabIndex = 0;
             // 
             // tabPlazoFijo
             // 
@@ -678,6 +726,71 @@
             this.ColumnConsumosTarjeta.ReadOnly = true;
             this.ColumnConsumosTarjeta.Width = 125;
             // 
+            // tabUsuario
+            // 
+            this.tabUsuario.Controls.Add(this.dataGridViewUsuarios);
+            this.tabUsuario.Location = new System.Drawing.Point(4, 24);
+            this.tabUsuario.Name = "tabUsuario";
+            this.tabUsuario.Size = new System.Drawing.Size(752, 396);
+            this.tabUsuario.TabIndex = 4;
+            this.tabUsuario.Text = "Usuarios";
+            this.tabUsuario.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewUsuarios
+            // 
+            this.dataGridViewUsuarios.AllowUserToAddRows = false;
+            this.dataGridViewUsuarios.AllowUserToDeleteRows = false;
+            this.dataGridViewUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.dataGridViewUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
+            this.dataGridViewTextBoxColumn1,
+            this.colNombre,
+            this.colDni,
+            this.colEmail,
+            this.colBloqueado,
+            this.colAdmin});
+            this.dataGridViewUsuarios.Location = new System.Drawing.Point(0, 0);
+            this.dataGridViewUsuarios.Name = "dataGridViewUsuarios";
+            this.dataGridViewUsuarios.RowTemplate.Height = 25;
+            this.dataGridViewUsuarios.Size = new System.Drawing.Size(578, 338);
+            this.dataGridViewUsuarios.TabIndex = 0;
+            // 
+            // dataGridViewTextBoxColumn1
+            // 
+            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            this.dataGridViewTextBoxColumn1.ReadOnly = true;
+            this.dataGridViewTextBoxColumn1.Visible = false;
+            // 
+            // colNombre
+            // 
+            this.colNombre.HeaderText = "Nombre";
+            this.colNombre.Name = "colNombre";
+            this.colNombre.ReadOnly = true;
+            // 
+            // colDni
+            // 
+            this.colDni.HeaderText = "Dni";
+            this.colDni.Name = "colDni";
+            this.colDni.ReadOnly = true;
+            // 
+            // colEmail
+            // 
+            this.colEmail.HeaderText = "Email";
+            this.colEmail.Name = "colEmail";
+            this.colEmail.ReadOnly = true;
+            // 
+            // colBloqueado
+            // 
+            this.colBloqueado.HeaderText = "Bloqueado";
+            this.colBloqueado.Name = "colBloqueado";
+            this.colBloqueado.ReadOnly = true;
+            // 
+            // colAdmin
+            // 
+            this.colAdmin.HeaderText = "Admin";
+            this.colAdmin.Name = "colAdmin";
+            this.colAdmin.ReadOnly = true;
+            // 
             // btnCerrarSesion
             // 
             this.btnCerrarSesion.Location = new System.Drawing.Point(649, 490);
@@ -691,7 +804,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 21);
+            this.label1.Location = new System.Drawing.Point(53, 34);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 15);
             this.label1.TabIndex = 0;
@@ -701,48 +814,11 @@
             // 
             this.nombreUsuario.AutoSize = true;
             this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
+            this.nombreUsuario.Location = new System.Drawing.Point(131, 34);
             this.nombreUsuario.Name = "nombreUsuario";
             this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
             this.nombreUsuario.TabIndex = 1;
             this.nombreUsuario.Text = "label2";
-            // 
-            // ColumnId
-            // 
-            this.ColumnId.Frozen = true;
-            this.ColumnId.HeaderText = "ID";
-            this.ColumnId.MinimumWidth = 6;
-            this.ColumnId.Name = "ColumnId";
-            this.ColumnId.ReadOnly = true;
-            this.ColumnId.Visible = false;
-            this.ColumnId.Width = 125;
-            // 
-            // ColumnCbu
-            // 
-            this.ColumnCbu.Frozen = true;
-            this.ColumnCbu.HeaderText = "CBU";
-            this.ColumnCbu.MinimumWidth = 6;
-            this.ColumnCbu.Name = "ColumnCbu";
-            this.ColumnCbu.ReadOnly = true;
-            this.ColumnCbu.Width = 125;
-            // 
-            // ColumnTitulares
-            // 
-            this.ColumnTitulares.Frozen = true;
-            this.ColumnTitulares.HeaderText = "Titular/res";
-            this.ColumnTitulares.MinimumWidth = 6;
-            this.ColumnTitulares.Name = "ColumnTitulares";
-            this.ColumnTitulares.ReadOnly = true;
-            this.ColumnTitulares.Width = 125;
-            // 
-            // ColumnSaldo
-            // 
-            this.ColumnSaldo.Frozen = true;
-            this.ColumnSaldo.HeaderText = "Saldo";
-            this.ColumnSaldo.MinimumWidth = 6;
-            this.ColumnSaldo.Name = "ColumnSaldo";
-            this.ColumnSaldo.ReadOnly = true;
-            this.ColumnSaldo.Width = 125;
             // 
             // FormMain
             // 
@@ -763,16 +839,18 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormMain";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
-            this.tabControl1.ResumeLayout(false);
             this.tabCajaDeAhorro.ResumeLayout(false);
             this.tabCajaDeAhorro.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).EndInit();
+            this.tabControl1.ResumeLayout(false);
             this.tabPlazoFijo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).EndInit();
             this.tabPagos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).EndInit();
             this.tabTarjetas.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).EndInit();
+            this.tabUsuario.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -836,5 +914,13 @@
         private DataGridViewTextBoxColumn ColumnCbu;
         private DataGridViewTextBoxColumn ColumnTitulares;
         private DataGridViewTextBoxColumn ColumnSaldo;
+        private TabPage tabUsuario;
+        private DataGridView dataGridViewUsuarios;
+        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private DataGridViewTextBoxColumn colNombre;
+        private DataGridViewTextBoxColumn colDni;
+        private DataGridViewTextBoxColumn colEmail;
+        private DataGridViewTextBoxColumn colBloqueado;
+        private DataGridViewTextBoxColumn colAdmin;
     }
 }
