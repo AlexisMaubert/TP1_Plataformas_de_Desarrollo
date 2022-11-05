@@ -19,12 +19,12 @@ namespace TrabajoPractico1
 
             //Banco b = new Banco();
 
-            //b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseña indescifrable");
-            //b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseña indescifrable");
+            //b.altaUsuario("Cosme","Fulanito",1234,"cosmefulanito@gmail.com","contraseï¿½a indescifrable");
+            //b.altaUsuario("Tipo","De incognito",5689,"tipodeincognito@gmail.com","contraseï¿½a indescifrable");
 
             //foreach (Usuario u  in b.usuarios){Debug.WriteLine("Alta usuario: " + u);}
 
-            //b.modificarUsuario(5689,"tipo@gmail.com","contraseña");
+            //b.modificarUsuario(5689,"tipo@gmail.com","contraseï¿½a");
             //foreach(Usuario u  in b.usuarios){Debug.WriteLine("Post-modificacion de usuario" + u);}
 
             ////b.bajaUsuario(5689);
@@ -36,7 +36,7 @@ namespace TrabajoPractico1
 
             ////b.bajaCaja(b.cajas[0].cbu);
 
-            //b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseña random");
+            //b.altaUsuario("Usuario", "Random", 1111, "ur@gmail.com", "contraseï¿½a random");
             //b.agregarUsuarioACaja(b.obtenerCajaDeAhorro(1234)[0] , b.usuarios[2]);
             //Debug.WriteLine("Titular agregado" + b.cajas[0].titulares[2]);
 
@@ -58,8 +58,8 @@ namespace TrabajoPractico1
             //foreach(Tarjeta t  in b.usuarios[0].tarjetas){Debug.WriteLine("Alta tarjeta en usuario: " + t);}
 
             //b.modificarTarjetaDeCredito(b.tarjetas[0].numero, 99999);
-            //foreach (Tarjeta t in b.tarjetas) { Debug.WriteLine("Modificación tarjeta en banco: " + t); }
-            //foreach (Tarjeta t in b.usuarios[0].tarjetas) { Debug.WriteLine("Modificación tarjeta en usuario: " + t); }
+            //foreach (Tarjeta t in b.tarjetas) { Debug.WriteLine("Modificaciï¿½n tarjeta en banco: " + t); }
+            //foreach (Tarjeta t in b.usuarios[0].tarjetas) { Debug.WriteLine("Modificaciï¿½n tarjeta en usuario: " + t); }
 
             //b.bajaTarjeta(b.usuarios[0].tarjetas[0].numero);
 
