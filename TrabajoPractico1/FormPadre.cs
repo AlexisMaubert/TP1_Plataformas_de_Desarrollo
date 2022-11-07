@@ -24,7 +24,6 @@ namespace TrabajoPractico1
             this.hijoReg.MdiParent = this;
             this.hijoReg.regBotonEvento += regBotonDelegado;
             this.hijoLogin.Show();
-
         }
 
         private void FormPadre_Load(object sender, EventArgs e)

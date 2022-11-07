@@ -39,7 +39,6 @@ namespace TrabajoPractico1
 
         public PlazoFijo(int Id, int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa, bool Pagado, int Id_banco, int Id_caja)
         {
-            this.titular = new Usuario();
             this.id = Id;
             this.id_usuario = Id_usuario;
             this.monto = Monto;

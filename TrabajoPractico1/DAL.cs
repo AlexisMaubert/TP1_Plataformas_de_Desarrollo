@@ -503,7 +503,6 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 0;
                 }
             }
@@ -527,7 +526,6 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 0;
                 }
             }
@@ -613,7 +611,6 @@ namespace TrabajoPractico1
                 }
             }
         }
-
         public int agregarMovimiento(string Detalle, float Monto, int CajaId, int BancoId = 1)
         {
             //primero me aseguro que lo pueda agregar a la base
@@ -648,7 +645,6 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("ex.Message: " + ex.Message);
                     return -1;
                 }
                 return idNuevoMovimiento;
@@ -696,7 +692,6 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine("ex.Message: " + ex.Message);
                     return -1;
                 }
                 return idNuevaCaja;
@@ -768,7 +763,6 @@ namespace TrabajoPractico1
                 }
                 return idTarjetaNueva;
             }
-
          }
         public int eliminarTarjeta(int Id)
         {
@@ -857,7 +851,6 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@metodo", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
                
-               
                 command.Parameters["@Id_usuario"].Value = Id_usuario;
                 command.Parameters["@Nombre"].Value = Nombre;
                 command.Parameters["@Monto"].Value = Monto;
@@ -886,7 +879,6 @@ namespace TrabajoPractico1
                 return Pago;
             }
         }
-
         public int pagarPago(int IdPago)
         {
             string queryString = "UPDATE Pago SET pagado = 1 WHERE id = @id_pago;";
@@ -904,12 +896,73 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 0;
                 }
             }
         }
-
+        public int elimnarPago(int IdPago)
+        {
+            string queryString = "DELETE Pago WHERE id = @id_pago;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_pago", SqlDbType.Int));
+                command.Parameters["@id_pago"].Value = IdPago;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+        }
+        public int bloquearUsuario(int IdUsuario)
+        {
+            string queryString = "UPDATE Usuario SET bloqueado = 1 WHERE id = @id_usuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+        }
+        public int desbloquearUsuario(int IdUsuario)
+        {
+            string queryString = "UPDATE Usuario SET bloqueado = 0 WHERE id = @id_usuario;";
+            using (SqlConnection connection =
+                new SqlConnection(connectionString))
+            {
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
+                command.Parameters["@id_usuario"].Value = IdUsuario;
+                try
+                {
+                    connection.Open();
+                    //esta consulta NO espera un resultado para leer, es del tipo NON Query
+                    return command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    return 0;
+                }
+            }
+        }
     }
 }
 

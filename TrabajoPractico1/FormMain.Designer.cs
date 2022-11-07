@@ -29,9 +29,10 @@
         private void InitializeComponent()
         {
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
+            this.detalleTxt = new System.Windows.Forms.TextBox();
+            this.montoText = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnEliminarTitular = new System.Windows.Forms.Button();
             this.btnDetalles = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
@@ -82,6 +83,7 @@
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.tabUsuario = new System.Windows.Forms.TabPage();
+            this.btnDesbloquear = new System.Windows.Forms.Button();
             this.dataGridViewUsuarios = new System.Windows.Forms.DataGridView();
             this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -107,9 +109,10 @@
             // 
             // tabCajaDeAhorro
             // 
+            this.tabCajaDeAhorro.Controls.Add(this.detalleTxt);
+            this.tabCajaDeAhorro.Controls.Add(this.montoText);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
-            this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
             this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
             this.tabCajaDeAhorro.Controls.Add(this.btnDetalles);
             this.tabCajaDeAhorro.Controls.Add(this.btnTransferir);
@@ -128,10 +131,30 @@
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
+            // detalleTxt
+            // 
+            this.detalleTxt.Location = new System.Drawing.Point(547, 267);
+            this.detalleTxt.Name = "detalleTxt";
+            this.detalleTxt.Size = new System.Drawing.Size(106, 23);
+            this.detalleTxt.TabIndex = 14;
+            this.detalleTxt.Text = "Detalle";
+            this.detalleTxt.Visible = false;
+            this.detalleTxt.TextChanged += new System.EventHandler(this.detalleTxt_TextChanged);
+            // 
+            // montoText
+            // 
+            this.montoText.Location = new System.Drawing.Point(547, 238);
+            this.montoText.Name = "montoText";
+            this.montoText.Size = new System.Drawing.Size(106, 23);
+            this.montoText.TabIndex = 13;
+            this.montoText.Text = "Monto";
+            this.montoText.Visible = false;
+            this.montoText.TextChanged += new System.EventHandler(this.montoText_TextChanged);
+            // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(530, 259);
+            this.label2.Location = new System.Drawing.Point(522, 186);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(134, 15);
             this.label2.TabIndex = 12;
@@ -141,33 +164,19 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(547, 303);
+            this.dateTimePicker1.Location = new System.Drawing.Point(547, 210);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(106, 23);
             this.dateTimePicker1.TabIndex = 11;
+            this.dateTimePicker1.Value = new System.DateTime(2022, 11, 6, 0, 0, 0, 0);
             this.dateTimePicker1.Visible = false;
+            this.dateTimePicker1.CloseUp += new System.EventHandler(this.dateTimePicker1_CloseUp);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
-            "Detalle",
-            "Fecha",
-            "Monto"});
-            this.comboBox1.Location = new System.Drawing.Point(547, 276);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(106, 23);
-            this.comboBox1.TabIndex = 10;
-            this.comboBox1.Text = "Movimientos";
-            this.comboBox1.Visible = false;
-            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // btnEliminarTitular
             // 
-            this.btnEliminarTitular.Location = new System.Drawing.Point(539, 112);
+            this.btnEliminarTitular.Location = new System.Drawing.Point(539, 69);
             this.btnEliminarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminarTitular.Name = "btnEliminarTitular";
             this.btnEliminarTitular.Size = new System.Drawing.Size(114, 22);
@@ -179,19 +188,19 @@
             // 
             // btnDetalles
             // 
-            this.btnDetalles.Location = new System.Drawing.Point(555, 225);
+            this.btnDetalles.Location = new System.Drawing.Point(522, 303);
             this.btnDetalles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDetalles.Name = "btnDetalles";
-            this.btnDetalles.Size = new System.Drawing.Size(98, 22);
+            this.btnDetalles.Size = new System.Drawing.Size(131, 29);
             this.btnDetalles.TabIndex = 7;
-            this.btnDetalles.Text = "Movimientos";
+            this.btnDetalles.Text = "Mostrar movimientos";
             this.btnDetalles.UseVisualStyleBackColor = true;
             this.btnDetalles.Visible = false;
             this.btnDetalles.Click += new System.EventHandler(this.btnDetalles_Click);
             // 
             // btnTransferir
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(555, 198);
+            this.btnTransferir.Location = new System.Drawing.Point(555, 155);
             this.btnTransferir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTransferir.Name = "btnTransferir";
             this.btnTransferir.Size = new System.Drawing.Size(98, 22);
@@ -203,7 +212,7 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(555, 172);
+            this.btnRetirar.Location = new System.Drawing.Point(555, 129);
             this.btnRetirar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRetirar.Name = "btnRetirar";
             this.btnRetirar.Size = new System.Drawing.Size(98, 22);
@@ -215,7 +224,7 @@
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(555, 146);
+            this.btnDepositar.Location = new System.Drawing.Point(555, 103);
             this.btnDepositar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDepositar.Name = "btnDepositar";
             this.btnDepositar.Size = new System.Drawing.Size(98, 22);
@@ -227,7 +236,7 @@
             // 
             // btnAgregarTitular
             // 
-            this.btnAgregarTitular.Location = new System.Drawing.Point(539, 86);
+            this.btnAgregarTitular.Location = new System.Drawing.Point(539, 43);
             this.btnAgregarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAgregarTitular.Name = "btnAgregarTitular";
             this.btnAgregarTitular.Size = new System.Drawing.Size(114, 22);
@@ -239,7 +248,7 @@
             // 
             // btnBajaCaja
             // 
-            this.btnBajaCaja.Location = new System.Drawing.Point(539, 59);
+            this.btnBajaCaja.Location = new System.Drawing.Point(539, 16);
             this.btnBajaCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBajaCaja.Name = "btnBajaCaja";
             this.btnBajaCaja.Size = new System.Drawing.Size(114, 22);
@@ -728,6 +737,7 @@
             // 
             // tabUsuario
             // 
+            this.tabUsuario.Controls.Add(this.btnDesbloquear);
             this.tabUsuario.Controls.Add(this.dataGridViewUsuarios);
             this.tabUsuario.Location = new System.Drawing.Point(4, 24);
             this.tabUsuario.Name = "tabUsuario";
@@ -735,6 +745,16 @@
             this.tabUsuario.TabIndex = 4;
             this.tabUsuario.Text = "Usuarios";
             this.tabUsuario.UseVisualStyleBackColor = true;
+            // 
+            // btnDesbloquear
+            // 
+            this.btnDesbloquear.Location = new System.Drawing.Point(619, 76);
+            this.btnDesbloquear.Name = "btnDesbloquear";
+            this.btnDesbloquear.Size = new System.Drawing.Size(87, 23);
+            this.btnDesbloquear.TabIndex = 1;
+            this.btnDesbloquear.Text = "Desbloquear";
+            this.btnDesbloquear.UseVisualStyleBackColor = true;
+            this.btnDesbloquear.Click += new System.EventHandler(this.btnDesbloquear_Click);
             // 
             // dataGridViewUsuarios
             // 
@@ -753,6 +773,7 @@
             this.dataGridViewUsuarios.RowTemplate.Height = 25;
             this.dataGridViewUsuarios.Size = new System.Drawing.Size(578, 338);
             this.dataGridViewUsuarios.TabIndex = 0;
+            this.dataGridViewUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUsuarios_CellContentClick);
             // 
             // dataGridViewTextBoxColumn1
             // 
@@ -866,7 +887,6 @@
         private TabPage tabPagos;
         private TabPage tabTarjetas;
         private DataGridView dataGridViewCaja;
-        private ComboBox comboBox1;
         private DateTimePicker dateTimePicker1;
         private Button btnNewCaja;
         private Button btnNewPf;
@@ -922,5 +942,8 @@
         private DataGridViewTextBoxColumn colEmail;
         private DataGridViewTextBoxColumn colBloqueado;
         private DataGridViewTextBoxColumn colAdmin;
+        private TextBox montoText;
+        private TextBox detalleTxt;
+        private Button btnDesbloquear;
     }
 }

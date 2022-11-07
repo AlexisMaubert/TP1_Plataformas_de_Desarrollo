@@ -22,6 +22,10 @@ namespace TrabajoPractico1
         private int idTarjeta;
         private int idPago;
         private int idPF;
+        private int usuarioSeleccionado;
+        private bool cambioMonto = false;
+        private bool cambioFecha = false;
+        private bool cambioDetalle = false;
         private DateTime fechaElegida;
         public cerrarSesionDelegado cerrarSesionEvento;
 
@@ -71,9 +75,11 @@ namespace TrabajoPractico1
             btnRetirar.Visible = false;
             btnTransferir.Visible = false;
             btnDetalles.Visible = false;
-            comboBox1.Visible = false;
             label2.Visible = false;
             btnEliminarPF.Visible = false;
+            detalleTxt.Visible = false;
+            montoText.Visible = false;
+            dateTimePicker1.Visible = false;
         }
         public void mostrarBtns()
         {
@@ -84,9 +90,11 @@ namespace TrabajoPractico1
             btnRetirar.Show();
             btnTransferir.Show();
             btnDetalles.Show();
-            comboBox1.Show();
             label2.Show();
             btnEliminarPF.Show();
+            detalleTxt.Show();
+            montoText.Show();
+            dateTimePicker1.Show();
         }
         //
         //
@@ -442,69 +450,100 @@ namespace TrabajoPractico1
             }
         }
         //DETALLES
-        private void btnDetalles_Click(object sender, EventArgs e)
-        {
-            string movimientos = "";
-            foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
-            {
-                movimientos = movimientos + movimiento.ToString() + "\n";
-            }
-            MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
-        }
-        //ELEGIR COMO FILTRAR LOS DETALLES
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            int index = comboBox1.SelectedIndex;
-            string seleccion = comboBox1.Items[index].ToString();
-            string movimientos = "";
-            switch (index)
-            {
-                case 0:
-                    dateTimePicker1.Visible = false;
-                    foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
-                    {
-                        movimientos = movimientos + movimiento.ToString() + "\n";
-                    }
-                    MessageBox.Show(movimientos, "Movimientos", MessageBoxButtons.OK);
-                    break;
-                case 1:
-                    dateTimePicker1.Visible = true;
-                    break;
-                case 2:
-                    dateTimePicker1.Visible = false;
-                    float monto;
-                    float.TryParse(Interaction.InputBox("ingrese monto del movimiento: ", "Monto Movimiento"), out monto);
-
-                    foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), monto))
-                    {
-                        movimientos = movimientos + movimiento.ToString() + "\n";
-                    }
-                    if (monto <= 0)
-                    {
-                        MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                    else
-                    {
-                        MessageBox.Show(movimientos, "Movimientos por monto", MessageBoxButtons.OK);
-                    }
-                    break;
-                default:
-                    dateTimePicker1.Visible = false;
-                    MessageBox.Show("Error en el ingreso de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-            }
-        }
-        //ELEGIR FECHA
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             fechaElegida = dateTimePicker1.Value;
-            string movimientos = "";
-            foreach (Movimiento movimiento in banco.buscarMovimiento(banco.BuscarCajaDeAhorro(idCaja), fechaElegida))
+        }
+        private void btnDetalles_Click(object sender, EventArgs e)
+        {
+            float.TryParse(montoText.Text, out float monto);
+            string movs = "";
+            if (cambioDetalle == true && cambioFecha == true && cambioMonto == true)
             {
-                movimientos = movimientos + movimiento.ToString() + "\n";
+                movs = "Movimientos por Fecha, Monto y Detalle\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, fechaElegida, monto, detalleTxt.Text))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
             }
-            MessageBox.Show(movimientos, "Movimientos por fecha", MessageBoxButtons.OK);
-            dateTimePicker1.Visible = false;
+            else if (cambioDetalle == true && cambioFecha == false && cambioMonto == false)
+            {
+                movs = "Movimientos por Detalle\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, detalleTxt.Text))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else if (cambioFecha == true && cambioDetalle == false && cambioMonto == false)
+            {
+                movs = "Movimientos por Fecha\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, fechaElegida))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else if (cambioMonto == true && cambioDetalle == false && cambioFecha == false)
+            {
+                movs = "Movimientos por Monto \n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, monto))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else if (cambioDetalle == true && cambioFecha == true && cambioMonto == false)
+            {
+                movs = "Movimientos por Fecha y Detalle\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, detalleTxt.Text, fechaElegida))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else if (cambioDetalle == true && cambioFecha == false && cambioMonto == true)
+            {
+                movs = "Movimientos por Detalle y Monto\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, detalleTxt.Text, monto))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else if (cambioDetalle == false && cambioFecha == true && cambioMonto == true)
+            {
+                movs = "Movimientos por Fecha y Monto\n";
+                foreach (Movimiento movimiento in banco.buscarMovimiento(idCaja, fechaElegida, monto))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            else
+            {
+                movs = "Movimientos sin filtro 😀\n";
+                foreach (Movimiento movimiento in banco.obtenerMovimientos(idCaja))
+                {
+                    movs = movs + movimiento.ToString() + "\n";
+                }
+            }
+            MessageBox.Show(movs, "Movimientos", MessageBoxButtons.OK);
+            movs = "";
+            montoText.Text = "Monto";
+            detalleTxt.Text = "Detalle";
+            cambioMonto = false;
+            cambioFecha = false;
+            cambioDetalle = false;
+        }
+
+        private void montoText_TextChanged(object sender, EventArgs e)
+        {
+            cambioMonto = true;
+        }
+
+        private void detalleTxt_TextChanged(object sender, EventArgs e)
+        {
+            cambioDetalle = true;
+        }
+
+        private void dateTimePicker1_CloseUp(object sender, EventArgs e)
+        {
+            cambioFecha = true;
         }
         //
         //
@@ -663,7 +702,6 @@ namespace TrabajoPractico1
             switch (index)
             {
                 case 0:
-                    banco.quitarPago(idPago);
                     MessageBox.Show("Se ha eliminado el pago", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     refreshDataPagos();
                     break;
@@ -671,9 +709,12 @@ namespace TrabajoPractico1
                     MessageBox.Show("No se encontró el pago que desea eliminar", "Error al buscar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case 2:
-                    MessageBox.Show("El Pago necesita estar pagado😒", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("No se pudo borrar el pago de la base de datos", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case 3:
+                    MessageBox.Show("El Pago necesita estar pagado😒", "Error al intentar eliminar el pago", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 4:
                     MessageBox.Show("Ha ocurrido un error al intentar eliminar el pago", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
@@ -838,7 +879,49 @@ namespace TrabajoPractico1
                     break;
             }
         }
-
+        //
+        //
+        //PESTAÑA USUARIOS
+        //
+        //
+        private void dataGridViewUsuarios_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                if (!Int32.TryParse(dataGridViewUsuarios.Rows[e.RowIndex].Cells[0].Value.ToString(), out usuarioSeleccionado))
+                {
+                    MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    mostrarBtns();
+                }
+            }
+            else
+            {
+                esconderBtns();
+            }
+        }
+        private void btnDesbloquear_Click(object sender, EventArgs e)
+        {
+            int index = banco.desbloquearUsuario(usuarioSeleccionado);
+            switch (index)
+            {
+                case 0:
+                    MessageBox.Show("Se ha desbloqueado al usuario con éxito", "Operación exitosa 🤑", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    break;
+                case 1:
+                    MessageBox.Show("El usuario que desea desbloquear no se encontró", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 2:
+                    MessageBox.Show("El usuario ya se encuentra desbloqueado", "El usuario esta desbloqueado", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                case 3:
+                    MessageBox.Show("No se pudo guardar en la base de datos", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+            refreshDataUsuarios();
+        }
     }
 }
 

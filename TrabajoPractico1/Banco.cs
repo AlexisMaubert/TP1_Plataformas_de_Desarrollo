@@ -7,11 +7,13 @@ using System.Globalization;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
+using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
 
@@ -391,6 +393,7 @@ namespace TrabajoPractico1
                     return 4;                // El usuario no se pudo eliminar de la base de datos
                 }
                 caja.titulares.Remove(titular);
+                titular.cajas.Remove(caja);
                 return 0;
             }
             catch
@@ -473,11 +476,9 @@ namespace TrabajoPractico1
                 return 2;
             }
         }
-
         //
         //PAGOS
         //
-
         public int nuevoPago(string Nombre, float Monto)
         {
             try
@@ -507,17 +508,21 @@ namespace TrabajoPractico1
                 {
                     return 1;
                 }
+                if (DB.elimnarPago(IdpagoABorrar) == 0)
+                {
+                    return 2;
+                }
                 if (pagoABorrar.pagado)
                 {
                     this.pagos.Remove(pagoABorrar);
                     pagoABorrar.user.pagos.Remove(pagoABorrar);
                     return 0;
                 }
-                return 2;
+                return 3;
             }
             catch
             {
-                return 3;
+                return 4;
             }
         }
 
@@ -610,7 +615,7 @@ namespace TrabajoPractico1
         {
             DateTime fechaIni = pFijo.fechaIni;
             DateTime fechaFin = pFijo.fechaFin;
-            if (DateTime.Now >= fechaFin && !pFijo.pagado)
+            if (DateTime.Now.CompareTo(fechaFin) <= 0 && pFijo.pagado == false) //Esto no se si va a alreves
             {
                 double cantDias = (fechaFin - fechaIni).TotalDays;
                 float montoFinal = (pFijo.monto + pFijo.monto * (float)(90.0 / 365.0) * (float)cantDias);
@@ -623,6 +628,24 @@ namespace TrabajoPractico1
                 DB.depositarEnCaja(pFijo.id_caja, montoFinal);
                 altaMovimiento(caja, "Pago plazo fijo", montoFinal);
             }
+        }
+        public int desbloquearUsuario(int IdUsuario)
+        {
+            Usuario? user = buscarUsuario(IdUsuario);
+            if(user == null)
+            {
+                return 1;
+            }
+            if(user.bloqueado == false)
+            {
+                return 2;
+            }
+            if(DB.desbloquearUsuario(IdUsuario) == 0)
+            {
+                return 3;
+            }
+            user.bloqueado = false;
+            return 0;
         }
         //
         //METODOS PARA MOSTRAR DATOS
@@ -726,6 +749,7 @@ namespace TrabajoPractico1
                 if (user.intentosFallidos >= 3) //Si alcanza los 3 intentos se bloquea la cuenta
                 {
                     user.bloqueado = true;
+                    DB.bloquearUsuario(user.id);
                     return 3;                    //Numero de intentos excedidos
                 }
                 else
@@ -767,7 +791,7 @@ namespace TrabajoPractico1
             if (DB.retirarDeCaja(IdCaja, Monto) <= 0)
             {
                 return 3;
-            };
+            }
             cajaSeleccionada.saldo -= Monto;
             this.altaMovimiento(cajaSeleccionada, "Retiro", Monto);
             return 0;
@@ -784,14 +808,14 @@ namespace TrabajoPractico1
             {
                 return 2;
             }
-            if (DB.retirarDeCaja(IdOrigen, Monto) <= 0)
+            if (DB.retirarDeCaja(IdOrigen, Monto) == 0)
             {
                 return 3;
-            };
-            if (DB.depositarEnCaja(CbuDestino, Monto) <= 0)
+            }
+            if (DB.depositarEnCaja(cajaDestino.id, Monto) == 0)
             {
                 return 4;
-            };
+            }
             cajaOrigen.saldo -= Monto;
             this.altaMovimiento(cajaOrigen, "Transferencia realizada", Monto);
             cajaDestino.saldo += Monto;
@@ -802,21 +826,33 @@ namespace TrabajoPractico1
         {
             return movimientos.Find(movimiento => movimiento.id == Id);
         }
-        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha, float Monto)
+        public List<Movimiento> buscarMovimiento(int IdCaja, DateTime Fecha, float Monto, string Detalle) 
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha == Fecha).ToList();
+            return movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.fecha.Date == Fecha.Date && movimiento.detalle == Detalle && movimiento.id_Caja == IdCaja).ToList();
         }
-        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, DateTime Fecha)
+        public List<Movimiento> buscarMovimiento(int IdCaja, DateTime Fecha) //Fecha por Detalle - Eliminar CajaOrigen
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.fecha.Day == Fecha.Day && movimiento.fecha.Month == Fecha.Month && movimiento.fecha.Year == Fecha.Year).ToList();
+            return movimientos.FindAll(movimiento => movimiento.fecha.Date == Fecha.Date && movimiento.id_Caja == IdCaja).ToList();
         }
-        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, float Monto)
+        public List<Movimiento> buscarMovimiento(int IdCaja, float Monto) //Monto por Detalle - Eliminar CajaOrigen
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.monto == Monto).ToList();
+            return movimientos.FindAll(movimiento => movimiento.monto == Monto && movimiento.id_Caja == IdCaja).ToList();
         }
-        public List<Movimiento> buscarMovimiento(CajaDeAhorro CajaOrigen, string Detalle)
+        public List<Movimiento> buscarMovimiento(int IdCaja, string Detalle) 
         {
-            return CajaOrigen.movimientos.FindAll(movimiento => movimiento.detalle == Detalle).ToList();
+            return movimientos.FindAll(m => m.detalle == Detalle && m.id_Caja == IdCaja).ToList();
+        }
+        public List<Movimiento> buscarMovimiento(int IdCaja, string Detalle, DateTime Fecha)
+        {
+            return movimientos.FindAll(m => m.detalle == Detalle && m.fecha.Date == Fecha.Date && m.id_Caja == IdCaja);
+        }
+        public List<Movimiento> buscarMovimiento(int IdCaja, string Detalle, float Monto)
+        {
+            return movimientos.FindAll(m => m.detalle == Detalle && m.monto == Monto && m.id_Caja == IdCaja);
+        }
+        public List<Movimiento> buscarMovimiento(int IdCaja, DateTime Fecha, float Monto)
+        {
+            return movimientos.FindAll(m => m.monto == Monto && m.fecha.Date == Fecha.Date && m.id_Caja == IdCaja);
         }
         public int pagarTarjeta(int Id, int Cbu)
         {
