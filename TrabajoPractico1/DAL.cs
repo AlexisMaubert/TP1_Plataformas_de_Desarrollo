@@ -55,7 +55,6 @@ namespace TrabajoPractico1
             }
             return misUsuarios;
         }
-
         public List<CajaDeAhorro> inicializarCajas()
         {
             List<CajaDeAhorro> cajas = new List<CajaDeAhorro>();
@@ -437,7 +436,7 @@ namespace TrabajoPractico1
                     return false;
                 }
             }
-        }       
+        }
         public int eliminarUsuarioDeCaja(int IdCaja, int IdUsuario)
         {
             string queryString = "DELETE FROM CajaUsuario WHERE id_caja = @id_caja and id_usuario = @id_usuario;";
@@ -704,8 +703,8 @@ namespace TrabajoPractico1
             using (SqlConnection connection =
                 new SqlConnection(connectionString))
             {
-                SqlCommand command = new SqlCommand(queryString, connection );
-                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int ));
+                SqlCommand command = new SqlCommand(queryString, connection);
+                command.Parameters.Add(new SqlParameter("@id", SqlDbType.Int));
                 command.Parameters["@id"].Value = Id;
                 try
                 {
@@ -720,7 +719,7 @@ namespace TrabajoPractico1
                 }
             }
         }
-        public int agregarTarjeta(int Id_usuario, int Numero, int CodigoV, float Limite, float Consumo,int Id_Banco = 1)
+        public int agregarTarjeta(int Id_usuario, int Numero, int CodigoV, float Limite, float Consumo, int Id_Banco = 1)
         {
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
@@ -730,7 +729,7 @@ namespace TrabajoPractico1
                 new SqlConnection(connectionString))
             {
                 SqlCommand command = new SqlCommand(queryString, connection);
-                
+
                 command.Parameters.Add(new SqlParameter("@id_usuario", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@numero", SqlDbType.Int));
                 command.Parameters.Add(new SqlParameter("@codigo_v", SqlDbType.Int));
@@ -763,7 +762,7 @@ namespace TrabajoPractico1
                 }
                 return idTarjetaNueva;
             }
-         }
+        }
         public int eliminarTarjeta(int Id)
         {
             string connectionString = Properties.Resources.ConnectionStr;
@@ -782,7 +781,6 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
                     return 0;
                 }
             }
@@ -806,11 +804,10 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 0;
                 }
             }
-        } 
+        }
         public int pagarTarjeta(int tarjetaId)
         {
             string queryString = "UPDATE Tarjeta SET consumo = 0 WHERE id = @id_tarjeta;";
@@ -828,12 +825,11 @@ namespace TrabajoPractico1
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     return 0;
                 }
             }
         }
-        public int agregarPago(int Id_usuario, string Nombre, float Monto, bool Pagado = false, string Metodo="", int Id_Banco = 1)
+        public int agregarPago(int Id_usuario, string Nombre, float Monto, bool Pagado = false, string Metodo = "", int Id_Banco = 1)
         {
             //primero me aseguro que lo pueda agregar a la base
             int resultadoQuery;
@@ -850,14 +846,14 @@ namespace TrabajoPractico1
                 command.Parameters.Add(new SqlParameter("@pagado", SqlDbType.Bit));
                 command.Parameters.Add(new SqlParameter("@metodo", SqlDbType.NVarChar));
                 command.Parameters.Add(new SqlParameter("@id_banco", SqlDbType.Int));
-               
+
                 command.Parameters["@Id_usuario"].Value = Id_usuario;
                 command.Parameters["@Nombre"].Value = Nombre;
                 command.Parameters["@Monto"].Value = Monto;
                 command.Parameters["@Pagado"].Value = Pagado;
                 command.Parameters["@Metodo"].Value = Metodo;
                 command.Parameters["@Id_banco"].Value = Id_Banco;
-                
+
                 try
                 {
                     connection.Open();
