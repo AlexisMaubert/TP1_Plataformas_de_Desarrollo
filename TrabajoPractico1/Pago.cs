@@ -8,37 +8,31 @@ namespace TrabajoPractico1
 {
     public class Pago
     {
-        public Usuario user { get; set; }
+        public Usuario usuario { get; set; }
         public int id { get; set; }
         public int id_usuario { get; set; }
         public string nombre { get; set; }
         public float monto { get; set; }
         public bool pagado { get; set; }
         public string metodo { get; set; }
-        public int id_banco { get; set; }
 
-        public Pago( int Id, int Id_usuario, string Nombre, float Monto, bool Pagado, string Metodo, int Id_banco)
+        public Pago(int Id_usuario, string Nombre, float Monto, bool Pagado, string Metodo)
         {
-            
-            this.id = Id;
             this.id_usuario = Id_usuario;
             this.nombre = Nombre;
             this.monto = Monto;
             this.pagado = Pagado;
             this.metodo = Metodo;
-            this.id_banco = Id_banco;
         }
 
-        public Pago() 
+        public Pago()
         {
-            
+
         }
 
-        public Pago( int Id,Usuario User, string Nombre, float Monto)
+        public Pago(Usuario User, string Nombre, float Monto)
         {
-            this.id = Id;
-            user = new Usuario();
-            this.user = User;
+            this.usuario = User;
             this.nombre = Nombre;
             this.monto = Monto;
             this.pagado = false;
@@ -48,6 +42,4 @@ namespace TrabajoPractico1
             return string.Format("Nombre: {0}, Monto: {1}, Pagado: {2}, Método: {3}, Id: {4}", this.nombre, this.monto, this.pagado, this.metodo, this.id);
         }
     }
-
-    
 }

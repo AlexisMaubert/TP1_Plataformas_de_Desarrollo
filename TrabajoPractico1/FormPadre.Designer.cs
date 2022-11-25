@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+            banco.cerrar();
             base.Dispose(disposing);
         }
 

@@ -15,39 +15,33 @@ namespace TrabajoPractico1
         public float tasa { get; set; }
         public bool pagado { get; set; }
         public Usuario titular { get; set; }
-        public int id_banco { get; set; }
-        public int id_usuario { get; set; }
-        public int id_caja { get; set; }
+        public int id_titular { get; set; }
 
-    public PlazoFijo()
-        
+        public PlazoFijo()
+
         {
-            this.titular = new Usuario();
+
         }
 
-        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa, int Id_caja)
+        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
         {
-           this.titular= new Usuario();
-           this.titular = Titular;
-           this.monto = Monto;
-           this.fechaIni = DateTime.Now;
-           this.fechaFin = FechaFin;
-           this.tasa = Tasa;
-           this.pagado = false;
-           this.id_caja = Id_caja;
+            this.titular = Titular;
+            this.id_titular = Titular.id;
+            this.monto = Monto;
+            this.fechaIni = DateTime.Now;
+            this.fechaFin = FechaFin;
+            this.tasa = Tasa;
+            this.pagado = false;
         }
 
-        public PlazoFijo(int Id, int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa, bool Pagado, int Id_banco, int Id_caja)
+        public PlazoFijo(int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa)
         {
-            this.id = Id;
-            this.id_usuario = Id_usuario;
+            this.id_titular = Id_usuario;
             this.monto = Monto;
             this.fechaIni = FechaIni;
             this.fechaFin = FechaFin;
             this.tasa = Tasa;
-            this.pagado = Pagado;
-            this.id_banco = Id_banco;
-            this.id_caja = Id_caja;
+            this.pagado = false;
         }
 
         public override string ToString()
