@@ -16,30 +16,18 @@ namespace TrabajoPractico1
         public bool pagado { get; set; }
         public Usuario titular { get; set; }
         public int id_titular { get; set; }
+        public int cbu { get; set; }
 
-        public PlazoFijo()
+        public PlazoFijo() { }
 
-        {
-
-        }
-
-        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
+        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa, int cbu)
         {
             this.titular = Titular;
             this.id_titular = Titular.id;
             this.monto = Monto;
             this.fechaIni = DateTime.Now;
             this.fechaFin = FechaFin;
-            this.tasa = Tasa;
-            this.pagado = false;
-        }
-
-        public PlazoFijo(int Id_usuario, float Monto, DateTime FechaIni, DateTime FechaFin, float Tasa)
-        {
-            this.id_titular = Id_usuario;
-            this.monto = Monto;
-            this.fechaIni = FechaIni;
-            this.fechaFin = FechaFin;
+            this.cbu = cbu;
             this.tasa = Tasa;
             this.pagado = false;
         }

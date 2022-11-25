@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.VisualBasic.ApplicationServices;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -70,6 +71,7 @@ namespace TrabajoPractico1
                 Movimiento movimientoNuevo = new Movimiento(Caja, Detalle, Monto);
                 contexto.movimientos.Add(movimientoNuevo);
                 Caja.movimientos.Add(movimientoNuevo);
+                contexto.Update(Caja);
                 contexto.SaveChanges();
                 return true;
             }
@@ -165,8 +167,6 @@ namespace TrabajoPractico1
             //Ahora sí lo agrego en la lista
             CajaDeAhorro nuevo = new CajaDeAhorro(nuevoCbu, usuarioLogeado);
             contexto.cajas.Add(nuevo);
-            contexto.Update(nuevo);
-            usuarioLogeado.cajas.Add(nuevo);
             contexto.Update(usuarioLogeado);
             contexto.SaveChanges();
             return 0;
@@ -302,6 +302,8 @@ namespace TrabajoPractico1
                 }
                 contexto.tarjetas.Remove(tarjetaARemover); //Borro la tarjeta de la lista de tarjetas del Banco
                 tarjetaARemover.titular.tarjetas.Remove(tarjetaARemover);//Borro la tarjeta de la lista de tarjetas del usuario.
+                contexto.Update(tarjetaARemover.titular);
+                contexto.SaveChanges();
                 return 0;
             }
             catch
@@ -338,6 +340,8 @@ namespace TrabajoPractico1
                 Pago nuevoPago = new Pago(usuarioLogeado, Nombre, Monto);
                 contexto.pagos.Add(nuevoPago);
                 usuarioLogeado.pagos.Add(nuevoPago);
+                contexto.Update(usuarioLogeado);
+                contexto.SaveChanges();
                 return 0;
             }
             catch
@@ -436,9 +440,10 @@ namespace TrabajoPractico1
                 }
                 caja.saldo -= Monto;
                 this.altaMovimiento(caja, "Alta plazo fijo", Monto);
-                PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90);
+                PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90, caja.cbu);
                 contexto.plazosFijos.Add(nuevoPlazoFijo);
                 usuarioLogeado.pf.Add(nuevoPlazoFijo);
+                contexto.Update(usuarioLogeado);
                 contexto.SaveChanges();
                 return 0;
             }
@@ -448,24 +453,25 @@ namespace TrabajoPractico1
             }
         }
 
-        //public void pagarPlazosFijos(PlazoFijo pFijo)// Hay que buscar la manera de pasarle una caja xq ya no tiene PF asociada
-        //{
-        //    DateTime fechaIni = pFijo.fechaIni;
-        //    DateTime fechaFin = pFijo.fechaFin;
-        //    if (DateTime.Now.CompareTo(fechaFin) <= 0 && pFijo.pagado == false) //Esto no se si va a alreves
-        //    {
-        //        double cantDias = (fechaFin - fechaIni).TotalDays;
-        //        float montoFinal = (pFijo.monto + pFijo.monto * (float)(90.0 / 365.0) * (float)cantDias);
-        //        decimal bar = Convert.ToDecimal(montoFinal);
-        //        montoFinal = (float)Math.Round(bar, 2);//redondeo a 2 decimales
-        //        CajaDeAhorro caja = BuscarCajaDeAhorro(pFijo.id_caja);
-        //        caja.saldo += montoFinal; 
-        //        pFijo.pagado = true;
-        //        DB.pagarPlazoFijo(pFijo.id, montoFinal); //CTRL K + U PARA DESCOMENTAR
-        //        DB.depositarEnCaja(pFijo.id_caja, montoFinal);
-        //        altaMovimiento(caja, "Pago plazo fijo", montoFinal);
-        //    }
-        //}
+        public void pagarPlazosFijos(PlazoFijo pFijo)// Hay que buscar la manera de pasarle una caja xq ya no tiene PF asociada
+        {
+            DateTime fechaIni = pFijo.fechaIni;
+            DateTime fechaFin = pFijo.fechaFin;
+            if (DateTime.Now.CompareTo(fechaFin) <= 0 && pFijo.pagado == false) //Esto no se si va a alreves
+            {
+                double cantDias = (fechaFin - fechaIni).TotalDays;
+                float montoFinal = (pFijo.monto + pFijo.monto * (float)(90.0 / 365.0) * (float)cantDias);
+                decimal bar = Convert.ToDecimal(montoFinal);
+                montoFinal = (float)Math.Round(bar, 2);//redondeo a 2 decimales
+                CajaDeAhorro caja = contexto.cajas.Where(c => c.cbu == pFijo.cbu).FirstOrDefault();
+                caja.saldo += montoFinal;
+                pFijo.pagado = true;
+                contexto.Update(caja);
+                contexto.Update(pFijo);
+                contexto.SaveChanges();
+                altaMovimiento(caja, "Pago plazo fijo", montoFinal);
+            }
+        }
 
         public int desbloquearUsuario(int IdUsuario)
         {
