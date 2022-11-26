@@ -138,7 +138,7 @@ namespace TrabajoPractico1
                     pago.Property(p => p.pagado).HasColumnType("bit");
                     pago.Property(p => p.pagado).IsRequired(true);
                     pago.Property(p => p.metodo).HasColumnType("varchar(50)");
-                    pago.Property(p => p.metodo).IsRequired(true);
+                    pago.Property(p => p.metodo).IsRequired(false);
                 });
 
             modelBuilder.Entity<Movimiento>(

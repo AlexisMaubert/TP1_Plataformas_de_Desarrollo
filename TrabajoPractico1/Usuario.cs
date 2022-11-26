@@ -18,7 +18,6 @@ namespace TrabajoPractico1
         public int intentosFallidos { get; set; }
         public bool bloqueado { get; set; }
         public string password { get; set; }
-        //public List<CajaDeAhorro> cajas { get; set; }
         public List<PlazoFijo> pf { get; set; }
         public List<Tarjeta> tarjetas { get; set; }
         public List<Pago> pagos { get; set; }

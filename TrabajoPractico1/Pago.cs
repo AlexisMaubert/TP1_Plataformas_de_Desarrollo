@@ -25,14 +25,12 @@ namespace TrabajoPractico1
             this.metodo = Metodo;
         }
 
-        public Pago()
-        {
-
-        }
+        public Pago()    {    }
 
         public Pago(Usuario User, string Nombre, float Monto)
         {
             this.usuario = User;
+            this.id_usuario = User.id;
             this.nombre = Nombre;
             this.monto = Monto;
             this.pagado = false;

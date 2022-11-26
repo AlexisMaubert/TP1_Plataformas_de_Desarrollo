@@ -34,7 +34,7 @@ namespace TrabajoPractico1
             }
             else 
             {
-                MessageBox.Show("Ingrese un n�mero de DNI v�lido", "Error en el ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ingrese un n�mero de DNI válido", "Error en el ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void linkReg_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)

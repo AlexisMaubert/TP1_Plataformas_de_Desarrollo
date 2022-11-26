@@ -119,6 +119,7 @@ namespace TrabajoPractico1
             {
                 this.comboBoxTarjetaPago.Items.Add(tarjeta.numero);
             }
+
         }
         //CAJA DATA
         private void refreshDataCaja()
@@ -277,13 +278,7 @@ namespace TrabajoPractico1
                     MessageBox.Show("Esta caja de ahorro tiene saldo", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case 3:
-                    MessageBox.Show("No se pudo eliminar la caja (Nivel: DB)", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                case 4:
                     MessageBox.Show("Ha ocurrido un error al intentar eliminar la caja", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                case 5:
-                    MessageBox.Show("No puedes eliminar la caja porque tienes plazos fijos activos", "Error de eliminacion de caja", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
         }
@@ -305,15 +300,9 @@ namespace TrabajoPractico1
                         MessageBox.Show("No se encontró la caja de ahorro deseada", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 3:
-                        MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: DB)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("El usuario ya es el titular de esta caja", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 4:
-                        MessageBox.Show("No se pudo agregar la relacion en la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 5:
-                        MessageBox.Show("El usuario ya es el titular de esta caja (Nivel: APP)", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 6:
                         MessageBox.Show("Ha ocurrido un error al intentar agregar un titular a la caja de ahorro", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
@@ -342,12 +331,9 @@ namespace TrabajoPractico1
                         MessageBox.Show("No se encontró la caja de ahorro", "Caja de ahorro no encontrada", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 3:
-                        MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: APP)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No se ha podido eliminar el usuario de la caja ", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 4:
-                        MessageBox.Show("No se ha podido eliminar el usuario de la caja (Nivel: DB)", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 5:
                         MessageBox.Show("Ha ocurrido un error al intentar eliminar un titular a la caja de ahorro", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
@@ -376,9 +362,6 @@ namespace TrabajoPractico1
                     case 1:
                         MessageBox.Show("No se encontró la caja de ahorro a la que desea depositar", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
-                    case 2:
-                        MessageBox.Show(String.Format("No se pudo depositar el monto: {0} en la caja de id: {1} (Nivel DB)", deposito, idCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
                 }
                 refreshDataCaja();
             }
@@ -403,9 +386,6 @@ namespace TrabajoPractico1
                         break;
                     case 2:
                         MessageBox.Show("El monto que desea retirar excede el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 3:
-                        MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", retiro, idCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
                 refreshDataCaja();
@@ -439,10 +419,7 @@ namespace TrabajoPractico1
                             MessageBox.Show("El monto que desea transferir supera el saldo de la cuenta", "Saldo insuficiente", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                         case 3:
-                            MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", monto, idCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            break;
-                        case 4:
-                            MessageBox.Show(String.Format("No se pudo depositar el monto: {0} al cbu: {1} (Nivel DB)", monto, cbu), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Error al intentar tranferir", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                             break;
                     }
                     refreshDataCaja();
@@ -590,9 +567,6 @@ namespace TrabajoPractico1
                     MessageBox.Show("El plazo fijo todavía no esta pago", "Plazo fijo no se pudo eliminar", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
                 case 3:
-                    MessageBox.Show("No se pudo eliminar el plazo fijo (Nivel DB)", "Ocurrió un problema de DB", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    break;
-                case 4:
                     MessageBox.Show("Operación Fallida", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     break;
             }
@@ -611,7 +585,7 @@ namespace TrabajoPractico1
             }
             else
             {
-                index = banco.crearPlazoFijo(idCaja, monto);
+                index = banco.crearPlazoFijo(cbu, monto);
                 switch (index)
                 {
                     case 0:
@@ -627,12 +601,6 @@ namespace TrabajoPractico1
                         MessageBox.Show("La cuenta no posee los fondos suficientes.", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                     case 4:
-                        MessageBox.Show("No se pudo aregar el plazo fijo a la base de datos", "Ocurrió un problema", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 5:
-                        MessageBox.Show(String.Format("No se pudo retirar el monto: {0} de la caja de id: {1} (Nivel DB)", monto, idCaja), "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 6:
                         MessageBox.Show("Ha ocurrido un error al intentar crear el plazo fijo", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }
@@ -667,9 +635,6 @@ namespace TrabajoPractico1
                         this.refreshDataPagos();
                         break;
                     case 1:
-                        MessageBox.Show("Error en el ingreso a la base de datos", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        break;
-                    case 2:
                         MessageBox.Show("Error al intentar crear el pago", "Error de ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         break;
                 }

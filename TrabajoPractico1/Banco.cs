@@ -52,9 +52,9 @@ namespace TrabajoPractico1
                 contexto.plazosFijos.Load();
 
             }
-            catch
+            catch(Exception ex)
             {
-
+                Debug.WriteLine(ex);
             }
         }
         public void cerrar()
@@ -106,7 +106,7 @@ namespace TrabajoPractico1
                 return false;
             }
         }
-        public bool bajaUsuario(int Id) //Funciona ahjaja 
+        public bool bajaUsuario(int Id) 
         {
             try
             {
@@ -276,7 +276,6 @@ namespace TrabajoPractico1
                 Tarjeta nuevo = new Tarjeta(usuarioLogeado.id, nuevoNumero, nuevoCodigo, 20000, 0);
                 nuevo.titular = usuarioLogeado;
                 contexto.tarjetas.Add(nuevo);
-                usuarioLogeado.tarjetas.Add(nuevo);
                 contexto.Update(usuarioLogeado);
                 contexto.SaveChanges();
                 return true;
@@ -339,17 +338,15 @@ namespace TrabajoPractico1
             {
                 Pago nuevoPago = new Pago(usuarioLogeado, Nombre, Monto);
                 contexto.pagos.Add(nuevoPago);
-                usuarioLogeado.pagos.Add(nuevoPago);
-                contexto.Update(usuarioLogeado);
                 contexto.SaveChanges();
                 return 0;
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.Write(ex.InnerException.Message);
                 return 1;
             }
         }
-
         public int quitarPago(int IdpagoABorrar)
         {
             try
@@ -421,35 +418,35 @@ namespace TrabajoPractico1
                 return 3;
             }
         }
-        public int crearPlazoFijo(int IdCaja, float Monto)
+        public int crearPlazoFijo(int Cbu, float Monto)
         {
             try
             {
                 if (Monto < 1000)
                 {
-                    return 1;
+                    return 1; //Monto insuficiente para crear el pf
                 }
-                CajaDeAhorro? caja = BuscarCajaDeAhorro(IdCaja);
+                CajaDeAhorro? caja = BuscarCajaDeAhorroPorCbu(Cbu);
                 if (caja == null)
                 {
-                    return 2;
+                    return 2; //No se encontró la caja
                 }
                 if (caja.saldo < Monto)
                 {
-                    return 3;
+                    return 3; //Fondos insuficientes
                 }
                 caja.saldo -= Monto;
                 this.altaMovimiento(caja, "Alta plazo fijo", Monto);
                 PlazoFijo nuevoPlazoFijo = new PlazoFijo(usuarioLogeado, Monto, DateTime.Now.AddMonths(1), 90, caja.cbu);
                 contexto.plazosFijos.Add(nuevoPlazoFijo);
-                usuarioLogeado.pf.Add(nuevoPlazoFijo);
+                contexto.Update(caja);
                 contexto.Update(usuarioLogeado);
                 contexto.SaveChanges();
                 return 0;
             }
             catch
             {
-                return 5;
+                return 4;
             }
         }
 
@@ -589,17 +586,16 @@ namespace TrabajoPractico1
                 user.intentosFallidos++;
                 contexto.Update(user);
                 contexto.SaveChanges();
-                if (user.intentosFallidos >= 3) //Si alcanza los 3 intentos se bloquea la cuenta
+                if (user.intentosFallidos >= 3)              //Si alcanza los 3 intentos se bloquea la cuenta
                 {
                     user.bloqueado = true;
                     contexto.Update(user);
                     contexto.SaveChanges();
-                    return 3;                    //Numero de intentos excedidos
+                    return 3;                                        //Numero de intentos excedidos
                 }
                 else
                 {
-                    return 4;
-                    // intentos restantes
+                    return 4;                    // intentos restantes
                 }
             }
             this.usuarioLogeado = user;
@@ -611,7 +607,7 @@ namespace TrabajoPractico1
             CajaDeAhorro cajaDestino = BuscarCajaDeAhorro(IdCaja);
             if (cajaDestino == null)
             {
-                return 1;  //Si no se encuentra la Caja    
+                return 1;                              //Si no se encuentra la Caja    
             }
             cajaDestino.saldo += Monto;
             contexto.Update(cajaDestino);
