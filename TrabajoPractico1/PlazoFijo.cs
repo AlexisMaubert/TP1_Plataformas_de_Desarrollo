@@ -14,22 +14,22 @@ namespace TrabajoPractico1
         public DateTime fechaFin { get; set; }
         public float tasa { get; set; }
         public bool pagado { get; set; }
-        public Usuario titular { get; } 
+        public Usuario titular { get; set; }
+        public int id_titular { get; set; }
+        public int cbu { get; set; }
 
-        public PlazoFijo()   
-        {
-            this.titular = new Usuario();
-        }
+        public PlazoFijo() { }
 
-        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa)
+        public PlazoFijo(Usuario Titular, float Monto, DateTime FechaFin, float Tasa, int cbu)
         {
-           this.titular= new Usuario();
-           this.titular = Titular;
-           this.monto = Monto;
-           this.fechaIni = DateTime.Now;
-           this.fechaFin = FechaFin;
-           this.tasa = Tasa;
-           this.pagado = false;
+            this.titular = Titular;
+            this.id_titular = Titular.id;
+            this.monto = Monto;
+            this.fechaIni = DateTime.Now;
+            this.fechaFin = FechaFin;
+            this.cbu = cbu;
+            this.tasa = Tasa;
+            this.pagado = false;
         }
 
         public override string ToString()

@@ -26,15 +26,15 @@ namespace TrabajoPractico1
         }
         private void iniciarSesion_Click(object sender, EventArgs e)
         {
-            this.pass = inputPass.Text; //guardo la contraseña del input en la variable pass
-            //Try parse intenta convertir un String a Int y devuelve un booleano (Primer parámetro el string, segundo parametro la variable donde se va a guardar el resultado de la conversion)
-            if (Int32.TryParse(inputDni.Text, out this.dni)) //Si la función TryParse funciona guardo el resultado en la variable dni y ejecuto el IF
+            this.pass = inputPass.Text; //guardo la contraseï¿½a del input en la variable pass
+            //Try parse intenta convertir un String a Int y devuelve un booleano (Primer parï¿½metro el string, segundo parametro la variable donde se va a guardar el resultado de la conversion)
+            if (Int32.TryParse(inputDni.Text, out this.dni)) //Si la funciï¿½n TryParse funciona guardo el resultado en la variable dni y ejecuto el IF
             {
-                this.loginEvento(dni, pass); //Ejecuto el método delegado para el inicio de sesión
+                this.loginEvento(dni, pass); //Ejecuto el mï¿½todo delegado para el inicio de sesiï¿½n
             }
             else 
             {
-                MessageBox.Show("Ingrese un número de DNI válido", "Error en el ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Ingrese un nï¿½mero de DNI vÃ¡lido", "Error en el ingreso", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void linkReg_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
