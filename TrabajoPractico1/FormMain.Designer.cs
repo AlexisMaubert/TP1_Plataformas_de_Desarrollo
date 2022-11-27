@@ -28,11 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabCajaDeAhorro = new System.Windows.Forms.TabPage();
-            this.detalleTxt = new System.Windows.Forms.TextBox();
-            this.montoText = new System.Windows.Forms.TextBox();
+            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+            this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.btnEliminarTitular = new System.Windows.Forms.Button();
             this.btnDetalles = new System.Windows.Forms.Button();
             this.btnTransferir = new System.Windows.Forms.Button();
@@ -46,10 +47,7 @@
             this.ColumnCbu = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnTitulares = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnSaldo = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPlazoFijo = new System.Windows.Forms.TabPage();
-            this.comboBoxPFCBU = new System.Windows.Forms.ComboBox();
-            this.btnEliminarPF = new System.Windows.Forms.Button();
             this.btnNewPf = new System.Windows.Forms.Button();
             this.dataGridViewPF = new System.Windows.Forms.DataGridView();
             this.ColumnIdPlf = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -82,37 +80,38 @@
             this.ColumnCodigoTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnLimiteTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.ColumnConsumosTarjeta = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.tabUsuario = new System.Windows.Forms.TabPage();
-            this.btnDesbloquear = new System.Windows.Forms.Button();
-            this.dataGridViewUsuarios = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colNombre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colDni = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colEmail = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colBloqueado = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colAdmin = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.btnCerrarSesion = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.nombreUsuario = new System.Windows.Forms.Label();
+            this.tabControl1.SuspendLayout();
             this.tabCajaDeAhorro.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).BeginInit();
-            this.tabControl1.SuspendLayout();
             this.tabPlazoFijo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).BeginInit();
             this.tabPagos.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).BeginInit();
             this.tabTarjetas.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).BeginInit();
-            this.tabUsuario.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).BeginInit();
             this.SuspendLayout();
+            // 
+            // tabControl1
+            // 
+            this.tabControl1.Controls.Add(this.tabCajaDeAhorro);
+            this.tabControl1.Controls.Add(this.tabPlazoFijo);
+            this.tabControl1.Controls.Add(this.tabPagos);
+            this.tabControl1.Controls.Add(this.tabTarjetas);
+            this.tabControl1.Location = new System.Drawing.Point(12, 61);
+            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.tabControl1.Name = "tabControl1";
+            this.tabControl1.SelectedIndex = 0;
+            this.tabControl1.Size = new System.Drawing.Size(760, 424);
+            this.tabControl1.TabIndex = 0;
             // 
             // tabCajaDeAhorro
             // 
-            this.tabCajaDeAhorro.Controls.Add(this.detalleTxt);
-            this.tabCajaDeAhorro.Controls.Add(this.montoText);
+            this.tabCajaDeAhorro.Controls.Add(this.btnCerrarSesion);
             this.tabCajaDeAhorro.Controls.Add(this.label2);
             this.tabCajaDeAhorro.Controls.Add(this.dateTimePicker1);
+            this.tabCajaDeAhorro.Controls.Add(this.comboBox1);
             this.tabCajaDeAhorro.Controls.Add(this.btnEliminarTitular);
             this.tabCajaDeAhorro.Controls.Add(this.btnDetalles);
             this.tabCajaDeAhorro.Controls.Add(this.btnTransferir);
@@ -131,30 +130,20 @@
             this.tabCajaDeAhorro.Text = "CajasDeAhorro";
             this.tabCajaDeAhorro.UseVisualStyleBackColor = true;
             // 
-            // detalleTxt
+            // btnCerrarSesion
             // 
-            this.detalleTxt.Location = new System.Drawing.Point(547, 267);
-            this.detalleTxt.Name = "detalleTxt";
-            this.detalleTxt.Size = new System.Drawing.Size(106, 23);
-            this.detalleTxt.TabIndex = 14;
-            this.detalleTxt.Text = "Detalle";
-            this.detalleTxt.Visible = false;
-            this.detalleTxt.TextChanged += new System.EventHandler(this.detalleTxt_TextChanged);
-            // 
-            // montoText
-            // 
-            this.montoText.Location = new System.Drawing.Point(547, 238);
-            this.montoText.Name = "montoText";
-            this.montoText.Size = new System.Drawing.Size(106, 23);
-            this.montoText.TabIndex = 13;
-            this.montoText.Text = "Monto";
-            this.montoText.Visible = false;
-            this.montoText.TextChanged += new System.EventHandler(this.montoText_TextChanged);
+            this.btnCerrarSesion.Location = new System.Drawing.Point(642, 361);
+            this.btnCerrarSesion.Name = "btnCerrarSesion";
+            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
+            this.btnCerrarSesion.TabIndex = 13;
+            this.btnCerrarSesion.Text = "Cerrar Sesión";
+            this.btnCerrarSesion.UseVisualStyleBackColor = true;
+            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(522, 186);
+            this.label2.Location = new System.Drawing.Point(530, 259);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(134, 15);
             this.label2.TabIndex = 12;
@@ -164,19 +153,33 @@
             // dateTimePicker1
             // 
             this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-            this.dateTimePicker1.Location = new System.Drawing.Point(547, 210);
+            this.dateTimePicker1.Location = new System.Drawing.Point(547, 303);
             this.dateTimePicker1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.dateTimePicker1.Name = "dateTimePicker1";
             this.dateTimePicker1.Size = new System.Drawing.Size(106, 23);
             this.dateTimePicker1.TabIndex = 11;
-            this.dateTimePicker1.Value = new System.DateTime(2022, 11, 6, 0, 0, 0, 0);
             this.dateTimePicker1.Visible = false;
-            this.dateTimePicker1.CloseUp += new System.EventHandler(this.dateTimePicker1_CloseUp);
             this.dateTimePicker1.ValueChanged += new System.EventHandler(this.dateTimePicker1_ValueChanged);
+            // 
+            // comboBox1
+            // 
+            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.Items.AddRange(new object[] {
+            "Detalle",
+            "Fecha",
+            "Monto"});
+            this.comboBox1.Location = new System.Drawing.Point(547, 276);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.comboBox1.Name = "comboBox1";
+            this.comboBox1.Size = new System.Drawing.Size(106, 23);
+            this.comboBox1.TabIndex = 10;
+            this.comboBox1.Text = "Movimientos";
+            this.comboBox1.Visible = false;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // btnEliminarTitular
             // 
-            this.btnEliminarTitular.Location = new System.Drawing.Point(539, 69);
+            this.btnEliminarTitular.Location = new System.Drawing.Point(539, 112);
             this.btnEliminarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnEliminarTitular.Name = "btnEliminarTitular";
             this.btnEliminarTitular.Size = new System.Drawing.Size(114, 22);
@@ -188,19 +191,19 @@
             // 
             // btnDetalles
             // 
-            this.btnDetalles.Location = new System.Drawing.Point(522, 303);
+            this.btnDetalles.Location = new System.Drawing.Point(555, 225);
             this.btnDetalles.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDetalles.Name = "btnDetalles";
-            this.btnDetalles.Size = new System.Drawing.Size(131, 29);
+            this.btnDetalles.Size = new System.Drawing.Size(98, 22);
             this.btnDetalles.TabIndex = 7;
-            this.btnDetalles.Text = "Mostrar movimientos";
+            this.btnDetalles.Text = "Movimientos";
             this.btnDetalles.UseVisualStyleBackColor = true;
             this.btnDetalles.Visible = false;
             this.btnDetalles.Click += new System.EventHandler(this.btnDetalles_Click);
             // 
             // btnTransferir
             // 
-            this.btnTransferir.Location = new System.Drawing.Point(555, 155);
+            this.btnTransferir.Location = new System.Drawing.Point(555, 198);
             this.btnTransferir.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnTransferir.Name = "btnTransferir";
             this.btnTransferir.Size = new System.Drawing.Size(98, 22);
@@ -212,7 +215,7 @@
             // 
             // btnRetirar
             // 
-            this.btnRetirar.Location = new System.Drawing.Point(555, 129);
+            this.btnRetirar.Location = new System.Drawing.Point(555, 172);
             this.btnRetirar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnRetirar.Name = "btnRetirar";
             this.btnRetirar.Size = new System.Drawing.Size(98, 22);
@@ -224,7 +227,7 @@
             // 
             // btnDepositar
             // 
-            this.btnDepositar.Location = new System.Drawing.Point(555, 103);
+            this.btnDepositar.Location = new System.Drawing.Point(555, 146);
             this.btnDepositar.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnDepositar.Name = "btnDepositar";
             this.btnDepositar.Size = new System.Drawing.Size(98, 22);
@@ -236,7 +239,7 @@
             // 
             // btnAgregarTitular
             // 
-            this.btnAgregarTitular.Location = new System.Drawing.Point(539, 43);
+            this.btnAgregarTitular.Location = new System.Drawing.Point(539, 86);
             this.btnAgregarTitular.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnAgregarTitular.Name = "btnAgregarTitular";
             this.btnAgregarTitular.Size = new System.Drawing.Size(114, 22);
@@ -248,7 +251,7 @@
             // 
             // btnBajaCaja
             // 
-            this.btnBajaCaja.Location = new System.Drawing.Point(539, 16);
+            this.btnBajaCaja.Location = new System.Drawing.Point(539, 59);
             this.btnBajaCaja.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
             this.btnBajaCaja.Name = "btnBajaCaja";
             this.btnBajaCaja.Size = new System.Drawing.Size(114, 22);
@@ -326,24 +329,8 @@
             this.ColumnSaldo.ReadOnly = true;
             this.ColumnSaldo.Width = 125;
             // 
-            // tabControl1
-            // 
-            this.tabControl1.Controls.Add(this.tabCajaDeAhorro);
-            this.tabControl1.Controls.Add(this.tabPlazoFijo);
-            this.tabControl1.Controls.Add(this.tabPagos);
-            this.tabControl1.Controls.Add(this.tabTarjetas);
-            this.tabControl1.Controls.Add(this.tabUsuario);
-            this.tabControl1.Location = new System.Drawing.Point(12, 61);
-            this.tabControl1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(760, 424);
-            this.tabControl1.TabIndex = 0;
-            // 
             // tabPlazoFijo
             // 
-            this.tabPlazoFijo.Controls.Add(this.comboBoxPFCBU);
-            this.tabPlazoFijo.Controls.Add(this.btnEliminarPF);
             this.tabPlazoFijo.Controls.Add(this.btnNewPf);
             this.tabPlazoFijo.Controls.Add(this.dataGridViewPF);
             this.tabPlazoFijo.Location = new System.Drawing.Point(4, 24);
@@ -354,27 +341,6 @@
             this.tabPlazoFijo.TabIndex = 1;
             this.tabPlazoFijo.Text = "PlazoFijo";
             this.tabPlazoFijo.UseVisualStyleBackColor = true;
-            // 
-            // comboBoxPFCBU
-            // 
-            this.comboBoxPFCBU.FormattingEnabled = true;
-            this.comboBoxPFCBU.Location = new System.Drawing.Point(145, 358);
-            this.comboBoxPFCBU.Name = "comboBoxPFCBU";
-            this.comboBoxPFCBU.Size = new System.Drawing.Size(121, 23);
-            this.comboBoxPFCBU.TabIndex = 3;
-            this.comboBoxPFCBU.Text = "Lista de CBUs";
-            this.comboBoxPFCBU.Visible = false;
-            this.comboBoxPFCBU.SelectedIndexChanged += new System.EventHandler(this.comboBoxPFCBU_SelectedIndexChanged);
-            // 
-            // btnEliminarPF
-            // 
-            this.btnEliminarPF.Location = new System.Drawing.Point(666, 79);
-            this.btnEliminarPF.Name = "btnEliminarPF";
-            this.btnEliminarPF.Size = new System.Drawing.Size(75, 23);
-            this.btnEliminarPF.TabIndex = 2;
-            this.btnEliminarPF.Text = "Eliminar";
-            this.btnEliminarPF.UseVisualStyleBackColor = true;
-            this.btnEliminarPF.Click += new System.EventHandler(this.btnEliminarPF_Click);
             // 
             // btnNewPf
             // 
@@ -405,8 +371,6 @@
             this.dataGridViewPF.RowTemplate.Height = 25;
             this.dataGridViewPF.Size = new System.Drawing.Size(664, 343);
             this.dataGridViewPF.TabIndex = 0;
-            this.dataGridViewPF.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPF_CellContentClick);
-            this.dataGridViewPF.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewPF_CellContentClick);
             // 
             // ColumnIdPlf
             // 
@@ -735,97 +699,10 @@
             this.ColumnConsumosTarjeta.ReadOnly = true;
             this.ColumnConsumosTarjeta.Width = 125;
             // 
-            // tabUsuario
-            // 
-            this.tabUsuario.Controls.Add(this.btnDesbloquear);
-            this.tabUsuario.Controls.Add(this.dataGridViewUsuarios);
-            this.tabUsuario.Location = new System.Drawing.Point(4, 24);
-            this.tabUsuario.Name = "tabUsuario";
-            this.tabUsuario.Size = new System.Drawing.Size(752, 396);
-            this.tabUsuario.TabIndex = 4;
-            this.tabUsuario.Text = "Usuarios";
-            this.tabUsuario.UseVisualStyleBackColor = true;
-            // 
-            // btnDesbloquear
-            // 
-            this.btnDesbloquear.Location = new System.Drawing.Point(619, 76);
-            this.btnDesbloquear.Name = "btnDesbloquear";
-            this.btnDesbloquear.Size = new System.Drawing.Size(87, 23);
-            this.btnDesbloquear.TabIndex = 1;
-            this.btnDesbloquear.Text = "Desbloquear";
-            this.btnDesbloquear.UseVisualStyleBackColor = true;
-            this.btnDesbloquear.Click += new System.EventHandler(this.btnDesbloquear_Click);
-            // 
-            // dataGridViewUsuarios
-            // 
-            this.dataGridViewUsuarios.AllowUserToAddRows = false;
-            this.dataGridViewUsuarios.AllowUserToDeleteRows = false;
-            this.dataGridViewUsuarios.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridViewUsuarios.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
-            this.dataGridViewTextBoxColumn1,
-            this.colNombre,
-            this.colDni,
-            this.colEmail,
-            this.colBloqueado,
-            this.colAdmin});
-            this.dataGridViewUsuarios.Location = new System.Drawing.Point(0, 0);
-            this.dataGridViewUsuarios.Name = "dataGridViewUsuarios";
-            this.dataGridViewUsuarios.RowTemplate.Height = 25;
-            this.dataGridViewUsuarios.Size = new System.Drawing.Size(578, 338);
-            this.dataGridViewUsuarios.TabIndex = 0;
-            this.dataGridViewUsuarios.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridViewUsuarios_CellContentClick);
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "ID";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            this.dataGridViewTextBoxColumn1.ReadOnly = true;
-            this.dataGridViewTextBoxColumn1.Visible = false;
-            // 
-            // colNombre
-            // 
-            this.colNombre.HeaderText = "Nombre";
-            this.colNombre.Name = "colNombre";
-            this.colNombre.ReadOnly = true;
-            // 
-            // colDni
-            // 
-            this.colDni.HeaderText = "Dni";
-            this.colDni.Name = "colDni";
-            this.colDni.ReadOnly = true;
-            // 
-            // colEmail
-            // 
-            this.colEmail.HeaderText = "Email";
-            this.colEmail.Name = "colEmail";
-            this.colEmail.ReadOnly = true;
-            // 
-            // colBloqueado
-            // 
-            this.colBloqueado.HeaderText = "Bloqueado";
-            this.colBloqueado.Name = "colBloqueado";
-            this.colBloqueado.ReadOnly = true;
-            // 
-            // colAdmin
-            // 
-            this.colAdmin.HeaderText = "Admin";
-            this.colAdmin.Name = "colAdmin";
-            this.colAdmin.ReadOnly = true;
-            // 
-            // btnCerrarSesion
-            // 
-            this.btnCerrarSesion.Location = new System.Drawing.Point(649, 490);
-            this.btnCerrarSesion.Name = "btnCerrarSesion";
-            this.btnCerrarSesion.Size = new System.Drawing.Size(95, 23);
-            this.btnCerrarSesion.TabIndex = 13;
-            this.btnCerrarSesion.Text = "Cerrar Sesión";
-            this.btnCerrarSesion.UseVisualStyleBackColor = true;
-            this.btnCerrarSesion.Click += new System.EventHandler(this.btnCerrarSesion_Click);
-            // 
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(53, 34);
+            this.label1.Location = new System.Drawing.Point(53, 21);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(72, 15);
             this.label1.TabIndex = 0;
@@ -835,7 +712,7 @@
             // 
             this.nombreUsuario.AutoSize = true;
             this.nombreUsuario.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.nombreUsuario.Location = new System.Drawing.Point(131, 34);
+            this.nombreUsuario.Location = new System.Drawing.Point(143, 21);
             this.nombreUsuario.Name = "nombreUsuario";
             this.nombreUsuario.Size = new System.Drawing.Size(40, 15);
             this.nombreUsuario.TabIndex = 1;
@@ -848,7 +725,6 @@
             this.AutoSize = true;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.ControlBox = false;
-            this.Controls.Add(this.btnCerrarSesion);
             this.Controls.Add(this.nombreUsuario);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.tabControl1);
@@ -860,18 +736,16 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FormMain";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.tabControl1.ResumeLayout(false);
             this.tabCajaDeAhorro.ResumeLayout(false);
             this.tabCajaDeAhorro.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewCaja)).EndInit();
-            this.tabControl1.ResumeLayout(false);
             this.tabPlazoFijo.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPF)).EndInit();
             this.tabPagos.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewPagos)).EndInit();
             this.tabTarjetas.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.dataGridViewTarjetas)).EndInit();
-            this.tabUsuario.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridViewUsuarios)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -887,7 +761,12 @@
         private TabPage tabPagos;
         private TabPage tabTarjetas;
         private DataGridView dataGridViewCaja;
+        private DataGridViewTextBoxColumn ColumnId;
+        private DataGridViewTextBoxColumn ColumnCbu;
+        private DataGridViewTextBoxColumn ColumnTitulares;
+        private ComboBox comboBox1;
         private DateTimePicker dateTimePicker1;
+        private DataGridViewTextBoxColumn ColumnSaldo;
         private Button btnNewCaja;
         private Button btnNewPf;
         private DataGridView dataGridViewPF;
@@ -928,22 +807,5 @@
         private DataGridViewTextBoxColumn ColumnCodigoTarjeta;
         private DataGridViewTextBoxColumn ColumnLimiteTarjeta;
         private DataGridViewTextBoxColumn ColumnConsumosTarjeta;
-        private Button btnEliminarPF;
-        private ComboBox comboBoxPFCBU;
-        private DataGridViewTextBoxColumn ColumnId;
-        private DataGridViewTextBoxColumn ColumnCbu;
-        private DataGridViewTextBoxColumn ColumnTitulares;
-        private DataGridViewTextBoxColumn ColumnSaldo;
-        private TabPage tabUsuario;
-        private DataGridView dataGridViewUsuarios;
-        private DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private DataGridViewTextBoxColumn colNombre;
-        private DataGridViewTextBoxColumn colDni;
-        private DataGridViewTextBoxColumn colEmail;
-        private DataGridViewTextBoxColumn colBloqueado;
-        private DataGridViewTextBoxColumn colAdmin;
-        private TextBox montoText;
-        private TextBox detalleTxt;
-        private Button btnDesbloquear;
     }
 }
