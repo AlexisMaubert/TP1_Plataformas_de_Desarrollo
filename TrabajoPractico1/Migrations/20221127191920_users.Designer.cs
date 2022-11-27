@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TrabajoPractico1;
 
@@ -11,9 +12,11 @@ using TrabajoPractico1;
 namespace TrabajoPractico1.Migrations
 {
     [DbContext(typeof(MiContexto))]
-    partial class MiContextoModelSnapshot : ModelSnapshot
+    [Migration("20221127191920_users")]
+    partial class users
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -81,6 +84,7 @@ namespace TrabajoPractico1.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("metodo")
+                        .IsRequired()
                         .HasColumnType("varchar(50)");
 
                     b.Property<double>("monto")

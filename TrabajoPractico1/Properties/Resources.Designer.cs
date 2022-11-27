@@ -61,7 +61,7 @@ namespace TrabajoPractico1.Properties {
         }
         
         /// <summary>
-        ///   Busca una cadena traducida similar a Data Source=FAMILIAMAUBERTC\SQLEXPRESS;Initial Catalog=grupoA;Integrated Security=True;Encrypt=False.
+        ///   Busca una cadena traducida similar a Data Source=DESKTOP-ER7RIC5\SQLEXPRESS;Initial Catalog=bancoTP3;Integrated Security=True;Encrypt=False.
         /// </summary>
         internal static string ConnectionStr {
             get {
